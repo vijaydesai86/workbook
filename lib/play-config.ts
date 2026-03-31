@@ -10,7 +10,7 @@ export type ActivityTheme = {
 };
 
 export type ActivityArt = {
-  kind: "letter" | "pair" | "keyboard" | "conversation" | "choice";
+  kind: "letter" | "pair" | "keyboard" | "conversation" | "choice" | "alphabet" | "scene";
   lead: string;
   trail?: string;
   caption: string;
@@ -45,505 +45,354 @@ export type ActivityPlayConfig = {
   modules: ActivityPlayModule[];
 };
 
+type AlphabetSeed = {
+  letter: string;
+  word: string;
+  cue: string;
+};
+
+const alphabetSeeds: AlphabetSeed[] = [
+  { letter: "A", word: "Apple", cue: "Say A, then apple." },
+  { letter: "B", word: "Ball", cue: "Say B, then ball." },
+  { letter: "C", word: "Cat", cue: "Say C, then cat." },
+  { letter: "D", word: "Dog", cue: "Say D, then dog." },
+  { letter: "E", word: "Egg", cue: "Say E, then egg." },
+  { letter: "F", word: "Fish", cue: "Say F, then fish." },
+  { letter: "G", word: "Grapes", cue: "Say G, then grapes." },
+  { letter: "H", word: "House", cue: "Say H, then house." },
+  { letter: "I", word: "Ice Cream", cue: "Say I, then ice cream." },
+  { letter: "J", word: "Juice", cue: "Say J, then juice." },
+  { letter: "K", word: "Kite", cue: "Say K, then kite." },
+  { letter: "L", word: "Leaf", cue: "Say L, then leaf." },
+  { letter: "M", word: "Moon", cue: "Say M, then moon." },
+  { letter: "N", word: "Nest", cue: "Say N, then nest." },
+  { letter: "O", word: "Orange", cue: "Say O, then orange." },
+  { letter: "P", word: "Pear", cue: "Say P, then pear." },
+  { letter: "Q", word: "Quilt", cue: "Say Q, then quilt." },
+  { letter: "R", word: "Rainbow", cue: "Say R, then rainbow." },
+  { letter: "S", word: "Sun", cue: "Say S, then sun." },
+  { letter: "T", word: "Tree", cue: "Say T, then tree." },
+  { letter: "U", word: "Umbrella", cue: "Say U, then umbrella." },
+  { letter: "V", word: "Van", cue: "Say V, then van." },
+  { letter: "W", word: "Whale", cue: "Say W, then whale." },
+  { letter: "X", word: "Xylophone", cue: "Say X, then xylophone." },
+  { letter: "Y", word: "Yarn", cue: "Say Y, then yarn." },
+  { letter: "Z", word: "Zebra", cue: "Say Z, then zebra." }
+];
+
+function createAlphabetCards(): ActivityPlayCard[] {
+  return alphabetSeeds.map((seed) => ({
+    id: "alphabet-" + seed.letter.toLowerCase(),
+    title: seed.letter + " is for " + seed.word,
+    prompt: "Look at the " + seed.word.toLowerCase() + " card, say the letter, then say the object word.",
+    focus: "Letter " + seed.letter,
+    cue: seed.cue,
+    example: seed.letter + ". " + seed.word + ".",
+    art: {
+      kind: "alphabet",
+      lead: seed.word.toUpperCase(),
+      trail: seed.letter,
+      caption: seed.word + " card"
+    }
+  }));
+}
+
 const bespokeConfigs: Record<string, ActivityPlayConfig> = {
-  "speech-training": {
-    defaultModuleId: "single_letters",
-    coverLabel: "Speech Studio",
-    supportLine: "Slow speech cards with visual cues, repeatable turns, and no pressure timers.",
-    audience: "Great for home practice, early communicators, and articulation warm-ups.",
+  "alphabet-cards": {
+    defaultModuleId: "alphabet_deck",
+    coverLabel: "Alphabet Deck",
+    supportLine: "A full visual alphabet with one picture card and one audio cue for each letter.",
+    audience: "Built for early learners who benefit from clear object pictures, short language, and predictable repetition.",
     theme: {
-      primary: "#ff8a5b",
-      secondary: "#ffe6db",
-      surface: "#fff6f1",
-      ink: "#48281e",
-      badge: "#fff0c2",
-      mascot: "Milo the mouth coach"
+      primary: "#ea6f42",
+      secondary: "#ffe4d8",
+      surface: "#fff8f3",
+      ink: "#4a2b20",
+      badge: "#fff0b8",
+      mascot: "Sunny the alphabet buddy"
     },
     modules: [
       {
-        id: "single_letters",
-        title: "Single Letters",
-        description: "Practice one speech sound at a time using large visual cards.",
-        accent: "Warm-up mode",
-        skills: ["See it", "Say it", "Repeat it"],
-        calmNote: "One sound per card. Repeat slowly. Stop any time.",
-        cards: [
-          {
-            id: "letter-s",
-            title: "S Sound",
-            prompt: "Watch the mouth shape, then hold the /s/ sound in a long gentle stream.",
-            focus: "Long quiet airflow",
-            cue: "Smile a little and keep the tongue behind the teeth.",
-            example: "sss",
-            art: {
-              kind: "letter",
-              lead: "S",
-              caption: "Snake sound"
-            }
-          },
-          {
-            id: "letter-m",
-            title: "M Sound",
-            prompt: "Close the lips, hum /m/, and feel the buzz before opening the mouth.",
-            focus: "Lips together first",
-            cue: "Touch your lips lightly, then let the sound hum.",
-            example: "mmm",
-            art: {
-              kind: "letter",
-              lead: "M",
-              caption: "Humming sound"
-            }
-          },
-          {
-            id: "letter-p",
-            title: "P Sound",
-            prompt: "Press the lips together and pop the /p/ sound once with a tiny puff of air.",
-            focus: "Quick lip pop",
-            cue: "Keep the jaw loose and use a short burst of air.",
-            example: "puh",
-            art: {
-              kind: "letter",
-              lead: "P",
-              caption: "Pop sound"
-            }
-          }
-        ]
-      },
-      {
-        id: "sound_pairs",
-        title: "Sound Pairs",
-        description: "Blend one sound into a short vowel pair using two-part cards.",
-        accent: "Bridge mode",
-        skills: ["Blend", "Pause", "Repeat"],
-        calmNote: "Say the first sound, then slide into the second one without rushing.",
-        cards: [
-          {
-            id: "pair-sa",
-            title: "sa",
-            prompt: "Start with /s/ and slide into ah in one smooth move.",
-            focus: "Smooth blend",
-            cue: "Keep the air moving before you open into the vowel.",
-            example: "sa",
-            art: {
-              kind: "pair",
-              lead: "S",
-              trail: "A",
-              caption: "Slide together"
-            }
-          },
-          {
-            id: "pair-sho",
-            title: "sho",
-            prompt: "Make /sh/ first and round the lips for oh without stopping.",
-            focus: "Rounded lips",
-            cue: "Whisper the first sound softly, then round the mouth.",
-            example: "sho",
-            art: {
-              kind: "pair",
-              lead: "SH",
-              trail: "O",
-              caption: "Quiet to round"
-            }
-          },
-          {
-            id: "pair-ma",
-            title: "ma",
-            prompt: "Hum /m/ and release into ah in one calm motion.",
-            focus: "One motion",
-            cue: "Keep the lips closed at first and open gently.",
-            example: "ma",
-            art: {
-              kind: "pair",
-              lead: "M",
-              trail: "A",
-              caption: "Hum then open"
-            }
-          }
-        ]
-      },
-      {
-        id: "home_phrases",
-        title: "Home Phrases",
-        description: "Use a target sound inside short everyday phrases.",
-        accent: "Use-it mode",
-        skills: ["Ask", "Point", "Use words"],
-        calmNote: "Keep the phrase short. One breath. One clear try.",
-        cards: [
-          {
-            id: "phrase-more-water",
-            title: "More water",
-            prompt: "Point to the drink and say the full phrase in one calm breath.",
-            focus: "Steady pacing",
-            cue: "Point first, then speak once.",
-            example: "More water",
-            art: {
-              kind: "conversation",
-              lead: "MORE",
-              trail: "WATER",
-              caption: "Ask for a drink"
-            }
-          },
-          {
-            id: "phrase-my-turn",
-            title: "My turn",
-            prompt: "Use the phrase before reaching for the toy or game.",
-            focus: "Clear first word",
-            cue: "Tap the card once before saying the words.",
-            example: "My turn",
-            art: {
-              kind: "conversation",
-              lead: "MY",
-              trail: "TURN",
-              caption: "Ask to join"
-            }
-          },
-          {
-            id: "phrase-see-it",
-            title: "See it",
-            prompt: "Look at the item and say the two words together.",
-            focus: "Crisp opening sound",
-            cue: "Stretch the first sound lightly and keep the phrase short.",
-            example: "See it",
-            art: {
-              kind: "conversation",
-              lead: "SEE",
-              trail: "IT",
-              caption: "Name what you notice"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  "typing-lab": {
-    defaultModuleId: "learning",
-    coverLabel: "Typing Game",
-    supportLine: "Calm keyboard play with large targets, short rounds, and praise-focused feedback.",
-    audience: "Made for beginners, non-verbal learners, and children who need predictable repetition.",
-    theme: {
-      primary: "#4c8bf5",
-      secondary: "#dce8ff",
-      surface: "#f3f7ff",
-      ink: "#1a2d4f",
-      badge: "#e6f8e5",
-      mascot: "Pixel the typing buddy"
-    },
-    modules: [
-      {
-        id: "learning",
-        title: "Learning",
-        description: "Letters appear in a guided order with one big target at a time.",
-        accent: "Learning mode",
-        skills: ["Look", "Tap", "Celebrate"],
-        calmNote: "One key only. No rush. Repeat with the same pace.",
-        cards: [
-          {
-            id: "type-a",
-            title: "Find A",
-            prompt: "Look for the A key and press it once when you are ready.",
-            focus: "One target only",
-            cue: "Eyes on the key, then one quiet tap.",
-            example: "A",
-            art: {
-              kind: "keyboard",
-              lead: "A",
-              caption: "Home row target"
-            }
-          },
-          {
-            id: "type-s",
-            title: "Find S",
-            prompt: "Say the letter name first, then press S slowly.",
-            focus: "Name then tap",
-            cue: "Start from the home row and tap once.",
-            example: "S",
-            art: {
-              kind: "keyboard",
-              lead: "S",
-              caption: "Say then tap"
-            }
-          },
-          {
-            id: "type-d",
-            title: "Find D",
-            prompt: "Press D and watch the same letter appear on screen.",
-            focus: "Cause and effect",
-            cue: "Tap once, look up, and smile at the match.",
-            example: "D",
-            art: {
-              kind: "keyboard",
-              lead: "D",
-              caption: "See the match"
-            }
-          }
-        ]
-      },
-      {
-        id: "practice",
-        title: "Practice",
-        description: "Short words with the same calm rhythm on every round.",
-        accent: "Practice mode",
-        skills: ["Read", "Type", "Repeat"],
-        calmNote: "Short words only. Use a pause between each key.",
-        cards: [
-          {
-            id: "word-sun",
-            title: "sun",
-            prompt: "Type the word sun one letter at a time.",
-            focus: "Three-key sequence",
-            cue: "Read the full word first, then type it slowly.",
-            example: "sun",
-            art: {
-              kind: "keyboard",
-              lead: "SUN",
-              caption: "Short bright word"
-            }
-          },
-          {
-            id: "word-map",
-            title: "map",
-            prompt: "Type map and pause after every letter.",
-            focus: "Pause between taps",
-            cue: "Point to each letter before pressing it.",
-            example: "map",
-            art: {
-              kind: "keyboard",
-              lead: "MAP",
-              caption: "Three taps"
-            }
-          },
-          {
-            id: "word-dog",
-            title: "dog",
-            prompt: "Type dog once, then try the same word one more time.",
-            focus: "Confidence replay",
-            cue: "Keep the same speed on both turns.",
-            example: "dog",
-            art: {
-              kind: "keyboard",
-              lead: "DOG",
-              caption: "Repeat the win"
-            }
-          }
-        ]
-      },
-      {
-        id: "free_play",
-        title: "Free Play",
-        description: "Explore keys freely while hearing or seeing the target.",
-        accent: "Free play",
-        skills: ["Explore", "Notice", "Try again"],
-        calmNote: "No score. No finish line. Just explore letters.",
-        cards: [
-          {
-            id: "free-b",
-            title: "Tap B",
-            prompt: "Tap B whenever you feel ready and listen for the letter cue.",
-            focus: "Explore one letter",
-            cue: "There is no wrong pace here.",
-            example: "B",
-            art: {
-              kind: "keyboard",
-              lead: "B",
-              caption: "Try any time"
-            }
-          },
-          {
-            id: "free-c",
-            title: "Tap C",
-            prompt: "Tap C and watch the screen answer back.",
-            focus: "See and hear",
-            cue: "Look, press, then reset for another turn.",
-            example: "C",
-            art: {
-              kind: "keyboard",
-              lead: "C",
-              caption: "Sound + sight"
-            }
-          },
-          {
-            id: "free-l",
-            title: "Tap L",
-            prompt: "Try L at your own speed and notice where it sits on the keyboard.",
-            focus: "Find the place",
-            cue: "Use one finger and take your time.",
-            example: "L",
-            art: {
-              kind: "keyboard",
-              lead: "L",
-              caption: "Find the spot"
-            }
-          }
-        ]
+        id: "alphabet_deck",
+        title: "A to Z Cards",
+        description: "Move through all 26 alphabet picture cards in one calm, repeatable deck.",
+        accent: "Full alphabet",
+        skills: ["See the picture", "Name the letter", "Say the word"],
+        calmNote: "One letter card at a time. Repeat only when the child is ready.",
+        cards: createAlphabetCards()
       }
     ]
   },
   "social-scenes": {
-    defaultModuleId: "greetings",
-    coverLabel: "Social Stories",
-    supportLine: "Practice short social moments through visual turns, simple scripts, and clear choices.",
-    audience: "Helpful for greetings, asking for help, and building short conversation routines.",
+    defaultModuleId: "swing_time",
+    coverLabel: "Social Scenes",
+    supportLine: "Everyday visual scenes for playground turns, snack choices, greetings, and help requests.",
+    audience: "Helpful for autistic children and other learners who benefit from visual supports, predictable language, and concrete everyday situations.",
     theme: {
-      primary: "#6b56d6",
-      secondary: "#e7e0ff",
-      surface: "#f7f4ff",
-      ink: "#291d54",
-      badge: "#fff2bf",
-      mascot: "Tara the talk buddy"
+      primary: "#4f7aef",
+      secondary: "#dbe8ff",
+      surface: "#f5f8ff",
+      ink: "#213252",
+      badge: "#fff0b8",
+      mascot: "Kiki the social buddy"
     },
     modules: [
       {
-        id: "greetings",
-        title: "Greetings",
-        description: "Short predictable openings for familiar people.",
-        accent: "Start together",
-        skills: ["Wave", "Say hello", "Wait"],
-        calmNote: "One greeting, one wait, one reply.",
+        id: "swing_time",
+        title: "Swing Time",
+        description: "Practice waiting, asking for a turn, and finishing at the swing.",
+        accent: "Playground routine",
+        skills: ["Wait", "Ask", "Finish"],
+        calmNote: "Keep the order the same: wait, ask, swing, all done.",
         cards: [
           {
-            id: "hello",
-            title: "Hello",
-            prompt: "Look up, wave once, and say hello.",
-            focus: "Face and word",
-            cue: "Count 1-2, then speak.",
-            example: "Hello",
+            id: "swing-wait",
+            title: "Wait for the swing",
+            prompt: "Show the swing card and say the waiting phrase one time.",
+            focus: "Waiting with one short phrase",
+            cue: "Point to the swing and say, wait for swing.",
+            example: "Wait for swing.",
             art: {
-              kind: "conversation",
-              lead: "HELLO",
-              trail: "HI",
-              caption: "Greeting turn"
+              kind: "scene",
+              lead: "SWING",
+              trail: "WAIT",
+              caption: "Playground swing"
             }
           },
           {
-            id: "good-morning",
-            title: "Good morning",
-            prompt: "Use the full greeting in one calm voice.",
-            focus: "Whole phrase",
-            cue: "Smile first, then start the words.",
-            example: "Good morning",
+            id: "swing-my-turn",
+            title: "My turn on the swing",
+            prompt: "Use the swing picture and practice asking for a turn calmly.",
+            focus: "Turn-taking phrase",
+            cue: "Point to the swing and say, my turn swing.",
+            example: "My turn swing.",
             art: {
-              kind: "conversation",
-              lead: "GOOD",
-              trail: "MORNING",
-              caption: "Start the day"
+              kind: "scene",
+              lead: "SWING",
+              trail: "MY TURN",
+              caption: "Ask for the swing"
             }
           },
           {
-            id: "how-are-you",
-            title: "How are you?",
-            prompt: "Ask the question and wait for one response.",
-            focus: "Ask then wait",
-            cue: "Keep the hands still while listening.",
-            example: "How are you?",
+            id: "swing-all-done",
+            title: "All done swing",
+            prompt: "Use the same swing card to practice finishing with a clear phrase.",
+            focus: "Ending the routine",
+            cue: "Touch the card and say, all done swing.",
+            example: "All done swing.",
             art: {
-              kind: "conversation",
-              lead: "HOW",
-              trail: "YOU",
-              caption: "Question turn"
+              kind: "scene",
+              lead: "SWING",
+              trail: "ALL DONE",
+              caption: "Finish the swing turn"
             }
           }
         ]
       },
       {
-        id: "help_requests",
-        title: "Help Requests",
-        description: "Practice asking for help using one clear sentence.",
-        accent: "Ask for support",
-        skills: ["Notice", "Ask", "Repeat"],
-        calmNote: "Use one sentence, then repeat it only once if needed.",
+        id: "slide_line",
+        title: "Slide Line",
+        description: "Practice lining up, waiting, and taking one turn at the slide.",
+        accent: "Wait in line",
+        skills: ["Line up", "Wait", "Go"],
+        calmNote: "Use the same sequence every time: line up, wait, then go.",
         cards: [
           {
-            id: "need-help",
-            title: "I need help",
-            prompt: "Use the full sentence clearly one time.",
-            focus: "Whole sentence",
-            cue: "Point to the problem before speaking.",
-            example: "I need help",
+            id: "slide-line-up",
+            title: "Line up for the slide",
+            prompt: "Look at the slide card and say the line-up phrase.",
+            focus: "Joining the line",
+            cue: "Point to the slide and say, line up.",
+            example: "Line up.",
             art: {
-              kind: "conversation",
-              lead: "I NEED",
-              trail: "HELP",
-              caption: "Ask clearly"
+              kind: "scene",
+              lead: "SLIDE",
+              trail: "LINE UP",
+              caption: "Slide line"
             }
           },
           {
-            id: "can-you-help",
-            title: "Can you help me?",
-            prompt: "Say the question and wait for one answer.",
-            focus: "Question voice",
-            cue: "Take one breath before starting.",
-            example: "Can you help me?",
+            id: "slide-wait",
+            title: "Wait at the slide",
+            prompt: "Practice waiting with one simple phrase before the turn.",
+            focus: "Waiting in place",
+            cue: "Point to the slide and say, wait.",
+            example: "Wait.",
             art: {
-              kind: "conversation",
-              lead: "CAN YOU",
-              trail: "HELP",
-              caption: "Ask a person"
+              kind: "scene",
+              lead: "SLIDE",
+              trail: "WAIT",
+              caption: "Wait for the slide"
             }
           },
           {
-            id: "please-open",
-            title: "Please open it",
-            prompt: "Show the item and say the request once.",
-            focus: "Request with object",
-            cue: "Hold the item still while speaking.",
-            example: "Please open it",
+            id: "slide-my-turn",
+            title: "My turn slide",
+            prompt: "Use the slide card and say the turn phrase when ready.",
+            focus: "Turn phrase",
+            cue: "Point to the slide and say, my turn slide.",
+            example: "My turn slide.",
             art: {
-              kind: "conversation",
-              lead: "PLEASE",
-              trail: "OPEN",
-              caption: "Request turn"
+              kind: "scene",
+              lead: "SLIDE",
+              trail: "MY TURN",
+              caption: "Take a slide turn"
             }
           }
         ]
       },
       {
-        id: "choices",
-        title: "Choice Making",
-        description: "Use short choice cards to answer preference questions.",
-        accent: "Pick one",
-        skills: ["Look", "Pick", "Say it"],
-        calmNote: "Two choices. One answer. One calm sentence.",
+        id: "snack_time",
+        title: "Snack Time",
+        description: "Use snack pictures to choose food, ask for juice, and finish calmly.",
+        accent: "Snack choices",
+        skills: ["Choose", "Request", "Finish"],
+        calmNote: "Show two clear food cards and use one short phrase at a time.",
         cards: [
           {
-            id: "choice-snack",
-            title: "Snack choice",
-            prompt: "Look at two snack choices and say which one you want.",
-            focus: "One clear preference",
-            cue: "Point first, then say the choice.",
-            example: "I want apple",
+            id: "snack-choice",
+            title: "Apple or cracker",
+            prompt: "Look at the snack pictures and choose one with a clear phrase.",
+            focus: "Making one choice",
+            cue: "Point to the snack and say, apple please or cracker please.",
+            example: "Apple please.",
             art: {
               kind: "choice",
               lead: "APPLE",
               trail: "CRACKER",
-              caption: "Pick your snack"
+              caption: "Snack choice"
             }
           },
           {
-            id: "choice-toy",
-            title: "Toy choice",
-            prompt: "Choose one toy and say the name of it.",
-            focus: "Choose and say",
-            cue: "Touch the choice before speaking.",
-            example: "Car please",
+            id: "snack-juice",
+            title: "Juice please",
+            prompt: "Use the drink picture to practice one short request.",
+            focus: "Requesting a drink",
+            cue: "Point to the juice card and say, juice please.",
+            example: "Juice please.",
             art: {
-              kind: "choice",
-              lead: "CAR",
-              trail: "BALL",
-              caption: "Pick a toy"
+              kind: "scene",
+              lead: "JUICE",
+              trail: "PLEASE",
+              caption: "Ask for juice"
             }
           },
           {
-            id: "choice-song",
-            title: "Song choice",
-            prompt: "Pick one song card and say the name clearly.",
-            focus: "Choice request",
-            cue: "Use one short phrase only.",
-            example: "Play Wheels",
+            id: "snack-all-done",
+            title: "All done snack",
+            prompt: "Use the snack picture to end the routine with one clear phrase.",
+            focus: "Ending snack time",
+            cue: "Touch the snack card and say, all done snack.",
+            example: "All done snack.",
             art: {
-              kind: "choice",
-              lead: "WHEELS",
-              trail: "RAINBOW",
-              caption: "Pick the song"
+              kind: "scene",
+              lead: "CRACKER",
+              trail: "ALL DONE",
+              caption: "Finish snack time"
+            }
+          }
+        ]
+      },
+      {
+        id: "hello_time",
+        title: "Hello Time",
+        description: "Practice hello, good morning, and goodbye with familiar visual cues.",
+        accent: "Greeting routine",
+        skills: ["Wave", "Say hello", "Say goodbye"],
+        calmNote: "Use one greeting at a time and pause for a reply.",
+        cards: [
+          {
+            id: "hello-hi",
+            title: "Hello",
+            prompt: "Look at the greeting card and say hello one time.",
+            focus: "Simple greeting",
+            cue: "Wave and say, hello.",
+            example: "Hello.",
+            art: {
+              kind: "conversation",
+              lead: "HELLO",
+              trail: "HI",
+              caption: "Say hello"
+            }
+          },
+          {
+            id: "hello-morning",
+            title: "Good morning",
+            prompt: "Use the greeting card for a morning hello.",
+            focus: "Whole greeting phrase",
+            cue: "Smile and say, good morning.",
+            example: "Good morning.",
+            art: {
+              kind: "conversation",
+              lead: "GOOD MORNING",
+              trail: "HELLO",
+              caption: "Morning greeting"
+            }
+          },
+          {
+            id: "hello-bye",
+            title: "Goodbye",
+            prompt: "Practice ending the interaction with one goodbye phrase.",
+            focus: "Closing the interaction",
+            cue: "Wave and say, goodbye.",
+            example: "Goodbye.",
+            art: {
+              kind: "conversation",
+              lead: "GOODBYE",
+              trail: "SEE YOU",
+              caption: "Say goodbye"
+            }
+          }
+        ]
+      },
+      {
+        id: "ask_for_help",
+        title: "Ask for Help",
+        description: "Use teacher and backpack pictures for clear help requests.",
+        accent: "Help routine",
+        skills: ["Notice", "Ask", "Repeat once"],
+        calmNote: "Keep help requests short and concrete.",
+        cards: [
+          {
+            id: "help-teacher",
+            title: "Teacher help",
+            prompt: "Use the teacher card to practice a help request.",
+            focus: "Asking an adult for help",
+            cue: "Point to the teacher and say, I need help.",
+            example: "I need help.",
+            art: {
+              kind: "scene",
+              lead: "TEACHER",
+              trail: "HELP",
+              caption: "Ask the teacher"
+            }
+          },
+          {
+            id: "help-backpack",
+            title: "Backpack help",
+            prompt: "Use the backpack picture to ask for help with a zipper or buckle.",
+            focus: "Naming the problem",
+            cue: "Point to the backpack and say, help backpack please.",
+            example: "Help backpack please.",
+            art: {
+              kind: "scene",
+              lead: "BACKPACK",
+              trail: "HELP PLEASE",
+              caption: "Help with backpack"
+            }
+          },
+          {
+            id: "help-open",
+            title: "Open please",
+            prompt: "Use the drink or snack card to ask someone to open it.",
+            focus: "Short request phrase",
+            cue: "Hold the item card and say, open please.",
+            example: "Open please.",
+            art: {
+              kind: "scene",
+              lead: "JUICE",
+              trail: "OPEN PLEASE",
+              caption: "Ask to open"
             }
           }
         ]
@@ -578,7 +427,7 @@ function createFallbackConfig(activity: Activity): ActivityPlayConfig {
           id: item.id,
           title: item.title,
           prompt: item.summary,
-          focus: item.steps[0] ?? `Step ${index + 1}`,
+          focus: item.steps[0] ?? "Step " + String(index + 1),
           cue: item.steps[1] ?? item.tags.join(", "),
           example: item.steps[2] ?? item.tags[0] ?? item.kind,
           art: {

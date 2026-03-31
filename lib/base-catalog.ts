@@ -4,155 +4,152 @@ export const baseCatalog: Catalog = {
   updatedAt: "2026-03-31T00:00:00.000Z",
   activities: [
     {
-      id: "typing-lab",
-      title: "Typing Lab",
-      category: "Keyboard practice",
+      id: "alphabet-cards",
+      title: "Alphabet Cards",
+      category: "Letter learning",
       summary:
-        "Short, repeatable typing sessions with visual pacing and cue-driven prompts for early learners.",
-      goal: "Build confidence with letters, words, and short phrases.",
+        "A visual alphabet deck with one clear object card for each letter from A to Z.",
+      goal: "Build letter recognition, object-word pairing, and predictable sound practice.",
       sessionLength: "10-15 min",
       workModeNote:
-        "Work mode keeps this static: choose one typing item and run the steps as listed, with no live generation.",
+        "Work mode keeps the alphabet deck fixed so the child can revisit the same object cards and sounds in a calm routine.",
       trainModeNote:
-        "Train mode can extend this activity with more levels, prompt packs, or accessibility supports such as slower pacing and extra visual cues.",
+        "Train mode can add more alphabet objects or themed letter packs, but the main alphabet deck should stay simple and consistent.",
       items: [
         {
-          id: "typing-letter-match",
-          title: "Letter Match",
+          id: "alphabet-a-f",
+          title: "A to F cards",
           kind: "exercise",
-          summary: "Match one sound to one key with slow pacing and strong repetition.",
+          summary: "Start with a short set of early alphabet object cards.",
           steps: [
-            "Show one target letter at a time.",
-            "Say the sound aloud before pressing the key.",
-            "Repeat the same target for 5-8 turns before switching."
+            "Show one picture card at a time.",
+            "Say the letter name first.",
+            "Say the object word next."
           ],
-          tags: ["early typing", "letter-sound", "repetition"]
+          tags: ["letters", "objects", "visual cards"]
         },
         {
-          id: "typing-word-builder",
-          title: "Word Builder",
+          id: "alphabet-g-l",
+          title: "G to L cards",
           kind: "exercise",
-          summary: "Move from letters to simple high-frequency words with a predictable prompt rhythm.",
+          summary: "Keep the same rhythm with the next letter group.",
           steps: [
-            "Read the word together.",
-            "Type one letter at a time with a visual cue.",
-            "Replay the full word at the end."
+            "Point to the picture.",
+            "Name the letter once.",
+            "Repeat the object word clearly."
           ],
-          tags: ["words", "visual support", "motor planning"]
+          tags: ["letters", "repetition", "predictable routine"]
         },
         {
-          id: "typing-calm-settings",
-          title: "Calm Settings Pack",
-          kind: "setting",
-          summary: "Static support options to keep the activity predictable.",
-          steps: [
-            "Reduce visual clutter to one target at a time.",
-            "Use a slower countdown between prompts.",
-            "Keep success feedback short and consistent."
-          ],
-          tags: ["accessibility", "predictability", "support"]
-        }
-      ]
-    },
-    {
-      id: "speech-training",
-      title: "Speech Training",
-      category: "Speech practice",
-      summary:
-        "Home-practice speech routines with breathing, articulation, and short phrase drills that can be reused every day.",
-      goal: "Support sound formation and clearer phrase production.",
-      sessionLength: "8-12 min",
-      workModeNote:
-        "Work mode treats speech training like a printed routine: pick one item, follow the steps, and stop there.",
-      trainModeNote:
-        "Train mode can add more sound families, short articulation ladders, or new home-practice packs similar to the speech-training direction on SocialDiverse.",
-      items: [
-        {
-          id: "speech-breath-reset",
-          title: "Breath Reset",
+          id: "alphabet-m-r",
+          title: "M to R cards",
           kind: "exercise",
-          summary: "A short warm-up for posture, breath, and steady voice onset.",
+          summary: "Use the middle letter group for short review rounds.",
           steps: [
-            "Sit tall and place both feet on the floor.",
-            "Inhale through the nose for 3 counts.",
-            "Exhale with a long quiet sound for 4 counts."
+            "Look at the picture card.",
+            "Say the letter and object together.",
+            "Move to the next card slowly."
           ],
-          tags: ["warm-up", "breathing", "voice"]
+          tags: ["review", "matching", "speech support"]
         },
         {
-          id: "speech-mirror-sounds",
-          title: "Mirror Sounds",
-          kind: "exercise",
-          summary: "Use a mirror to copy mouth shape for target sounds.",
+          id: "alphabet-s-x",
+          title: "S to X cards",
+          kind: "support",
+          summary: "Later letters stay visual and concrete with familiar picture prompts.",
           steps: [
-            "Watch the mouth shape together.",
-            "Copy the sound 5 times slowly.",
-            "Move from sound to short syllables."
+            "Keep the pace slow.",
+            "Use one short cue sentence.",
+            "Repeat only when the child is ready."
           ],
-          tags: ["articulation", "mirror", "visual cue"]
+          tags: ["visual support", "calm pacing", "letters"]
         },
         {
-          id: "speech-short-phrases",
-          title: "Short Phrase Ladder",
-          kind: "prompt-pack",
-          summary: "Practice one sound inside short everyday phrases.",
+          id: "alphabet-y-z",
+          title: "Y to Z cards",
+          kind: "support",
+          summary: "Finish the alphabet with the same picture-card routine.",
           steps: [
-            "Start with one target word.",
-            "Expand to a 2-3 word phrase.",
-            "Repeat the final phrase in three calm turns."
+            "Point to the card.",
+            "Say the letter.",
+            "Say the object word."
           ],
-          tags: ["phrases", "carryover", "daily practice"]
+          tags: ["end of deck", "object cards", "consistency"]
         }
       ]
     },
     {
       id: "social-scenes",
       title: "Social Scenes",
-      category: "Conversation practice",
+      category: "Everyday communication",
       summary:
-        "Guided scene cards for short exchanges, turn-taking, and predictable response practice.",
-      goal: "Support social communication in familiar settings.",
-      sessionLength: "12-18 min",
+        "Five everyday scene sets for swing time, slide line, snack time, hello time, and asking for help.",
+      goal: "Support social communication with familiar places, clear picture cues, and short repeatable phrases.",
+      sessionLength: "10-18 min",
       workModeNote:
-        "Work mode keeps the scene library fixed so learners get the same prompts and steps every session.",
+        "Work mode keeps the same scene cards and phrases available each session so the child gets a predictable routine.",
       trainModeNote:
-        "Train mode can add more scenes or item packs, but they should stay structured and close to the current categories.",
+        "Train mode can add more social scenes later, but they should stay concrete, visual, and grounded in everyday life.",
       items: [
         {
-          id: "scene-greeting-loop",
-          title: "Greeting Loop",
+          id: "scene-swing-time",
+          title: "Swing Time",
           kind: "exercise",
-          summary: "A repeatable hello-and-response routine for familiar people.",
+          summary: "Practice waiting, asking for a turn, and finishing at the swing.",
           steps: [
-            "Practice a hello line.",
-            "Wait for one reply.",
-            "Use one closing line."
+            "Show the swing card.",
+            "Practice one short phrase.",
+            "Repeat with the same calm order."
           ],
-          tags: ["greeting", "turn-taking", "routine"]
+          tags: ["playground", "turn taking", "swing"]
         },
         {
-          id: "scene-help-request",
-          title: "Help Request Card",
+          id: "scene-slide-line",
+          title: "Slide Line",
+          kind: "exercise",
+          summary: "Use picture cues for lining up and waiting at the slide.",
+          steps: [
+            "Point to the slide picture.",
+            "Say the line-up phrase.",
+            "Move to the next card when ready."
+          ],
+          tags: ["playground", "waiting", "slide"]
+        },
+        {
+          id: "scene-snack-time",
+          title: "Snack Time",
           kind: "support",
-          summary: "A structured way to ask for help using one cue sentence and one follow-up.",
+          summary: "Use food and drink cards for choosing and requesting at snack time.",
           steps: [
-            "Name the problem.",
-            "Ask for help with one sentence.",
-            "Repeat the request once if needed."
+            "Show two picture choices.",
+            "Ask one short question.",
+            "Answer with one clear phrase."
           ],
-          tags: ["requesting", "support", "sentence starter"]
+          tags: ["snack", "choices", "requesting"]
         },
         {
-          id: "scene-choice-practice",
-          title: "Choice Practice",
-          kind: "prompt-pack",
-          summary: "Practice answering simple preference questions with visual support.",
+          id: "scene-hello-time",
+          title: "Hello Time",
+          kind: "exercise",
+          summary: "Practice hello, good morning, and goodbye with familiar greeting cards.",
           steps: [
-            "Show two options.",
-            "Ask one short question.",
-            "Answer with one clear preference sentence."
+            "Look at the greeting picture.",
+            "Say one greeting phrase.",
+            "Pause for a reply."
           ],
-          tags: ["choices", "response practice", "visual support"]
+          tags: ["greetings", "school", "conversation"]
+        },
+        {
+          id: "scene-ask-help",
+          title: "Ask for Help",
+          kind: "support",
+          summary: "Use teacher and backpack cards to practice asking for help clearly.",
+          steps: [
+            "Show the help picture.",
+            "Model the help phrase.",
+            "Repeat once if needed."
+          ],
+          tags: ["help", "teacher", "requesting"]
         }
       ]
     }

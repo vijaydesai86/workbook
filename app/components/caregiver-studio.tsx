@@ -10,9 +10,9 @@ type CaregiverStudioProps = {
 };
 
 const suggestionPrompts = [
-  "Add three home speech warm-ups for /s/ and /sh/ practice.",
-  "Extend typing practice with more calm visual cue packs.",
-  "Add more choice-making cards for social scenes."
+  "Add three more playground social scene cards for waiting and turn-taking.",
+  "Add more alphabet picture cards that stay concrete and child-friendly.",
+  "Extend snack time with more food and drink choice cards."
 ];
 
 export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
@@ -131,8 +131,8 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
           <div className="eyebrow">Caregiver studio</div>
           <h1>Add more content without changing the child flow.</h1>
           <p>
-            Use AI here to extend activities, add more cards, or create new modules. This area stays
-            separate so the child only sees the play experience.
+            Use AI here to extend the saved activity sets, add more cards, or create new modules.
+            This area stays separate so the child only sees the play experience.
           </p>
         </div>
         <div className="caregiver-summary-card">
@@ -150,7 +150,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
               <h2>Ask for a structured addition</h2>
             </div>
           </div>
-          <p className="subtle">Keep requests specific. Ask for more items inside an activity or a clearly named new module.</p>
+          <p className="subtle">Keep requests specific. Ask for more scene cards, more alphabet pictures, or more items inside an existing set.</p>
           <div className="quick-chip-row">
             {suggestionPrompts.map((suggestion) => (
               <button
@@ -233,8 +233,8 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
             ))}
           </div>
           <div className="support-note">
-            Best results come from concrete requests such as adding more speech sounds, more social
-            choices, or more typing practice cards.
+            Best results come from concrete requests such as adding more playground scenes, more
+            snack choices, or more alphabet picture cards.
           </div>
         </aside>
       </section>

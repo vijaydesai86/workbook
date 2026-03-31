@@ -7,10 +7,31 @@ type BuildTrainingProposalArgs = {
 };
 
 function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+  const lower = value.toLowerCase();
+  let output = "";
+  let lastWasDash = false;
+
+  for (const char of lower) {
+    const isLetter = char >= "a" && char <= "z";
+    const isNumber = char >= "0" && char <= "9";
+
+    if (isLetter || isNumber) {
+      output += char;
+      lastWasDash = false;
+      continue;
+    }
+
+    if (!lastWasDash && output.length > 0) {
+      output += "-";
+      lastWasDash = true;
+    }
+  }
+
+  if (output.endsWith("-")) {
+    output = output.slice(0, -1);
+  }
+
+  return output;
 }
 
 function item(title: string, kind: ActivityItem["kind"], summary: string, steps: string[], tags: string[]) {
@@ -32,10 +53,15 @@ function activityTemplate(activity: Omit<Activity, "id"> & { id?: string }) {
 }
 
 function extractJsonBlock(input: string) {
-  const fenced = input.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const fenceStart = input.indexOf("```");
 
-  if (fenced?.[1]) {
-    return fenced[1];
+  if (fenceStart >= 0) {
+    const firstBrace = input.indexOf("{", fenceStart);
+    const fenceEnd = input.lastIndexOf("```");
+
+    if (firstBrace >= 0 && fenceEnd > firstBrace) {
+      return input.slice(firstBrace, fenceEnd).trim();
+    }
   }
 
   const start = input.indexOf("{");
@@ -50,96 +76,95 @@ function extractJsonBlock(input: string) {
 
 function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
   const lowerPrompt = prompt.toLowerCase();
-  const speechActivity = catalog.activities.find((activity) => activity.id === "speech-training");
-  const typingActivity = catalog.activities.find((activity) => activity.id === "typing-lab");
+  const alphabetActivity = catalog.activities.find((activity) => activity.id === "alphabet-cards");
   const socialActivity = catalog.activities.find((activity) => activity.id === "social-scenes");
+  const looksAlphabet =
+    lowerPrompt.includes("alphabet") ||
+    lowerPrompt.includes("letter") ||
+    lowerPrompt.includes("phonics") ||
+    lowerPrompt.includes("a to z");
+  const looksSocial =
+    lowerPrompt.includes("social") ||
+    lowerPrompt.includes("scene") ||
+    lowerPrompt.includes("playground") ||
+    lowerPrompt.includes("swing") ||
+    lowerPrompt.includes("slide") ||
+    lowerPrompt.includes("snack") ||
+    lowerPrompt.includes("hello") ||
+    lowerPrompt.includes("help");
 
-  if (lowerPrompt.includes("speech") && speechActivity) {
+  if (looksAlphabet && alphabetActivity) {
     return {
-      headline: "Add new speech home-practice items",
+      headline: "Add more alphabet picture cards",
       reasoning:
-        "The request is aligned with the existing speech-training activity, so the safest change is to extend that activity with a few repeatable home-practice packs.",
+        "The request matches the alphabet deck, so the safest change is to extend that activity with more concrete picture cards and short cue phrases.",
       changes: [
         {
           type: "add-items",
-          activityId: speechActivity.id,
-          activityTitle: speechActivity.title,
+          activityId: alphabetActivity.id,
+          activityTitle: alphabetActivity.title,
           items: [
             item(
-              "S Sound Warm-Up",
-              "exercise",
-              "A slow progression from isolated /s/ sound to simple syllables.",
-              [
-                "Hold a quiet /s/ for 3 seconds.",
-                "Repeat sa, see, so with steady airflow.",
-                "Finish with three target words."
-              ],
-              ["speech", "articulation", "/s/"]
-            ),
-            item(
-              "Sh Sound Ladder",
+              "Animal Alphabet Add-On",
               "prompt-pack",
-              "A short ladder for /sh/ in syllables and phrases.",
+              "A small add-on pack that keeps the same one-letter, one-picture structure with animal cards.",
               [
-                "Repeat sh in isolation.",
-                "Move to sha, she, sho.",
-                "Practice one short phrase with /sh/."
+                "Show one animal picture card.",
+                "Say the letter first.",
+                "Say the animal word next."
               ],
-              ["speech", "articulation", "/sh/"]
+              ["alphabet", "animals", "visual cards"]
             ),
             item(
-              "Phrase Carryover Cards",
-              "support",
-              "A tiny set of carryover cues for using the target sound inside daily phrases.",
+              "Food Alphabet Add-On",
+              "prompt-pack",
+              "A concrete food-themed picture pack that keeps the existing alphabet routine.",
               [
-                "Choose one target phrase.",
-                "Repeat it in three calm turns.",
-                "Use it once during a daily routine."
+                "Point to the picture.",
+                "Name the letter.",
+                "Repeat the object word once."
               ],
-              ["carryover", "home practice", "phrases"]
+              ["alphabet", "food", "picture cards"]
             )
           ]
         }
       ],
-      notes: [
-        "Fallback generator used because GitHub Copilot SDK was unavailable.",
-        "Apply the proposal and refine later once Copilot CLI is configured."
-      ]
+      notes: ["Fallback generator used because GitHub Copilot SDK was unavailable."]
     };
   }
 
-  if (lowerPrompt.includes("typing") && typingActivity) {
+  if (socialActivity && (looksSocial || !looksAlphabet)) {
     return {
-      headline: "Extend typing supports with learner-friendly packs",
+      headline: "Add more social scene cards",
       reasoning:
-        "The request matches the typing activity, so the proposed change adds bounded support packs rather than changing the core product flow.",
+        "The request fits the social scenes library, so the safest change is to extend that activity with more concrete everyday scene cards.",
       changes: [
         {
           type: "add-items",
-          activityId: typingActivity.id,
-          activityTitle: typingActivity.title,
+          activityId: socialActivity.id,
+          activityTitle: socialActivity.title,
           items: [
             item(
-              "Color Cue Letters",
-              "support",
-              "Use stable colors to group key targets and reduce scanning load.",
+              "Playground Waiting Cards",
+              "prompt-pack",
+              "A small add-on pack for waiting in line and asking for a turn at playground equipment.",
               [
-                "Pick one key color group.",
-                "Practice only that group for one round.",
-                "Review success before switching."
+                "Show one playground picture card.",
+                "Practice one short phrase.",
+                "Repeat in the same order."
               ],
-              ["typing", "color cue", "support"]
+              ["social scenes", "playground", "waiting"]
             ),
             item(
-              "Starter Word Tray",
-              "prompt-pack",
-              "A predictable set of short learner-friendly words for first typing wins.",
+              "Snack Choice Add-On",
+              "support",
+              "A concrete snack choice pack with food and drink request prompts.",
               [
-                "Choose three short words.",
-                "Type each word twice.",
-                "Finish with one timed replay."
+                "Show two picture choices.",
+                "Ask one short question.",
+                "Answer with one clear phrase."
               ],
-              ["typing", "beginner", "words"]
+              ["social scenes", "snack", "choices"]
             )
           ]
         }
@@ -149,45 +174,44 @@ function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
   }
 
   return {
-    headline: "Add a new guided conversation activity",
+    headline: "Add a new everyday scene set",
     reasoning:
-      "The request does not point to one activity clearly, so the fallback adds one aligned activity instead of broad feature changes.",
+      "The request does not point to one area clearly, so the fallback proposes one additional child-facing scene set instead of broad platform changes.",
     changes: [
       {
         type: "add-activity",
         activity: activityTemplate({
-          title: "Turn Taking Studio",
-          category: "Conversation practice",
-          summary:
-            "Short turn-taking drills for predictable exchanges with a visible start, response, and finish.",
-          goal: "Build tolerance for waiting, responding, and handing the turn back.",
-          sessionLength: "10-15 min",
+          title: "Home Routines",
+          category: "Everyday communication",
+          summary: "Picture cards for simple home routines such as getting shoes, washing hands, and tidying up.",
+          goal: "Support daily communication with familiar objects and short routine phrases.",
+          sessionLength: "8-12 min",
           workModeNote:
-            "Work mode uses these turn-taking drills as a fixed set of scene cards with no live generation.",
+            "Work mode uses these routine cards as a fixed child-facing scene set with no live generation.",
           trainModeNote:
-            "Train mode can add more scene cards or response ladders, but should keep the routine-based structure.",
+            "Train mode can add more routine cards, but the set should stay visual, concrete, and predictable.",
           items: [
             item(
-              "Pass the Turn",
+              "Shoes On",
               "exercise",
-              "Practice saying one line, waiting, and answering once more.",
+              "A simple routine card for putting on shoes with one short phrase.",
               [
-                "Say one starter line.",
-                "Wait for the other speaker.",
-                "Reply with one follow-up."
+                "Show the shoes picture.",
+                "Say one short routine phrase.",
+                "Repeat once if helpful."
               ],
-              ["turn-taking", "waiting", "conversation"]
+              ["home routine", "visual card", "daily living"]
             ),
             item(
-              "Question Relay",
-              "prompt-pack",
-              "A set of short questions for back-and-forth exchanges.",
+              "Wash Hands",
+              "support",
+              "A clear hand-washing picture card with a short step sequence.",
               [
-                "Ask one short question.",
-                "Listen for one answer.",
-                "Ask one linked follow-up."
+                "Show the hand-washing card.",
+                "Say the routine phrase.",
+                "Move to the next step slowly."
               ],
-              ["questions", "conversation", "routine"]
+              ["home routine", "washing", "visual support"]
             )
           ]
         })
@@ -195,7 +219,7 @@ function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
     ],
     notes: [
       "Fallback generator used because GitHub Copilot SDK was unavailable.",
-      `Closest existing activity was ${socialActivity?.title ?? "social scenes"}.`
+      "The new proposal stays aligned with the current visual activity structure."
     ]
   };
 }
@@ -209,14 +233,14 @@ async function generateWithCopilot(prompt: string, catalog: Catalog) {
 
     const response = await session.sendAndWait({
       prompt: [
-        "You are designing additions for a communication-support activity app.",
+        "You are designing additions for a child-focused communication-support activity app.",
         "Return JSON only. Do not include markdown.",
         "Allowed changes:",
         "- add-items to an existing activity",
         "- add-activity for one new aligned activity",
         "Do not suggest arbitrary platform features or admin systems.",
-        "Keep additions aligned with the current activity-hub structure inspired by SocialDiverse.",
-        "Prefer extending existing options such as speech-training before creating something new.",
+        "Keep additions aligned with the visual activity-hub structure.",
+        "Prefer extending existing options such as social-scenes or alphabet-cards before creating something new.",
         "Every new item must include 3 short steps and 2-5 tags.",
         "Current catalog JSON:",
         JSON.stringify(catalog),
@@ -227,8 +251,8 @@ async function generateWithCopilot(prompt: string, catalog: Catalog) {
           changes: [
             {
               type: "add-items",
-              activityId: "speech-training",
-              activityTitle: "Speech Training",
+              activityId: "social-scenes",
+              activityTitle: "Social Scenes",
               items: [
                 {
                   id: "example-item-id",
@@ -243,7 +267,7 @@ async function generateWithCopilot(prompt: string, catalog: Catalog) {
           ],
           notes: ["Optional implementation note"]
         }),
-        `User request: ${prompt}`
+        "User request: " + prompt
       ].join("\n")
     });
 
