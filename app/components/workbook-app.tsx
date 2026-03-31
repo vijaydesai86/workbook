@@ -48,10 +48,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
 
   const selectedConfig = selectedActivity ? getPlayConfigForActivity(selectedActivity) : null;
   const featuredModule = selectedConfig?.modules[0] ?? null;
-  const totalModules = initialCatalog.activities.reduce(
-    (sum, activity) => sum + getPlayConfigForActivity(activity).modules.length,
-    0
-  );
+  const totalCards = selectedConfig?.modules.reduce((sum, module) => sum + module.cards.length, 0) ?? 0;
   const playHref = selectedActivity ? "/activities/" + selectedActivity.id + "/play?module=" + String(featuredModule?.id ?? "") : "/";
 
   return (
@@ -60,55 +57,59 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <Link className="brand-mark" href="/">
           BrightPath Play
         </Link>
-        <Link className="caregiver-link" href="/caregiver">
-          Caregiver tools
+        <Link className="caregiver-link kid-adult-link" href="/caregiver">
+          Adult area
         </Link>
       </header>
 
       <section className="landing-hero kid-hero-home">
         <div className="landing-copy kid-hero-copy">
-          <div className="eyebrow">Pick a game</div>
-          <h1>Tap a big card and start.</h1>
+          <div className="eyebrow">Choose a picture game</div>
+          <h1>Big cards. Calm sound. Easy play.</h1>
           <p>
-            Real photo cards, calm sound, and easy next buttons made for children who do better with
-            simple steps and clear choices.
+            Tap one picture game and move through it one card at a time. The words stay short,
+            the layout stays steady, and every card has matching audio.
           </p>
           <div className="hero-actions kid-hero-actions">
             {selectedActivity ? (
               <Link className="button hero-button kid-main-button" href={playHref}>
-                Start {selectedActivity.title}
+                Play {selectedActivity.title}
               </Link>
             ) : null}
             <a className="ghost-button kid-secondary-button" href="#activity-gallery">
-              See games
+              See the cards
             </a>
           </div>
-          <div className="kid-how-row">
+          <div className="kid-how-row" aria-label="How to play">
             <div className="kid-how-card">
               <strong>1</strong>
-              <span>Pick</span>
+              <span>Pick a card set</span>
             </div>
             <div className="kid-how-card">
               <strong>2</strong>
-              <span>Hear</span>
+              <span>Tap hear</span>
             </div>
             <div className="kid-how-card">
               <strong>3</strong>
-              <span>Say</span>
+              <span>Say it back</span>
             </div>
           </div>
         </div>
 
         <div className="hero-showcase kid-hero-showcase">
           {selectedActivity ? <ActivityVisual activity={selectedActivity} /> : null}
-          <div className="hero-helper-card kid-hero-helper">
-            <div className="hero-helper-title">Ready to play</div>
-            <div className="quick-chip-row">
-              <span className="quick-chip">{initialCatalog.activities.length} games</span>
-              <span className="quick-chip">{totalModules} parts</span>
-              <span className="quick-chip">sound on every card</span>
+          {selectedActivity && selectedConfig ? (
+            <div className="hero-helper-card kid-hero-helper kid-selected-helper">
+              <div className="hero-helper-title">Ready now</div>
+              <h2>{selectedActivity.title}</h2>
+              <p className="subtle">{selectedConfig.supportLine}</p>
+              <div className="quick-chip-row">
+                <span className="quick-chip">{totalCards} cards</span>
+                <span className="quick-chip">{selectedConfig.theme.mascot}</span>
+                <span className="quick-chip">real photos</span>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </section>
 
@@ -116,8 +117,8 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <div className="hub-main">
           <div className="section-head kid-section-head" id="activity-gallery">
             <div>
-              <div className="eyebrow">Games</div>
-              <h2>Choose one to play</h2>
+              <div className="eyebrow">Pick one</div>
+              <h2>Picture games</h2>
             </div>
           </div>
 
@@ -129,7 +130,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
 
               return (
                 <article className={cardClassName} key={activity.id}>
-                  <button className="gallery-card-top" onClick={() => setSelectedActivityId(activity.id)} type="button">
+                  <button className="gallery-card-top kid-gallery-top" onClick={() => setSelectedActivityId(activity.id)} type="button">
                     <ActivityVisual activity={activity} />
                     <div className="gallery-card-copy kid-gallery-copy">
                       <h3>{activity.title}</h3>
@@ -138,10 +139,10 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                   </button>
                   <div className="gallery-card-actions kid-gallery-actions">
                     <Link className="ghost-button kid-secondary-button" href={"/activities/" + activity.id}>
-                      Open
+                      Look first
                     </Link>
                     <Link className="button kid-main-button" href={"/activities/" + activity.id + "/play"}>
-                      Play
+                      Play now
                     </Link>
                   </div>
                 </article>
@@ -153,9 +154,9 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <aside className="hub-side">
           {selectedActivity && selectedConfig ? (
             <section className="focus-panel kid-focus-panel" style={{ backgroundColor: selectedConfig.theme.surface }}>
-              <div className="focus-top">
+              <div className="focus-top kid-focus-top">
                 <div>
-                  <div className="eyebrow">Start here</div>
+                  <div className="eyebrow">Play next</div>
                   <h2>{selectedActivity.title}</h2>
                 </div>
                 <span className="soft-chip" style={{ backgroundColor: selectedConfig.theme.badge }}>
@@ -164,6 +165,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
               </div>
 
               <div className="focus-module-card kid-start-card" style={{ borderColor: selectedConfig.theme.secondary }}>
+                <p className="kid-card-kicker">Start with</p>
                 <h3>{featuredModule?.title}</h3>
                 <p className="subtle">{featuredModule?.description}</p>
                 <div className="quick-chip-row">
@@ -176,7 +178,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                 <div className="support-note">{featuredModule?.calmNote}</div>
                 <div className="gallery-card-actions kid-gallery-actions">
                   <Link className="button kid-main-button" href={playHref}>
-                    Start now
+                    Start here
                   </Link>
                 </div>
               </div>
@@ -188,7 +190,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                       <strong>{module.title}</strong>
                       <div className="subtle">{module.description}</div>
                     </div>
-                    <span className="soft-chip">{module.cards.length}</span>
+                    <span className="soft-chip">{module.cards.length} cards</span>
                   </Link>
                 ))}
               </div>
@@ -199,12 +201,12 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
 
       <section className="caregiver-callout kid-caregiver-callout">
         <div>
-          <div className="eyebrow">For adults</div>
-          <h2>Add or train new cards later</h2>
-          <p className="subtle">Caregiver tools stay separate from the child play space.</p>
+          <div className="eyebrow">Adult tools</div>
+          <h2>Train or add new cards later</h2>
+          <p className="subtle">The child play space stays simple. Caregiver controls stay separate.</p>
         </div>
         <Link className="ghost-button kid-secondary-button" href="/caregiver">
-          Open caregiver studio
+          Open adult tools
         </Link>
       </section>
     </main>

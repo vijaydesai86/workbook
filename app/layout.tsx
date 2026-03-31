@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
 
+const displayFont = Fredoka({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"]
+});
+
+const bodyFont = Nunito({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["500", "600", "700", "800"]
+});
+
 export const metadata: Metadata = {
-  title: "Social Workbook",
-  description: "A train/work activity workbook powered by GitHub Copilot SDK."
+  title: "BrightPath Play",
+  description: "Kid-first picture card activities with calm audio and a separate caregiver training studio."
 };
 
 export default function RootLayout({
@@ -13,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={displayFont.variable + " " + bodyFont.variable}>{children}</body>
     </html>
   );
 }

@@ -44,23 +44,23 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
 
   return (
     <main className="app-shell app-shell-play kid-play-shell">
-      <div className="page-actions">
-        <Link className="ghost-button" href={"/activities/" + activity.id}>
-          Back
+      <div className="page-actions kid-page-actions kid-play-actions">
+        <Link className="ghost-button kid-secondary-button" href={"/activities/" + activity.id}>
+          Back to game
         </Link>
-        <Link className="ghost-button" href="/">
-          Home
+        <Link className="ghost-button kid-secondary-button" href="/">
+          All games
         </Link>
       </div>
 
       <section className="play-topbar play-topbar-kid" style={{ backgroundColor: config.theme.surface }}>
         <div>
           <div className="eyebrow">{activity.title}</div>
-          <h1>{activeModule.title}</h1>
-          <p className="subtle">{activeModule.description}</p>
+          <h1>{currentCard.title}</h1>
+          <p className="subtle">{activeModule.title}</p>
         </div>
-        <div className="play-status">
-          <span className="soft-chip">{cardIndex + 1} / {activeModule.cards.length}</span>
+        <div className="play-status kid-play-status">
+          <span className="soft-chip">Card {cardIndex + 1} of {activeModule.cards.length}</span>
           <span className="soft-chip">{config.theme.mascot}</span>
         </div>
       </section>
@@ -82,7 +82,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           ))}
         </section>
       ) : (
-        <section className="play-step-strip play-step-strip-story" aria-label="Scene steps">
+        <section className="play-step-strip play-step-strip-story" aria-label="Scene cards">
           {activeModule.cards.map((card, index) => (
             <Link
               className={"play-step-chip " + (index === cardIndex ? "play-step-chip-active" : "")}
@@ -109,38 +109,44 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
 
         <aside className="play-story-panel play-story-panel-kid" style={{ backgroundColor: config.theme.surface }}>
           <div className="play-say-card">
-            <p className="play-say-label">{isAlphabet ? "Say this" : "Try these words"}</p>
+            <p className="play-say-label">Say</p>
             <strong>{currentCard.example}</strong>
             <p className="subtle">{currentCard.prompt}</p>
           </div>
 
-          <div className="play-nav-dock">
-            {cardIndex > 0 ? (
-              <Link className="ghost-button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0))}>
-                Back
-              </Link>
-            ) : (
-              <span className="ghost-button disabled-chip play-nav-button">Back</span>
-            )}
+          <div className="play-helper-card">
+            <div className="play-helper-row">
+              <span className="play-helper-label">Listen, then try</span>
+              <span className="soft-chip">{activeModule.accent}</span>
+            </div>
+            <div className="play-nav-dock">
+              {cardIndex > 0 ? (
+                <Link className="ghost-button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0))}>
+                  Back
+                </Link>
+              ) : (
+                <span className="ghost-button disabled-chip play-nav-button">Back</span>
+              )}
 
-            <PlayControls soundText={currentCard.example} title={currentCard.title} />
+              <PlayControls soundText={currentCard.example} title={currentCard.title} />
 
-            {cardIndex < activeModule.cards.length - 1 ? (
-              <Link className="button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1))}>
-                Next
-              </Link>
-            ) : (
-              <Link className="button play-nav-button" href={"/activities/" + activity.id}>
-                Finish
-              </Link>
-            )}
+              {cardIndex < activeModule.cards.length - 1 ? (
+                <Link className="button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1))}>
+                  Next card
+                </Link>
+              ) : (
+                <Link className="button play-nav-button" href={"/activities/" + activity.id}>
+                  All done
+                </Link>
+              )}
+            </div>
           </div>
 
           <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0)}>
             Start this part again
           </Link>
 
-          <div className="support-note">{activeModule.calmNote}</div>
+          <div className="support-note play-support-note">{activeModule.calmNote}</div>
         </aside>
       </section>
 
@@ -153,7 +159,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
               key={module.id}
             >
               <strong>{module.title}</strong>
-              <span className="subtle">{module.accent}</span>
+              <span className="subtle">{module.cards.length} cards</span>
             </Link>
           ))}
         </section>

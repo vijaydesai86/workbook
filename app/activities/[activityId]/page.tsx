@@ -24,27 +24,28 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
 
   return (
     <main className="app-shell kid-detail-shell">
-      <div className="page-actions">
+      <div className="page-actions kid-page-actions">
         <Link className="ghost-button kid-secondary-button" href="/">
-          Home
+          All games
         </Link>
         <Link className="button kid-main-button" href={playHref}>
-          Start
+          Play now
         </Link>
       </div>
 
       <section className="detail-hero kid-detail-hero" style={{ backgroundColor: config.theme.surface }}>
         <div className="detail-hero-copy kid-detail-copy">
-          <div className="eyebrow">Ready to play</div>
+          <div className="eyebrow">Picture game</div>
           <h1>{activity.title}</h1>
           <p>{config.supportLine}</p>
           <div className="quick-chip-row">
             <span className="soft-chip">{config.modules.length} parts</span>
             <span className="soft-chip">{config.theme.mascot}</span>
+            <span className="soft-chip">real photo cards</span>
           </div>
           <div className="hero-actions kid-hero-actions">
             <Link className="button kid-main-button" href={playHref}>
-              Start now
+              Start this game
             </Link>
           </div>
         </div>
@@ -74,7 +75,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </div>
             <div className="support-note">{module.calmNote}</div>
             <Link className="button kid-main-button" href={"/activities/" + activity.id + "/play?module=" + module.id}>
-              Play this part
+              Play {module.title}
             </Link>
           </article>
         ))}

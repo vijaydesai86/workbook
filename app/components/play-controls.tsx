@@ -9,10 +9,11 @@ type PlayControlsProps = {
 
 const preferredVoiceNames = [
   "Samantha",
-  "Google US English",
   "Google UK English Female",
+  "Google US English",
   "Microsoft Ava Online (Natural)",
   "Microsoft Aria Online (Natural)",
+  "Microsoft Libby Online (Natural)",
   "Microsoft Sonia Online (Natural)",
   "Karen",
   "Moira"
@@ -31,9 +32,14 @@ function chooseVoice(voices: SpeechSynthesisVoice[]) {
   }
 
   const englishVoices = voices.filter((voice) => voice.lang.toLowerCase().startsWith("en"));
-  const naturalVoice = englishVoices.find((voice) => /natural|neural|enhanced/i.test(voice.name));
+  const naturalVoice = englishVoices.find((voice) => /natural|neural|enhanced|premium/i.test(voice.name));
   if (naturalVoice) {
     return naturalVoice;
+  }
+
+  const femaleVoice = englishVoices.find((voice) => /female|woman|girl/i.test(voice.name));
+  if (femaleVoice) {
+    return femaleVoice;
   }
 
   return englishVoices[0] ?? voices[0] ?? null;
@@ -69,8 +75,8 @@ export function PlayControls({ soundText, title }: PlayControlsProps) {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(soundText.trim());
     utterance.lang = selectedVoice?.lang ?? "en-US";
-    utterance.rate = 0.92;
-    utterance.pitch = 1.03;
+    utterance.rate = 0.88;
+    utterance.pitch = 1;
     utterance.volume = 1;
 
     if (selectedVoice) {
@@ -82,12 +88,12 @@ export function PlayControls({ soundText, title }: PlayControlsProps) {
     utterance.onerror = () => setReading(false);
 
     synth.cancel();
-    synth.speak(utterance);
+    window.setTimeout(() => synth.speak(utterance), 40);
   }
 
   return (
     <button aria-label={"Hear " + title} className="button play-sound-button" onClick={handlePlaySound} type="button">
-      {reading ? "Playing..." : "Hear it"}
+      {reading ? "Playing..." : "Hear card"}
     </button>
   );
 }
