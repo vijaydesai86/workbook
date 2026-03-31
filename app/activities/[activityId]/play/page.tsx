@@ -143,92 +143,94 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
         </aside>
       </section>
 
-      {isCounting ? (
-        <section className="count-set-switch" aria-label="Choose set">
-          <div className="count-set-label">Choose set</div>
-          <div className="count-set-row">
-            <Link
-              className={"count-set-chip " + (countingSet === "apples" ? "count-set-chip-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, cardIndex, "apples")}
-            >
-              <strong>Apple set</strong>
-              <span>Same apple card</span>
-            </Link>
-            <Link
-              className={"count-set-chip " + (countingSet === "mixed" ? "count-set-chip-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, cardIndex, "mixed")}
-            >
-              <strong>Mixed set</strong>
-              <span>Different picture cards</span>
-            </Link>
-          </div>
-        </section>
-      ) : null}
+      <section className="play-secondary-stack" aria-label="More options">
+        {isCounting ? (
+          <section className="count-set-switch" aria-label="Choose set">
+            <div className="count-set-label">Choose set</div>
+            <div className="count-set-row">
+              <Link
+                className={"count-set-chip " + (countingSet === "apples" ? "count-set-chip-active" : "")}
+                href={buildPlayHref(activity.id, activeModule.id, cardIndex, "apples")}
+              >
+                <strong>Apple set</strong>
+                <span>Same apple card</span>
+              </Link>
+              <Link
+                className={"count-set-chip " + (countingSet === "mixed" ? "count-set-chip-active" : "")}
+                href={buildPlayHref(activity.id, activeModule.id, cardIndex, "mixed")}
+              >
+                <strong>Mixed set</strong>
+                <span>Different picture cards</span>
+              </Link>
+            </div>
+          </section>
+        ) : null}
 
-      {isAlphabet ? (
-        <section className="play-letter-grid" aria-label="Alphabet cards">
-          {activeModule.cards.map((card, index) => (
-            <Link
-              className={"play-letter-chip " + (index === cardIndex ? "play-letter-chip-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, index)}
-              key={card.id}
-            >
-              {card.art.trail}
-            </Link>
-          ))}
-        </section>
-      ) : isCounting ? (
-        <section className="play-count-grid" aria-label="Counting cards">
-          {activeModule.cards.map((card, index) => (
-            <Link
-              className={"play-count-chip " + (index === cardIndex ? "play-count-chip-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, index, countingSet)}
-              key={card.id}
-            >
-              <strong>{card.art.trail}</strong>
-              <span>{card.title}</span>
-            </Link>
-          ))}
-        </section>
-      ) : (
-        <section className="play-scene-grid" aria-label="Scene cards">
-          {activeModule.cards.map((card, index) => (
-            <Link
-              className={"play-scene-thumb " + (index === cardIndex ? "play-scene-thumb-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, index)}
-              key={card.id}
-            >
-              <div className="play-scene-thumb-media">
-                {card.art.imageSrc ? (
-                  <Image
-                    alt={card.art.imageAlt ?? card.title}
-                    className="play-scene-thumb-image"
-                    fill
-                    sizes="(max-width: 720px) 45vw, 180px"
-                    src={card.art.imageSrc}
-                  />
-                ) : null}
-              </div>
-              <span className="play-scene-thumb-label">{card.title}</span>
-            </Link>
-          ))}
-        </section>
-      )}
+        {isAlphabet ? (
+          <section className="play-letter-grid" aria-label="Alphabet cards">
+            {activeModule.cards.map((card, index) => (
+              <Link
+                className={"play-letter-chip " + (index === cardIndex ? "play-letter-chip-active" : "")}
+                href={buildPlayHref(activity.id, activeModule.id, index)}
+                key={card.id}
+              >
+                {card.art.trail}
+              </Link>
+            ))}
+          </section>
+        ) : isCounting ? (
+          <section className="play-count-grid" aria-label="Counting cards">
+            {activeModule.cards.map((card, index) => (
+              <Link
+                className={"play-count-chip " + (index === cardIndex ? "play-count-chip-active" : "")}
+                href={buildPlayHref(activity.id, activeModule.id, index, countingSet)}
+                key={card.id}
+              >
+                <strong>{card.art.trail}</strong>
+                <span>{card.title}</span>
+              </Link>
+            ))}
+          </section>
+        ) : (
+          <section className="play-scene-grid" aria-label="Scene cards">
+            {activeModule.cards.map((card, index) => (
+              <Link
+                className={"play-scene-thumb " + (index === cardIndex ? "play-scene-thumb-active" : "")}
+                href={buildPlayHref(activity.id, activeModule.id, index)}
+                key={card.id}
+              >
+                <div className="play-scene-thumb-media">
+                  {card.art.imageSrc ? (
+                    <Image
+                      alt={card.art.imageAlt ?? card.title}
+                      className="play-scene-thumb-image"
+                      fill
+                      sizes="(max-width: 720px) 45vw, 180px"
+                      src={card.art.imageSrc}
+                    />
+                  ) : null}
+                </div>
+                <span className="play-scene-thumb-label">{card.title}</span>
+              </Link>
+            ))}
+          </section>
+        )}
 
-      {config.modules.length > 1 ? (
-        <section className="module-rail module-rail-secondary kid-module-rail">
-          {config.modules.map((module) => (
-            <Link
-              className={"module-rail-card kid-module-rail-card " + (module.id === activeModule.id ? "module-rail-card-active" : "")}
-              href={buildPlayHref(activity.id, module.id, 0, countingSet)}
-              key={module.id}
-            >
-              <strong>{module.title}</strong>
-              <span className="subtle">{module.cards.length} cards</span>
-            </Link>
-          ))}
-        </section>
-      ) : null}
+        {config.modules.length > 1 ? (
+          <section className="module-rail module-rail-secondary kid-module-rail">
+            {config.modules.map((module) => (
+              <Link
+                className={"module-rail-card kid-module-rail-card " + (module.id === activeModule.id ? "module-rail-card-active" : "")}
+                href={buildPlayHref(activity.id, module.id, 0, countingSet)}
+                key={module.id}
+              >
+                <strong>{module.title}</strong>
+                <span className="subtle">{module.cards.length} cards</span>
+              </Link>
+            ))}
+          </section>
+        ) : null}
+      </section>
     </main>
   );
 }
