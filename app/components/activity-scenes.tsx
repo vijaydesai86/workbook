@@ -33,6 +33,7 @@ function PhotoSurface({ art }: { art: ActivityArt }) {
         sizes="(max-width: 720px) 100vw, (max-width: 1100px) 70vw, 560px"
         src={art.imageSrc}
       />
+      <div className="scene-photo-sheen" />
     </div>
   );
 }
@@ -40,19 +41,21 @@ function PhotoSurface({ art }: { art: ActivityArt }) {
 function AlphabetCard({ art, primary, secondary, badge }: SharedSceneProps) {
   return (
     <div className="scene-stage scene-stage-photo">
-      <div className="scene-photo-shell">
+      <div className="scene-photo-shell scene-photo-shell-alphabet">
         <div className="scene-photo-head">
           <span className="scene-badge" style={{ backgroundColor: badge, color: primary }}>
             {art.caption}
           </span>
-          <span className="scene-letter-pill" style={{ backgroundColor: secondary, color: primary }}>
-            {art.trail}
-          </span>
         </div>
-        <PhotoSurface art={art} />
-        <div className="alphabet-card-copy">
-          <strong>{art.lead}</strong>
-          <span>{art.trail} is for {art.lead}</span>
+        <div className="scene-photo-stage">
+          <PhotoSurface art={art} />
+          <div className="scene-floating-letter" style={{ backgroundColor: secondary, color: primary }}>
+            {art.trail}
+          </div>
+          <div className="scene-word-banner">
+            <strong>{art.lead}</strong>
+            <span>{art.trail} for {art.lead}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -68,10 +71,12 @@ function ChoiceCard({ art, primary, badge }: SharedSceneProps) {
             {art.caption}
           </span>
         </div>
-        <PhotoSurface art={art} />
-        <div className="scene-choice-row">
-          <span className="scene-choice-pill scene-choice-pill-light">{art.lead}</span>
-          {art.trail ? <span className="scene-choice-pill">{art.trail}</span> : null}
+        <div className="scene-photo-stage">
+          <PhotoSurface art={art} />
+          <div className="scene-choice-row scene-choice-row-overlay">
+            <span className="scene-choice-pill scene-choice-pill-light">{art.lead}</span>
+            {art.trail ? <span className="scene-choice-pill">{art.trail}</span> : null}
+          </div>
         </div>
       </div>
     </div>
@@ -87,7 +92,9 @@ function ConversationCard({ art, primary, badge }: SharedSceneProps) {
             {art.caption}
           </span>
         </div>
-        <PhotoSurface art={art} />
+        <div className="scene-photo-stage">
+          <PhotoSurface art={art} />
+        </div>
         <div className="scene-conversation-row">
           <div className="scene-talk-bubble">{art.lead}</div>
           {art.trail ? <div className="scene-talk-bubble scene-talk-bubble-alt">{art.trail}</div> : null}
@@ -106,14 +113,16 @@ function SceneCard({ art, primary, secondary, badge }: SharedSceneProps) {
             {art.caption}
           </span>
         </div>
-        <PhotoSurface art={art} />
-        <div className="scene-label-row">
-          <span className="scene-label-chip scene-label-chip-light">{art.lead}</span>
-          {art.trail ? (
-            <span className="scene-label-chip" style={{ backgroundColor: secondary, color: primary }}>
-              {art.trail}
-            </span>
-          ) : null}
+        <div className="scene-photo-stage">
+          <PhotoSurface art={art} />
+          <div className="scene-label-row scene-label-row-overlay">
+            <span className="scene-label-chip scene-label-chip-light">{art.lead}</span>
+            {art.trail ? (
+              <span className="scene-label-chip" style={{ backgroundColor: secondary, color: primary }}>
+                {art.trail}
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>
