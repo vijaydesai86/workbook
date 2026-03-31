@@ -12,18 +12,6 @@
     "thumb_url": "https://api.openverse.org/v1/images/d7ac9b7d-5a5a-4ecf-bd23-d1a1e893248f/thumb/"
   },
   {
-    "slug": "backpack-help",
-    "dir": "social-scenes",
-    "query": "child%20with%20backpack%20school%20photo",
-    "title": "selecting backpacks",
-    "creator": "FtCarsonPAO",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/46810671@N04/9365878327",
-    "image_url": "https://live.staticflickr.com/3756/9365878327_08abef93e0_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/09a6dc4f-6527-4ad6-9d02-fed43180a989/thumb/"
-  },
-  {
     "slug": "ball",
     "dir": "alphabet",
     "query": "red%20ball%20toy%20photo",
@@ -84,18 +72,6 @@
     "thumb_url": "https://api.openverse.org/v1/images/504194c9-f233-4244-869a-fabc3488b271/thumb/"
   },
   {
-    "slug": "goodbye",
-    "dir": "social-scenes",
-    "query": "child%20waving%20school%20goodbye",
-    "title": "Back to School",
-    "creator": "Editor B",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/11018968@N00/7739365966",
-    "image_url": "https://live.staticflickr.com/8422/7739365966_057a7b08ab_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/7c1b03f0-e7e6-43fa-8bb4-46005f2c5d29/thumb/"
-  },
-  {
     "slug": "grapes",
     "dir": "alphabet",
     "query": "grapes%20fruit%20photo",
@@ -106,30 +82,6 @@
     "landing_url": "https://www.flickr.com/photos/41284017@N08/8456926604",
     "image_url": "https://live.staticflickr.com/8229/8456926604_1ec79f1b20_b.jpg",
     "thumb_url": "https://api.openverse.org/v1/images/9e8ce67e-2c12-41c2-9c30-aef6aeea1c88/thumb/"
-  },
-  {
-    "slug": "hello",
-    "dir": "social-scenes",
-    "query": "waving%20hands%20photo",
-    "title": "5/365 catch my disease",
-    "creator": "Jane Rahman",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/69393384@N00/3172596111",
-    "image_url": "https://live.staticflickr.com/3331/3172596111_403b8641c8.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/4338ad08-1aef-4b1e-ab42-9871660ceb0c/thumb/"
-  },
-  {
-    "slug": "help",
-    "dir": "social-scenes",
-    "query": "raised%20hand%20classroom%20photo",
-    "title": "190925-Z-FD650-1109.jpg",
-    "creator": "Like us on Facebook at CAGuard",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/63080087@N06/48938775566",
-    "image_url": "https://live.staticflickr.com/65535/48938775566_545086632d_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/8613ad03-07f6-4ab3-aa0f-0a34895c2846/thumb/"
   },
   {
     "slug": "house",
@@ -264,42 +216,6 @@
     "thumb_url": "https://api.openverse.org/v1/images/8e2037e0-1ee7-4860-8bce-9736b2ba66aa/thumb/"
   },
   {
-    "slug": "slide-turn",
-    "dir": "social-scenes",
-    "query": "child%20going%20down%20slide%20playground",
-    "title": "A toddler sliding down a slide",
-    "creator": "Ivan Radic",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/26344495@N05/48558163677",
-    "image_url": "https://live.staticflickr.com/65535/48558163677_93cfa53727_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/bd46a9c3-d1b4-418c-b324-9d692a041898/thumb/"
-  },
-  {
-    "slug": "slide",
-    "dir": "social-scenes",
-    "query": "playground%20slide%20photo",
-    "title": "ryerson public school playground",
-    "creator": "striatic",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/34427466731@N01/470233447",
-    "image_url": "https://live.staticflickr.com/171/470233447_48a7e123ed_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/5a642402-4c7a-4777-ba48-6e6d92dded2c/thumb/"
-  },
-  {
-    "slug": "snack",
-    "dir": "social-scenes",
-    "query": "child%20nutrition%20snack%20photo",
-    "title": "Child Nutrition - Snack",
-    "creator": "spotreporting",
-    "license": "by-sa",
-    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
-    "landing_url": "https://www.flickr.com/photos/29792566@N08/5099959496",
-    "image_url": "https://live.staticflickr.com/4132/5099959496_2723ef5254.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/d210a293-596e-4cea-9e97-59a48303cc25/thumb/"
-  },
-  {
     "slug": "sun",
     "dir": "alphabet",
     "query": "sun%20photo",
@@ -310,30 +226,6 @@
     "landing_url": "https://www.flickr.com/photos/24321458@N03/2899637439",
     "image_url": "https://live.staticflickr.com/3137/2899637439_a9c220983c_b.jpg",
     "thumb_url": "https://api.openverse.org/v1/images/28b5ba46-93b1-40e8-85aa-bf6617565bf4/thumb/"
-  },
-  {
-    "slug": "swing-wait",
-    "dir": "social-scenes",
-    "query": "child%20waiting%20playground%20swing",
-    "title": "Waiting",
-    "creator": "Yogendra174",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/39072595@N03/4140352636",
-    "image_url": "https://live.staticflickr.com/2547/4140352636_37ffff2b28_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/1dc9c7eb-b1d9-4189-a643-bf5ad12f0231/thumb/"
-  },
-  {
-    "slug": "swing",
-    "dir": "social-scenes",
-    "query": "playground%20swing%20photo",
-    "title": "playground",
-    "creator": "SmartSignBrooklyn",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/102473613@N07/10213718205",
-    "image_url": "https://live.staticflickr.com/3790/10213718205_f18ee5a30d.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/936c9be0-de1d-4a4e-b311-c7b2a684c708/thumb/"
   },
   {
     "slug": "tree",

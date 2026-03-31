@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ActivityPlayScene } from "@/app/components/activity-scenes";
 import { PlayControls } from "@/app/components/play-controls";
 import { getActivityById } from "@/lib/catalog-store";
-import { getPlayConfigForActivity, getPlayModule } from "@/lib/play-config";
+import { getCountingSetId, getPlayConfigForActivity, getPlayModule } from "@/lib/play-config";
 
 type PlayPageProps = {
   params: Promise<{
@@ -13,11 +13,20 @@ type PlayPageProps = {
   searchParams: Promise<{
     module?: string;
     card?: string;
+    set?: string;
   }>;
 };
 
-function buildPlayHref(activityId: string, moduleId: string, cardIndex: number) {
-  return "/activities/" + activityId + "/play?module=" + moduleId + "&card=" + String(cardIndex);
+function buildPlayHref(activityId: string, moduleId: string, cardIndex: number, countingSet?: string) {
+  const params = new URLSearchParams();
+  params.set("module", moduleId);
+  params.set("card", String(cardIndex));
+
+  if (countingSet != null) {
+    params.set("set", countingSet);
+  }
+
+  return "/activities/" + activityId + "/play?" + params.toString();
 }
 
 export default async function ActivityPlayPage({ params, searchParams }: PlayPageProps) {
@@ -29,7 +38,10 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
     notFound();
   }
 
-  const config = getPlayConfigForActivity(activity);
+  const isAlphabet = activity.id === "alphabet-cards";
+  const isCounting = activity.id === "counting-cards";
+  const countingSet = isCounting ? getCountingSetId(resolvedSearchParams.set) : undefined;
+  const config = getPlayConfigForActivity(activity, { countingSet });
   const activeModule = getPlayModule(config, resolvedSearchParams.module);
 
   if (activeModule == null) {
@@ -41,8 +53,6 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
   const cardIndex = Math.min(Math.max(safeCardIndex, 0), activeModule.cards.length - 1);
   const currentCard = activeModule.cards[cardIndex];
   const progress = String(((cardIndex + 1) / activeModule.cards.length) * 100) + "%";
-  const isAlphabet = activity.id === "alphabet-cards";
-  const isCounting = activity.id === "counting-cards";
   const promptLabel = isCounting ? "Count" : "Say";
 
   return (
@@ -72,6 +82,28 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
         <div className="progress-track-fill" style={{ width: progress, backgroundColor: config.theme.primary }} />
       </div>
 
+      {isCounting ? (
+        <section className="count-set-switch" aria-label="Choose picture cards">
+          <div className="count-set-label">Choose picture cards</div>
+          <div className="count-set-row">
+            <Link
+              className={"count-set-chip " + (countingSet === "apples" ? "count-set-chip-active" : "")}
+              href={buildPlayHref(activity.id, activeModule.id, cardIndex, "apples")}
+            >
+              <strong>Apple cards</strong>
+              <span>Same apple on every number card</span>
+            </Link>
+            <Link
+              className={"count-set-chip " + (countingSet === "mixed" ? "count-set-chip-active" : "")}
+              href={buildPlayHref(activity.id, activeModule.id, cardIndex, "mixed")}
+            >
+              <strong>Different picture cards</strong>
+              <span>A new real-photo picture for each number card</span>
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
       {isAlphabet ? (
         <section className="play-letter-grid" aria-label="Alphabet cards">
           {activeModule.cards.map((card, index) => (
@@ -89,7 +121,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           {activeModule.cards.map((card, index) => (
             <Link
               className={"play-count-chip " + (index === cardIndex ? "play-count-chip-active" : "")}
-              href={buildPlayHref(activity.id, activeModule.id, index)}
+              href={buildPlayHref(activity.id, activeModule.id, index, countingSet)}
               key={card.id}
             >
               <strong>{card.art.trail}</strong>
@@ -148,7 +180,10 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
             </div>
             <div className="play-nav-dock">
               {cardIndex > 0 ? (
-                <Link className="ghost-button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0))}>
+                <Link
+                  className="ghost-button play-nav-button"
+                  href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0), countingSet)}
+                >
                   Back
                 </Link>
               ) : (
@@ -158,7 +193,10 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
               <PlayControls soundText={currentCard.example} title={currentCard.title} />
 
               {cardIndex < activeModule.cards.length - 1 ? (
-                <Link className="button play-nav-button" href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1))}>
+                <Link
+                  className="button play-nav-button"
+                  href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1), countingSet)}
+                >
                   Next card
                 </Link>
               ) : (
@@ -169,7 +207,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
             </div>
           </div>
 
-          <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0)}>
+          <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0, countingSet)}>
             Start this part again
           </Link>
 
@@ -182,7 +220,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           {config.modules.map((module) => (
             <Link
               className={"module-rail-card kid-module-rail-card " + (module.id === activeModule.id ? "module-rail-card-active" : "")}
-              href={buildPlayHref(activity.id, module.id, 0)}
+              href={buildPlayHref(activity.id, module.id, 0, countingSet)}
               key={module.id}
             >
               <strong>{module.title}</strong>

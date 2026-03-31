@@ -44,6 +44,13 @@ function PhotoSurface({ art }: { art: ActivityArt }) {
     art.kind === "scene"
       ? "scene-photo-image scene-photo-image-scene"
       : "scene-photo-image";
+  const imageStyle =
+    art.imagePosition || art.imageScale
+      ? {
+          objectPosition: art.imagePosition,
+          transform: art.imageScale ? "scale(" + String(art.imageScale) + ")" : undefined
+        }
+      : undefined;
 
   return (
     <div className="scene-photo-frame">
@@ -53,6 +60,7 @@ function PhotoSurface({ art }: { art: ActivityArt }) {
         fill
         sizes="(max-width: 720px) 100vw, (max-width: 1100px) 70vw, 560px"
         src={art.imageSrc}
+        style={imageStyle}
       />
       <div className="scene-photo-sheen" />
     </div>
@@ -86,6 +94,13 @@ function AlphabetCard({ art, primary, secondary, badge }: SharedSceneProps) {
 function CountCard({ art, primary, secondary, badge }: SharedSceneProps) {
   const count = art.count ?? 0;
   const columns = getCountColumns(count);
+  const imageStyle =
+    art.imagePosition || art.imageScale
+      ? {
+          objectPosition: art.imagePosition,
+          transform: art.imageScale ? "scale(" + String(art.imageScale) + ")" : undefined
+        }
+      : undefined;
 
   return (
     <div className="scene-stage scene-stage-photo">
@@ -109,6 +124,7 @@ function CountCard({ art, primary, secondary, badge }: SharedSceneProps) {
                     fill
                     sizes="96px"
                     src={art.imageSrc}
+                    style={imageStyle}
                   />
                 ) : null}
               </div>
@@ -116,7 +132,7 @@ function CountCard({ art, primary, secondary, badge }: SharedSceneProps) {
           </div>
           <div className="scene-word-banner scene-word-banner-count">
             <strong>{art.lead}</strong>
-            <span>One simple item repeated to count.</span>
+            <span>Count each picture one time.</span>
           </div>
         </div>
       </div>

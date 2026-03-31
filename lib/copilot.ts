@@ -77,21 +77,17 @@ function extractJsonBlock(input: string) {
 function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
   const lowerPrompt = prompt.toLowerCase();
   const alphabetActivity = catalog.activities.find((activity) => activity.id === "alphabet-cards");
-  const socialActivity = catalog.activities.find((activity) => activity.id === "social-scenes");
+  const countingActivity = catalog.activities.find((activity) => activity.id === "counting-cards");
   const looksAlphabet =
     lowerPrompt.includes("alphabet") ||
     lowerPrompt.includes("letter") ||
     lowerPrompt.includes("phonics") ||
     lowerPrompt.includes("a to z");
-  const looksSocial =
-    lowerPrompt.includes("social") ||
-    lowerPrompt.includes("scene") ||
-    lowerPrompt.includes("playground") ||
-    lowerPrompt.includes("swing") ||
-    lowerPrompt.includes("slide") ||
-    lowerPrompt.includes("snack") ||
-    lowerPrompt.includes("hello") ||
-    lowerPrompt.includes("help");
+  const looksCounting =
+    lowerPrompt.includes("count") ||
+    lowerPrompt.includes("number") ||
+    lowerPrompt.includes("math") ||
+    lowerPrompt.includes("how many");
 
   if (looksAlphabet && alphabetActivity) {
     return {
@@ -133,38 +129,38 @@ function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
     };
   }
 
-  if (socialActivity && (looksSocial || !looksAlphabet)) {
+  if (countingActivity && (looksCounting || !looksAlphabet)) {
     return {
-      headline: "Add more social scene cards",
+      headline: "Add more counting picture packs",
       reasoning:
-        "The request fits the social scenes library, so the safest change is to extend that activity with more concrete everyday scene cards.",
+        "The request fits the counting deck, so the safest change is to extend that activity with more concrete number-picture packs.",
       changes: [
         {
           type: "add-items",
-          activityId: socialActivity.id,
-          activityTitle: socialActivity.title,
+          activityId: countingActivity.id,
+          activityTitle: countingActivity.title,
           items: [
             item(
-              "Playground Waiting Cards",
+              "Animal Counting Pack",
               "prompt-pack",
-              "A small add-on pack for waiting in line and asking for a turn at playground equipment.",
+              "A small add-on pack that keeps the same count-and-say routine with one clear animal photo repeated on each number card.",
               [
-                "Show one playground picture card.",
-                "Practice one short phrase.",
-                "Repeat in the same order."
+                "Look at the number card.",
+                "Count the repeated picture.",
+                "Say the whole number phrase."
               ],
-              ["social scenes", "playground", "waiting"]
+              ["counting", "animals", "real photos"]
             ),
             item(
-              "Snack Choice Add-On",
+              "Toy Counting Pack",
               "support",
-              "A concrete snack choice pack with food and drink request prompts.",
+              "A concrete counting pack that uses familiar toy photos while keeping the same calm visual structure.",
               [
-                "Show two picture choices.",
-                "Ask one short question.",
-                "Answer with one clear phrase."
+                "Point to each picture tile.",
+                "Count in order.",
+                "Say the number and object together."
               ],
-              ["social scenes", "snack", "choices"]
+              ["counting", "toys", "number phrases"]
             )
           ]
         }
@@ -174,44 +170,44 @@ function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
   }
 
   return {
-    headline: "Add a new everyday scene set",
+    headline: "Add a new picture card set",
     reasoning:
-      "The request does not point to one area clearly, so the fallback proposes one additional child-facing scene set instead of broad platform changes.",
+      "The request does not point to one area clearly, so the fallback proposes one additional child-facing picture-card activity instead of broad platform changes.",
     changes: [
       {
         type: "add-activity",
         activity: activityTemplate({
-          title: "Home Routines",
-          category: "Everyday communication",
-          summary: "Picture cards for simple home routines such as getting shoes, washing hands, and tidying up.",
-          goal: "Support daily communication with familiar objects and short routine phrases.",
+          title: "Color Cards",
+          category: "Early learning",
+          summary: "Picture cards for simple color practice using one clear real photo on each card.",
+          goal: "Support color recognition with familiar objects and short repeatable cue phrases.",
           sessionLength: "8-12 min",
           workModeNote:
-            "Work mode uses these routine cards as a fixed child-facing scene set with no live generation.",
+            "Work mode uses these cards as a fixed child-facing picture set with no live generation.",
           trainModeNote:
-            "Train mode can add more routine cards, but the set should stay visual, concrete, and predictable.",
+            "Train mode can add more color cards, but the set should stay visual, concrete, and predictable.",
           items: [
             item(
-              "Shoes On",
+              "Red Card",
               "exercise",
-              "A simple routine card for putting on shoes with one short phrase.",
+              "A simple red object card with one short color phrase.",
               [
-                "Show the shoes picture.",
-                "Say one short routine phrase.",
+                "Show one color picture card.",
+                "Say the color word.",
                 "Repeat once if helpful."
               ],
-              ["home routine", "visual card", "daily living"]
+              ["colors", "visual card", "real photo"]
             ),
             item(
-              "Wash Hands",
+              "Blue Card",
               "support",
-              "A clear hand-washing picture card with a short step sequence.",
+              "A clear blue object card with the same short color routine.",
               [
-                "Show the hand-washing card.",
-                "Say the routine phrase.",
-                "Move to the next step slowly."
+                "Show the picture card.",
+                "Say the color word.",
+                "Move to the next card slowly."
               ],
-              ["home routine", "washing", "visual support"]
+              ["colors", "matching", "visual support"]
             )
           ]
         })
@@ -240,7 +236,7 @@ async function generateWithCopilot(prompt: string, catalog: Catalog) {
         "- add-activity for one new aligned activity",
         "Do not suggest arbitrary platform features or admin systems.",
         "Keep additions aligned with the visual activity-hub structure.",
-        "Prefer extending existing options such as social-scenes or alphabet-cards before creating something new.",
+        "Prefer extending existing options such as alphabet-cards or counting-cards before creating something new.",
         "Every new item must include 3 short steps and 2-5 tags.",
         "Current catalog JSON:",
         JSON.stringify(catalog),
@@ -251,8 +247,8 @@ async function generateWithCopilot(prompt: string, catalog: Catalog) {
           changes: [
             {
               type: "add-items",
-              activityId: "social-scenes",
-              activityTitle: "Social Scenes",
+              activityId: "counting-cards",
+              activityTitle: "Counting Cards",
               items: [
                 {
                   id: "example-item-id",

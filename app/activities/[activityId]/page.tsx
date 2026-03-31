@@ -10,6 +10,17 @@ type ActivityPageProps = {
   }>;
 };
 
+function buildPlayHref(activityId: string, moduleId: string, countingSet?: string) {
+  const params = new URLSearchParams();
+  params.set("module", moduleId);
+
+  if (countingSet != null) {
+    params.set("set", countingSet);
+  }
+
+  return "/activities/" + activityId + "/play?" + params.toString();
+}
+
 export default async function ActivityPage({ params }: ActivityPageProps) {
   const { activityId } = await params;
   const activity = await getActivityById(activityId);
@@ -20,7 +31,8 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
 
   const config = getPlayConfigForActivity(activity);
   const firstCard = config.modules[0]?.cards[0];
-  const playHref = "/activities/" + activity.id + "/play?module=" + config.defaultModuleId;
+  const isCounting = activity.id === "counting-cards";
+  const playHref = buildPlayHref(activity.id, config.defaultModuleId);
 
   return (
     <main className="app-shell kid-detail-shell">
@@ -43,11 +55,27 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             <span className="soft-chip">{config.theme.mascot}</span>
             <span className="soft-chip">real photo cards</span>
           </div>
-          <div className="hero-actions kid-hero-actions">
-            <Link className="button kid-main-button" href={playHref}>
-              Start this game
-            </Link>
-          </div>
+          {isCounting ? (
+            <div className="count-set-switch count-set-switch-detail" aria-label="Choose picture cards">
+              <div className="count-set-label">Choose picture cards</div>
+              <div className="count-set-row">
+                <Link className="count-set-chip count-set-chip-active" href={buildPlayHref(activity.id, config.defaultModuleId, "apples")}>
+                  <strong>Apple cards</strong>
+                  <span>Same apple on every number card</span>
+                </Link>
+                <Link className="count-set-chip" href={buildPlayHref(activity.id, config.defaultModuleId, "mixed")}>
+                  <strong>Different picture cards</strong>
+                  <span>A new real-photo picture for each number card</span>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="hero-actions kid-hero-actions">
+              <Link className="button kid-main-button" href={playHref}>
+                Start this game
+              </Link>
+            </div>
+          )}
         </div>
         <ActivityPosterScene
           art={firstCard?.art ?? { kind: "letter", lead: activity.title.slice(0, 1).toUpperCase(), caption: config.supportLine }}
@@ -74,7 +102,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
               ))}
             </div>
             <div className="support-note">{module.calmNote}</div>
-            <Link className="button kid-main-button" href={"/activities/" + activity.id + "/play?module=" + module.id}>
+            <Link className="button kid-main-button" href={buildPlayHref(activity.id, module.id)}>
               Play {module.title}
             </Link>
           </article>
