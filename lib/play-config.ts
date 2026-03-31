@@ -50,46 +50,45 @@ export type ActivityPlayConfig = {
 type AlphabetSeed = {
   letter: string;
   word: string;
-  cue: string;
 };
 
 const alphabetSeeds: AlphabetSeed[] = [
-  { letter: "A", word: "Apple", cue: "Say A, then apple." },
-  { letter: "B", word: "Ball", cue: "Say B, then ball." },
-  { letter: "C", word: "Cat", cue: "Say C, then cat." },
-  { letter: "D", word: "Dog", cue: "Say D, then dog." },
-  { letter: "E", word: "Egg", cue: "Say E, then egg." },
-  { letter: "F", word: "Fish", cue: "Say F, then fish." },
-  { letter: "G", word: "Grapes", cue: "Say G, then grapes." },
-  { letter: "H", word: "House", cue: "Say H, then house." },
-  { letter: "I", word: "Ice Cream", cue: "Say I, then ice cream." },
-  { letter: "J", word: "Juice", cue: "Say J, then juice." },
-  { letter: "K", word: "Kite", cue: "Say K, then kite." },
-  { letter: "L", word: "Leaf", cue: "Say L, then leaf." },
-  { letter: "M", word: "Moon", cue: "Say M, then moon." },
-  { letter: "N", word: "Nest", cue: "Say N, then nest." },
-  { letter: "O", word: "Orange", cue: "Say O, then orange." },
-  { letter: "P", word: "Pear", cue: "Say P, then pear." },
-  { letter: "Q", word: "Quilt", cue: "Say Q, then quilt." },
-  { letter: "R", word: "Rainbow", cue: "Say R, then rainbow." },
-  { letter: "S", word: "Sun", cue: "Say S, then sun." },
-  { letter: "T", word: "Tree", cue: "Say T, then tree." },
-  { letter: "U", word: "Umbrella", cue: "Say U, then umbrella." },
-  { letter: "V", word: "Van", cue: "Say V, then van." },
-  { letter: "W", word: "Whale", cue: "Say W, then whale." },
-  { letter: "X", word: "Xylophone", cue: "Say X, then xylophone." },
-  { letter: "Y", word: "Yarn", cue: "Say Y, then yarn." },
-  { letter: "Z", word: "Zebra", cue: "Say Z, then zebra." }
+  { letter: "A", word: "Apple" },
+  { letter: "B", word: "Ball" },
+  { letter: "C", word: "Cat" },
+  { letter: "D", word: "Dog" },
+  { letter: "E", word: "Egg" },
+  { letter: "F", word: "Fish" },
+  { letter: "G", word: "Grapes" },
+  { letter: "H", word: "House" },
+  { letter: "I", word: "Ice Cream" },
+  { letter: "J", word: "Juice" },
+  { letter: "K", word: "Kite" },
+  { letter: "L", word: "Leaf" },
+  { letter: "M", word: "Moon" },
+  { letter: "N", word: "Nest" },
+  { letter: "O", word: "Orange" },
+  { letter: "P", word: "Pear" },
+  { letter: "Q", word: "Quilt" },
+  { letter: "R", word: "Rainbow" },
+  { letter: "S", word: "Sun" },
+  { letter: "T", word: "Tree" },
+  { letter: "U", word: "Umbrella" },
+  { letter: "V", word: "Van" },
+  { letter: "W", word: "Whale" },
+  { letter: "X", word: "Xylophone" },
+  { letter: "Y", word: "Yarn" },
+  { letter: "Z", word: "Zebra" }
 ];
 
 function createAlphabetCards(): ActivityPlayCard[] {
   return alphabetSeeds.map((seed) => ({
     id: "alphabet-" + seed.letter.toLowerCase(),
-    title: seed.letter + " is for " + seed.word,
-    prompt: "Look at the picture, say the letter, then say the object word.",
+    title: seed.letter + " for " + seed.word,
+    prompt: "Say the letter, then say the picture word.",
     focus: "Letter " + seed.letter,
-    cue: seed.cue,
-    example: seed.letter + ". " + seed.word + ".",
+    cue: "Say, " + seed.letter + " for " + seed.word + ".",
+    example: seed.letter + " for " + seed.word + ".",
     art: {
       kind: "alphabet",
       lead: seed.word,
@@ -104,8 +103,8 @@ function createAlphabetCards(): ActivityPlayCard[] {
 const bespokeConfigs: Record<string, ActivityPlayConfig> = {
   "alphabet-cards": {
     defaultModuleId: "alphabet_deck",
-    coverLabel: "Alphabet Deck",
-    supportLine: "A full visual alphabet with one picture card and one audio cue for each letter.",
+    coverLabel: "Alphabet Cards",
+    supportLine: "Tap a picture card, hear it, and say the letter with the word.",
     audience: "Built for early learners who benefit from clear object pictures, short language, and predictable repetition.",
     theme: {
       primary: "#ea6f42",
@@ -113,16 +112,16 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       surface: "#fff8f3",
       ink: "#4a2b20",
       badge: "#fff0b8",
-      mascot: "Sunny the alphabet buddy"
+      mascot: "Sunny"
     },
     modules: [
       {
         id: "alphabet_deck",
-        title: "A to Z Cards",
-        description: "Move through all 26 alphabet picture cards in one calm, repeatable deck.",
-        accent: "Full alphabet",
-        skills: ["See the picture", "Name the letter", "Say the word"],
-        calmNote: "One letter card at a time. Repeat only when the child is ready.",
+        title: "A to Z",
+        description: "Move through all 26 picture cards.",
+        accent: "Alphabet",
+        skills: ["Look", "Hear", "Say"],
+        calmNote: "One card at a time. Repeat when the child is ready.",
         cards: createAlphabetCards()
       }
     ]
@@ -130,7 +129,7 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
   "social-scenes": {
     defaultModuleId: "swing_time",
     coverLabel: "Social Scenes",
-    supportLine: "Everyday visual scenes for playground turns, snack choices, greetings, and help requests.",
+    supportLine: "Photo cards for everyday moments like turns, snack, greetings, and asking for help.",
     audience: "Helpful for autistic children and other learners who benefit from visual supports, predictable language, and concrete everyday situations.",
     theme: {
       primary: "#4f7aef",
@@ -138,24 +137,24 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       surface: "#f5f8ff",
       ink: "#213252",
       badge: "#fff0b8",
-      mascot: "Kiki the social buddy"
+      mascot: "Kiki"
     },
     modules: [
       {
         id: "swing_time",
         title: "Swing Time",
         description: "Practice waiting, asking for a turn, and finishing at the swing.",
-        accent: "Playground routine",
+        accent: "Playground",
         skills: ["Wait", "Ask", "Finish"],
-        calmNote: "Keep the order the same: wait, ask, swing, all done.",
+        calmNote: "Keep the order the same each time.",
         cards: [
           {
             id: "swing-wait",
             title: "Wait for the swing",
-            prompt: "Show the swing card and say the waiting phrase one time.",
-            focus: "Waiting with one short phrase",
-            cue: "Point to the swing and say, wait for swing.",
-            example: "Wait for swing.",
+            prompt: "Look at the swing and say the waiting words.",
+            focus: "Waiting",
+            cue: "Say, wait for the swing.",
+            example: "Wait for the swing.",
             art: {
               kind: "scene",
               lead: "Swing",
@@ -168,31 +167,31 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           {
             id: "swing-my-turn",
             title: "My turn on the swing",
-            prompt: "Use the swing picture and practice asking for a turn calmly.",
-            focus: "Turn-taking phrase",
-            cue: "Point to the swing and say, my turn swing.",
-            example: "My turn swing.",
+            prompt: "Look at the swing and ask for a turn.",
+            focus: "Turn taking",
+            cue: "Say, my turn on the swing.",
+            example: "My turn on the swing.",
             art: {
               kind: "scene",
               lead: "Swing",
               trail: "My turn",
-              caption: "Ask for the swing",
+              caption: "My swing turn",
               imageSrc: "/cards/social-scenes/swing.jpg",
               imageAlt: "Playground swing photo"
             }
           },
           {
             id: "swing-all-done",
-            title: "All done swing",
-            prompt: "Use the same swing card to practice finishing with a clear phrase.",
-            focus: "Ending the routine",
-            cue: "Touch the card and say, all done swing.",
-            example: "All done swing.",
+            title: "All done with the swing",
+            prompt: "Look at the swing and say the finished words.",
+            focus: "Finishing",
+            cue: "Say, all done with the swing.",
+            example: "All done with the swing.",
             art: {
               kind: "scene",
               lead: "Swing",
               trail: "All done",
-              caption: "Finish the swing turn",
+              caption: "Swing finished",
               imageSrc: "/cards/social-scenes/swing.jpg",
               imageAlt: "Playground swing photo"
             }
@@ -203,17 +202,17 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
         id: "slide_line",
         title: "Slide Line",
         description: "Practice lining up, waiting, and taking one turn at the slide.",
-        accent: "Wait in line",
-        skills: ["Line up", "Wait", "Go"],
-        calmNote: "Use the same sequence every time: line up, wait, then go.",
+        accent: "Playground",
+        skills: ["Line up", "Wait", "Turn"],
+        calmNote: "Line up, wait, then go.",
         cards: [
           {
             id: "slide-line-up",
             title: "Line up for the slide",
-            prompt: "Look at the slide card and say the line-up phrase.",
+            prompt: "Look at the slide and say the line-up words.",
             focus: "Joining the line",
-            cue: "Point to the slide and say, line up.",
-            example: "Line up.",
+            cue: "Say, line up for the slide.",
+            example: "Line up for the slide.",
             art: {
               kind: "scene",
               lead: "Slide",
@@ -225,11 +224,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           },
           {
             id: "slide-wait",
-            title: "Wait at the slide",
-            prompt: "Practice waiting with one simple phrase before the turn.",
-            focus: "Waiting in place",
-            cue: "Point to the slide and say, wait.",
-            example: "Wait.",
+            title: "Wait for the slide",
+            prompt: "Look at the slide and say the waiting words.",
+            focus: "Waiting",
+            cue: "Say, wait for the slide.",
+            example: "Wait for the slide.",
             art: {
               kind: "scene",
               lead: "Slide",
@@ -241,16 +240,16 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           },
           {
             id: "slide-my-turn",
-            title: "My turn slide",
-            prompt: "Use the slide card and say the turn phrase when ready.",
-            focus: "Turn phrase",
-            cue: "Point to the slide and say, my turn slide.",
-            example: "My turn slide.",
+            title: "My turn on the slide",
+            prompt: "Look at the slide and say the turn words.",
+            focus: "Turn taking",
+            cue: "Say, my turn on the slide.",
+            example: "My turn on the slide.",
             art: {
               kind: "scene",
               lead: "Slide",
               trail: "My turn",
-              caption: "Take a slide turn",
+              caption: "Slide turn",
               imageSrc: "/cards/social-scenes/slide.jpg",
               imageAlt: "Playground slide photo"
             }
@@ -260,18 +259,18 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       {
         id: "snack_time",
         title: "Snack Time",
-        description: "Use snack pictures to choose food, ask for juice, and finish calmly.",
-        accent: "Snack choices",
-        skills: ["Choose", "Request", "Finish"],
-        calmNote: "Show two clear food cards and use one short phrase at a time.",
+        description: "Practice choosing, asking, and finishing at snack.",
+        accent: "Snack",
+        skills: ["Choose", "Ask", "Finish"],
+        calmNote: "Use one short snack phrase at a time.",
         cards: [
           {
             id: "snack-choice",
-            title: "Apple or cracker",
-            prompt: "Look at the snack pictures and choose one with a clear phrase.",
-            focus: "Making one choice",
-            cue: "Point to the snack and say, apple please or cracker please.",
-            example: "Apple please.",
+            title: "Apple, please",
+            prompt: "Look at the snack and say what you want.",
+            focus: "Choosing",
+            cue: "Say, apple, please.",
+            example: "Apple, please.",
             art: {
               kind: "choice",
               lead: "Apple",
@@ -283,11 +282,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           },
           {
             id: "snack-juice",
-            title: "Juice please",
-            prompt: "Use the drink picture to practice one short request.",
-            focus: "Requesting a drink",
-            cue: "Point to the juice card and say, juice please.",
-            example: "Juice please.",
+            title: "Juice, please",
+            prompt: "Look at the drink and ask for it.",
+            focus: "Requesting",
+            cue: "Say, juice, please.",
+            example: "Juice, please.",
             art: {
               kind: "scene",
               lead: "Juice",
@@ -299,16 +298,16 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           },
           {
             id: "snack-all-done",
-            title: "All done snack",
-            prompt: "Use the snack picture to end the routine with one clear phrase.",
-            focus: "Ending snack time",
-            cue: "Touch the snack card and say, all done snack.",
-            example: "All done snack.",
+            title: "All done with snack",
+            prompt: "Look at the snack and say the finished words.",
+            focus: "Finishing",
+            cue: "Say, all done with snack.",
+            example: "All done with snack.",
             art: {
               kind: "scene",
-              lead: "Cracker",
+              lead: "Snack",
               trail: "All done",
-              caption: "Finish snack time",
+              caption: "Snack finished",
               imageSrc: "/cards/social-scenes/snack.jpg",
               imageAlt: "Snack time photo"
             }
@@ -318,17 +317,17 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       {
         id: "hello_time",
         title: "Hello Time",
-        description: "Practice hello, good morning, and goodbye with familiar visual cues.",
-        accent: "Greeting routine",
+        description: "Practice hello, good morning, and goodbye.",
+        accent: "Greeting",
         skills: ["Wave", "Say hello", "Say goodbye"],
-        calmNote: "Use one greeting at a time and pause for a reply.",
+        calmNote: "Use one greeting, then pause.",
         cards: [
           {
             id: "hello-hi",
             title: "Hello",
-            prompt: "Look at the greeting card and say hello one time.",
-            focus: "Simple greeting",
-            cue: "Wave and say, hello.",
+            prompt: "Look at the picture and say hello.",
+            focus: "Greeting",
+            cue: "Say, hello.",
             example: "Hello.",
             art: {
               kind: "conversation",
@@ -342,15 +341,15 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           {
             id: "hello-morning",
             title: "Good morning",
-            prompt: "Use the greeting card for a morning hello.",
-            focus: "Whole greeting phrase",
-            cue: "Smile and say, good morning.",
+            prompt: "Look at the picture and say good morning.",
+            focus: "Greeting",
+            cue: "Say, good morning.",
             example: "Good morning.",
             art: {
               kind: "conversation",
               lead: "Good morning",
               trail: "Hello",
-              caption: "Morning greeting",
+              caption: "Morning hello",
               imageSrc: "/cards/social-scenes/hello.jpg",
               imageAlt: "Greeting photo"
             }
@@ -358,9 +357,9 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
           {
             id: "hello-bye",
             title: "Goodbye",
-            prompt: "Practice ending the interaction with one goodbye phrase.",
-            focus: "Closing the interaction",
-            cue: "Wave and say, goodbye.",
+            prompt: "Look at the picture and say goodbye.",
+            focus: "Goodbye",
+            cue: "Say, goodbye.",
             example: "Goodbye.",
             art: {
               kind: "conversation",
@@ -376,54 +375,54 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       {
         id: "ask_for_help",
         title: "Ask for Help",
-        description: "Use teacher and backpack pictures for clear help requests.",
-        accent: "Help routine",
-        skills: ["Notice", "Ask", "Repeat once"],
-        calmNote: "Keep help requests short and concrete.",
+        description: "Practice asking for help with simple clear words.",
+        accent: "Help",
+        skills: ["Notice", "Ask", "Repeat"],
+        calmNote: "Keep the help words short and clear.",
         cards: [
           {
             id: "help-teacher",
-            title: "Teacher help",
-            prompt: "Use the teacher card to practice a help request.",
-            focus: "Asking an adult for help",
-            cue: "Point to the teacher and say, I need help.",
+            title: "I need help",
+            prompt: "Look at the picture and ask for help.",
+            focus: "Help",
+            cue: "Say, I need help.",
             example: "I need help.",
             art: {
               kind: "scene",
               lead: "Teacher",
               trail: "Help",
-              caption: "Ask the teacher",
+              caption: "Ask for help",
               imageSrc: "/cards/social-scenes/help.jpg",
               imageAlt: "Classroom help photo"
             }
           },
           {
             id: "help-backpack",
-            title: "Backpack help",
-            prompt: "Use the backpack picture to ask for help with a zipper or buckle.",
-            focus: "Naming the problem",
-            cue: "Point to the backpack and say, help backpack please.",
-            example: "Help backpack please.",
+            title: "Help with my backpack",
+            prompt: "Look at the picture and ask for backpack help.",
+            focus: "Help",
+            cue: "Say, help with my backpack, please.",
+            example: "Help with my backpack, please.",
             art: {
               kind: "scene",
               lead: "Backpack",
-              trail: "Help please",
-              caption: "Help with backpack",
+              trail: "Help",
+              caption: "Backpack help",
               imageSrc: "/cards/social-scenes/help.jpg",
               imageAlt: "Classroom help photo"
             }
           },
           {
             id: "help-open",
-            title: "Open please",
-            prompt: "Use the drink or snack card to ask someone to open it.",
-            focus: "Short request phrase",
-            cue: "Hold the item card and say, open please.",
-            example: "Open please.",
+            title: "Open it, please",
+            prompt: "Look at the picture and ask someone to open it.",
+            focus: "Help",
+            cue: "Say, open it, please.",
+            example: "Open it, please.",
             art: {
               kind: "scene",
-              lead: "Juice",
-              trail: "Open please",
+              lead: "Open",
+              trail: "Please",
               caption: "Ask to open",
               imageSrc: "/cards/social-scenes/help.jpg",
               imageAlt: "Classroom help photo"
@@ -447,7 +446,7 @@ function createFallbackConfig(activity: Activity): ActivityPlayConfig {
       surface: "#f3fbf8",
       ink: "#14363a",
       badge: "#fff3cb",
-      mascot: "Helper buddy"
+      mascot: "Helper"
     },
     modules: [
       {
