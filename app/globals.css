@@ -364,3 +364,106 @@ textarea {
     flex-direction: column;
   }
 }
+
+
+.button,
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.activity-card {
+  display: grid;
+  gap: 12px;
+}
+
+.card-surface {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card-actions,
+.page-actions,
+.stage-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.module-grid,
+.helper-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.module-card,
+.helper-card,
+.play-stage {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.module-card,
+.helper-card {
+  padding: 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.module-card-active {
+  border-color: rgba(11, 143, 122, 0.45);
+  background: linear-gradient(180deg, rgba(11, 143, 122, 0.08), rgba(255, 250, 242, 0.92));
+}
+
+.module-list {
+  margin: 14px 0 0;
+  padding-left: 18px;
+}
+
+.module-list li + li {
+  margin-top: 10px;
+}
+
+.play-stage {
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(255, 251, 245, 0.97), rgba(243, 236, 224, 0.94));
+}
+
+.stage-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--warm);
+  font-size: 0.75rem;
+}
+
+.stage-title {
+  margin: 10px 0 8px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: "Iowan Old Style", "Palatino Linotype", serif;
+}
+
+.stage-prompt {
+  margin: 0;
+  max-width: 50rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.stage-nav {
+  margin-top: 22px;
+}
+
+.disabled-chip {
+  opacity: 0.45;
+  cursor: default;
+}

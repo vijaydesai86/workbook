@@ -204,3 +204,9 @@ export async function applyTrainingProposal(proposal: TrainingProposal) {
 
   await writeCustomizations(customizations);
 }
+
+
+export async function getActivityById(activityId: string) {
+  const catalog = await getMergedCatalog();
+  return catalog.activities.find((activity) => activity.id === activityId) ?? null;
+}

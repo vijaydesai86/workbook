@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { getPlayConfigForActivity } from "@/lib/play-config";
 import type { Catalog, TrainingProposal } from "@/lib/types";
 
 type WorkbookAppProps = {
@@ -38,6 +40,8 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
       catalog.activities[0],
     [catalog.activities, selectedActivityId]
   );
+
+  const selectedPlayConfig = selectedActivity ? getPlayConfigForActivity(selectedActivity) : null;
 
   async function refreshCatalog() {
     const response = await fetch("/api/catalog", { cache: "no-store" });
@@ -116,11 +120,11 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <div className="hero-card hero">
           <div>
             <p className="eyebrow">Social Workbook</p>
-            <h1>Train new activity content, then lock it into a predictable work mode.</h1>
+            <h1>Clickable activities, dedicated detail pages, and a real play flow.</h1>
             <p style={{ marginTop: 18 }}>
-              This prototype mirrors the activity-hub pattern from SocialDiverse: guided practice
-              modules, a narrow communication support focus, and a train mode that adds structured
-              content without turning the main tool into free-form chat.
+              The homepage now acts like an activity hub: open an activity, launch its play screen,
+              and keep train mode focused on adding structured content rather than inventing random
+              new product behavior.
             </p>
             <div className="mode-row">
               <button
@@ -129,7 +133,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                 type="button"
               >
                 <strong>Work mode</strong>
-                <small>Browse and use the saved catalog as a static tool.</small>
+                <small>Open fixed activities and run their play screens.</small>
               </button>
               <button
                 className={`mode-chip ${mode === "train" ? "active" : ""}`}
@@ -137,7 +141,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                 type="button"
               >
                 <strong>Train mode</strong>
-                <small>Use Copilot to propose additions to activities and packs.</small>
+                <small>Ask Copilot to extend existing activities and review the proposal.</small>
               </button>
             </div>
           </div>
@@ -146,18 +150,18 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <div className="hero-grid">
           <div className="hero-card hero-stat">
             <strong>{catalog.activities.length} activities</strong>
-            <span className="tagline">Typing, speech practice, and guided social scenes.</span>
+            <span className="tagline">Each activity now has its own detail page and play entry.</span>
           </div>
           <div className="hero-card hero-stat">
-            <strong>{catalog.activities.reduce((sum, activity) => sum + activity.items.length, 0)} items</strong>
-            <span className="tagline">Structured steps that carry into work mode after approval.</span>
+            <strong>{catalog.activities.reduce((sum, activity) => sum + getPlayConfigForActivity(activity).modules.length, 0)} modules</strong>
+            <span className="tagline">Speech, typing, and social modules with card-by-card play.</span>
           </div>
           <div className="hero-card hero-stat">
             <strong>{mode === "train" ? "Editable" : "Stable"}</strong>
             <span className="tagline">
               {mode === "train"
-                ? "AI suggestions stay gated behind review and apply."
-                : "No live LLM calls. The tool runs on the saved catalog only."}
+                ? "Generate additions, review them, then save them into work mode."
+                : "Use the activity library as a fixed, predictable tool."}
             </span>
           </div>
         </div>
@@ -168,27 +172,44 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
           <div className="sidebar-head">
             <h2 style={{ marginBottom: 6 }}>Activity library</h2>
             <div className="subtle">
-              Seeded from the same general space as SocialDiverse: practice-based, structured, and
-              easy to extend in controlled ways.
+              Choose an activity to preview it here, then open its dedicated page or jump straight
+              into play.
             </div>
           </div>
           <div className="sidebar-list">
-            {catalog.activities.map((activity) => (
-              <button
-                className={`activity-card ${activity.id === selectedActivity?.id ? "active" : ""}`}
-                key={activity.id}
-                onClick={() => setSelectedActivityId(activity.id)}
-                type="button"
-              >
-                <div className="meta-row">{activity.category}</div>
-                <h3>{activity.title}</h3>
-                <div className="subtle">{activity.summary}</div>
-                <div className="pill-row" style={{ marginTop: 12 }}>
-                  <span className="pill">{activity.sessionLength}</span>
-                  <span className="pill">{activity.items.length} items</span>
-                </div>
-              </button>
-            ))}
+            {catalog.activities.map((activity) => {
+              const playConfig = getPlayConfigForActivity(activity);
+
+              return (
+                <article
+                  className={`activity-card ${activity.id === selectedActivity?.id ? "active" : ""}`}
+                  key={activity.id}
+                >
+                  <button
+                    className="card-surface"
+                    onClick={() => setSelectedActivityId(activity.id)}
+                    type="button"
+                  >
+                    <div className="meta-row">{activity.category}</div>
+                    <h3>{activity.title}</h3>
+                    <div className="subtle">{activity.summary}</div>
+                    <div className="pill-row" style={{ marginTop: 12 }}>
+                      <span className="pill">{activity.sessionLength}</span>
+                      <span className="pill">{activity.items.length} items</span>
+                      <span className="pill">{playConfig.modules.length} modules</span>
+                    </div>
+                  </button>
+                  <div className="card-actions">
+                    <Link className="ghost-button" href={`/activities/${activity.id}`}>
+                      Open activity
+                    </Link>
+                    <Link className="button" href={`/activities/${activity.id}/play`}>
+                      Play
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </aside>
 
@@ -208,6 +229,15 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                     <span className="pill">{selectedActivity.goal}</span>
                     <span className="pill">{selectedActivity.sessionLength}</span>
                   </div>
+                </div>
+
+                <div className="page-actions" style={{ marginTop: 18 }}>
+                  <Link className="ghost-button" href={`/activities/${selectedActivity.id}`}>
+                    Open full activity page
+                  </Link>
+                  <Link className="button" href={`/activities/${selectedActivity.id}/play`}>
+                    Play {selectedActivity.title}
+                  </Link>
                 </div>
 
                 <div className="content-grid" style={{ marginTop: 20 }}>
@@ -230,16 +260,21 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                   </div>
 
                   <div className="session-card">
-                    <div className="meta-row">{mode === "work" ? "Current behavior" : "Mode behavior"}</div>
-                    <h3>{mode === "work" ? "Static session sheet" : "Training boundaries"}</h3>
+                    <div className="meta-row">Playable modules</div>
+                    <h3>{selectedPlayConfig?.modules.length ?? 0} modules ready</h3>
                     <div className="callout">
                       {mode === "work" ? selectedActivity.workModeNote : selectedActivity.trainModeNote}
                     </div>
-                    <ol>
-                      <li>Pick one item from the activity library.</li>
-                      <li>Use the listed steps as written.</li>
-                      <li>In train mode, review proposed additions before saving them.</li>
-                    </ol>
+                    <ul className="module-list">
+                      {selectedPlayConfig?.modules.map((module) => (
+                        <li key={module.id}>
+                          <Link href={`/activities/${selectedActivity.id}/play?module=${module.id}`}>
+                            {module.title}
+                          </Link>{" "}
+                          <span className="subtle">{module.description}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </section>
@@ -250,8 +285,8 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                     <div className="meta-row">Train mode console</div>
                     <h3>Ask for structured additions</h3>
                     <p className="subtle">
-                      Keep prompts narrow: add speech packs, extend typing supports, or create one
-                      aligned new activity. The output is saved only after you apply it.
+                      Extend an existing activity, add more speech items, or create one more aligned
+                      module without breaking the fixed work-mode flow.
                     </p>
                     <div className="suggestion-row" style={{ marginTop: 12 }}>
                       {suggestionPrompts.map((suggestion) => (
