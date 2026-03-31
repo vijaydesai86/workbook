@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ActivityPosterScene } from "@/app/components/activity-scenes";
 import { getActivityById } from "@/lib/catalog-store";
 import { getPlayConfigForActivity } from "@/lib/play-config";
 
@@ -9,30 +10,27 @@ type ActivityPageProps = {
   }>;
 };
 
-function ActivityVisual({ label, accent, surface, ink }: { label: string; accent: string; surface: string; ink: string }) {
-  return (
-    <div className="detail-visual" style={{ background: `linear-gradient(145deg, ${surface}, white)`, color: ink }}>
-      <span className="detail-visual-badge">{accent}</span>
-      <div className="detail-visual-main">{label}</div>
-    </div>
-  );
-}
-
 export default async function ActivityPage({ params }: ActivityPageProps) {
   const { activityId } = await params;
   const activity = await getActivityById(activityId);
 
-  if (!activity) {
+  if (activity == null) {
     notFound();
   }
 
   const config = getPlayConfigForActivity(activity);
+  const firstCard = config.modules[0]?.cards[0];
+  const playHref = "/activities/" + activity.id + "/play?module=" + config.defaultModuleId;
 
   return (
     <main className="app-shell">
       <div className="page-actions">
-        <Link className="ghost-button" href="/">Back to hub</Link>
-        <Link className="button" href={`/activities/${activity.id}/play?module=${config.defaultModuleId}`}>Play now</Link>
+        <Link className="ghost-button" href="/">
+          Back to hub
+        </Link>
+        <Link className="button" href={playHref}>
+          Play now
+        </Link>
       </div>
 
       <section className="detail-hero" style={{ backgroundColor: config.theme.surface }}>
@@ -46,7 +44,15 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             <span className="soft-chip">{config.modules.length} modes</span>
           </div>
         </div>
-        <ActivityVisual label={config.coverLabel} accent={config.theme.mascot} surface={config.theme.secondary} ink={config.theme.ink} />
+        <ActivityPosterScene
+          art={firstCard?.art ?? { kind: "letter", lead: activity.title.slice(0, 1).toUpperCase(), caption: config.supportLine }}
+          badge={config.theme.badge}
+          ink={config.theme.ink}
+          primary={config.theme.primary}
+          secondary={config.theme.secondary}
+          surface={config.theme.surface}
+          title={config.coverLabel}
+        />
       </section>
 
       <section className="detail-layout">
@@ -60,15 +66,15 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
           <div className="benefit-grid">
             <article className="benefit-card">
               <strong>Visual first</strong>
-              <p className="subtle">Large cards, short prompts, and predictable structure.</p>
+              <p className="subtle">Large cards, strong picture cues, and clear structure.</p>
             </article>
             <article className="benefit-card">
               <strong>Calm pacing</strong>
               <p className="subtle">No forced timer and no failure-heavy feedback loop.</p>
             </article>
             <article className="benefit-card">
-              <strong>Short sessions</strong>
-              <p className="subtle">Designed for one small win at a time.</p>
+              <strong>Card-matched audio</strong>
+              <p className="subtle">Each play card uses its own saved cue instead of a generic sound.</p>
             </article>
           </div>
           <div className="support-note">{config.audience}</div>
@@ -89,11 +95,15 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
                 <p className="subtle">{module.description}</p>
                 <div className="quick-chip-row">
                   {module.skills.map((skill) => (
-                    <span className="quick-chip" key={skill}>{skill}</span>
+                    <span className="quick-chip" key={skill}>
+                      {skill}
+                    </span>
                   ))}
                 </div>
                 <div className="support-note">{module.calmNote}</div>
-                <Link className="button" href={`/activities/${activity.id}/play?module=${module.id}`}>Play module</Link>
+                <Link className="button" href={"/activities/" + activity.id + "/play?module=" + module.id}>
+                  Play module
+                </Link>
               </article>
             ))}
           </div>
