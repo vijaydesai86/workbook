@@ -9,6 +9,15 @@ type ActivityPageProps = {
   }>;
 };
 
+function ActivityVisual({ label, accent, surface, ink }: { label: string; accent: string; surface: string; ink: string }) {
+  return (
+    <div className="detail-visual" style={{ background: `linear-gradient(145deg, ${surface}, white)`, color: ink }}>
+      <span className="detail-visual-badge">{accent}</span>
+      <div className="detail-visual-main">{label}</div>
+    </div>
+  );
+}
+
 export default async function ActivityPage({ params }: ActivityPageProps) {
   const { activityId } = await params;
   const activity = await getActivityById(activityId);
@@ -17,71 +26,93 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
     notFound();
   }
 
-  const playConfig = getPlayConfigForActivity(activity);
+  const config = getPlayConfigForActivity(activity);
 
   return (
-    <main className="page-shell">
+    <main className="app-shell">
       <div className="page-actions">
-        <Link className="ghost-button" href="/">
-          Back to hub
-        </Link>
-        <Link className="button" href={`/activities/${activity.id}/play`}>
-          Play activity
-        </Link>
+        <Link className="ghost-button" href="/">Back to hub</Link>
+        <Link className="button" href={`/activities/${activity.id}/play?module=${config.defaultModuleId}`}>Play now</Link>
       </div>
 
-      <section className="panel">
-        <div className="detail-head">
-          <div>
-            <div className="meta-row">{activity.category}</div>
-            <h1 style={{ marginTop: 6, marginBottom: 10 }}>{activity.title}</h1>
-            <p className="subtle" style={{ maxWidth: 820 }}>
-              {activity.summary}
-            </p>
-          </div>
-          <div className="pill-row">
-            <span className="pill">{activity.goal}</span>
-            <span className="pill">{activity.sessionLength}</span>
+      <section className="detail-hero" style={{ backgroundColor: config.theme.surface }}>
+        <div className="detail-hero-copy">
+          <div className="eyebrow">{config.coverLabel}</div>
+          <h1>{activity.title}</h1>
+          <p>{config.supportLine}</p>
+          <div className="quick-chip-row">
+            <span className="soft-chip">{activity.sessionLength}</span>
+            <span className="soft-chip">{config.theme.mascot}</span>
+            <span className="soft-chip">{config.modules.length} modes</span>
           </div>
         </div>
+        <ActivityVisual label={config.coverLabel} accent={config.theme.mascot} surface={config.theme.secondary} ink={config.theme.ink} />
       </section>
 
-      <section className="panel" style={{ marginTop: 20 }}>
-        <div className="detail-head">
-          <div>
-            <div className="meta-row">Play modules</div>
-            <h2 style={{ marginTop: 6 }}>Choose a module</h2>
+      <section className="detail-layout">
+        <div className="detail-main-card">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">Why this helps</div>
+              <h2>Made for real use</h2>
+            </div>
           </div>
-          <div className="subtle">{playConfig.modules.length} clickable modules</div>
-        </div>
-        <div className="module-grid" style={{ marginTop: 18 }}>
-          {playConfig.modules.map((module) => (
-            <article className="module-card" key={module.id}>
-              <div className="meta-row">{module.accent}</div>
-              <h3>{module.title}</h3>
-              <p className="subtle">{module.description}</p>
-              <div className="pill-row" style={{ marginTop: 12 }}>
-                <span className="pill">{module.cards.length} cards</span>
-              </div>
-              <div className="card-actions">
-                <Link className="button" href={`/activities/${activity.id}/play?module=${module.id}`}>
-                  Play module
-                </Link>
-              </div>
+          <div className="benefit-grid">
+            <article className="benefit-card">
+              <strong>Visual first</strong>
+              <p className="subtle">Large cards, short prompts, and predictable structure.</p>
             </article>
-          ))}
+            <article className="benefit-card">
+              <strong>Calm pacing</strong>
+              <p className="subtle">No forced timer and no failure-heavy feedback loop.</p>
+            </article>
+            <article className="benefit-card">
+              <strong>Short sessions</strong>
+              <p className="subtle">Designed for one small win at a time.</p>
+            </article>
+          </div>
+          <div className="support-note">{config.audience}</div>
         </div>
+
+        <aside className="detail-side-card">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">Start point</div>
+              <h2>Play modules</h2>
+            </div>
+          </div>
+          <div className="module-stack">
+            {config.modules.map((module) => (
+              <article className="module-stack-card" key={module.id}>
+                <div className="meta-row">{module.accent}</div>
+                <h3>{module.title}</h3>
+                <p className="subtle">{module.description}</p>
+                <div className="quick-chip-row">
+                  {module.skills.map((skill) => (
+                    <span className="quick-chip" key={skill}>{skill}</span>
+                  ))}
+                </div>
+                <div className="support-note">{module.calmNote}</div>
+                <Link className="button" href={`/activities/${activity.id}/play?module=${module.id}`}>Play module</Link>
+              </article>
+            ))}
+          </div>
+        </aside>
       </section>
 
-      <section className="panel" style={{ marginTop: 20 }}>
-        <div className="meta-row">Saved content</div>
-        <h2 style={{ marginTop: 6 }}>Practice items</h2>
-        <div className="item-grid" style={{ marginTop: 18 }}>
+      <section className="practice-strip">
+        <div className="section-head">
+          <div>
+            <div className="eyebrow">Practice cards</div>
+            <h2>Saved support content</h2>
+          </div>
+        </div>
+        <div className="practice-grid">
           {activity.items.map((item) => (
-            <article className="item-card" key={item.id}>
+            <article className="practice-card" key={item.id}>
               <div className="meta-row">{item.kind}</div>
               <h3>{item.title}</h3>
-              <div className="subtle">{item.summary}</div>
+              <p className="subtle">{item.summary}</p>
               <ul>
                 {item.steps.map((step) => (
                   <li key={step}>{step}</li>

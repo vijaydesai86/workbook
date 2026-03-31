@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { getPlayConfigForActivity } from "@/lib/play-config";
-import type { Catalog, TrainingProposal } from "@/lib/types";
+import type { Activity, Catalog, TrainingProposal } from "@/lib/types";
 
 type WorkbookAppProps = {
   initialCatalog: Catalog;
@@ -11,16 +11,38 @@ type WorkbookAppProps = {
 
 const suggestionPrompts = [
   "Add three home speech warm-ups for /s/ and /sh/ practice.",
-  "Extend typing practice with visual cue packs for early learners.",
-  "Add a new activity for turn-taking during short conversations."
+  "Extend typing practice with more calm visual cue packs.",
+  "Add more choice-making cards for social scenes."
 ];
+
+function ActivityVisual({ activity }: { activity: Activity }) {
+  const config = getPlayConfigForActivity(activity);
+  const firstModule = config.modules[0];
+  const firstCard = firstModule?.cards[0];
+
+  return (
+    <div
+      className="activity-visual"
+      style={{
+        background: `linear-gradient(135deg, ${config.theme.secondary}, ${config.theme.surface})`,
+        color: config.theme.ink
+      }}
+    >
+      <div className="activity-visual-badge" style={{ backgroundColor: config.theme.badge }}>
+        {config.coverLabel}
+      </div>
+      <div className="activity-visual-main" style={{ color: config.theme.primary }}>
+        {firstCard?.art.lead ?? activity.title.slice(0, 2).toUpperCase()}
+      </div>
+      <div className="activity-visual-caption">{firstCard?.art.caption ?? config.supportLine}</div>
+    </div>
+  );
+}
 
 export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
   const [catalog, setCatalog] = useState(initialCatalog);
   const [mode, setMode] = useState<"work" | "train">("work");
-  const [selectedActivityId, setSelectedActivityId] = useState(
-    initialCatalog.activities[0]?.id ?? ""
-  );
+  const [selectedActivityId, setSelectedActivityId] = useState(initialCatalog.activities[0]?.id ?? "");
   const [prompt, setPrompt] = useState(suggestionPrompts[0]);
   const [proposal, setProposal] = useState<TrainingProposal | null>(null);
   const [status, setStatus] = useState<string>("");
@@ -35,16 +57,16 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
   }, [catalog.activities, selectedActivityId]);
 
   const selectedActivity = useMemo(
-    () =>
-      catalog.activities.find((activity) => activity.id === selectedActivityId) ??
-      catalog.activities[0],
+    () => catalog.activities.find((activity) => activity.id === selectedActivityId) ?? catalog.activities[0],
     [catalog.activities, selectedActivityId]
   );
 
-  const selectedPlayConfig = selectedActivity ? getPlayConfigForActivity(selectedActivity) : null;
+  const selectedConfig = selectedActivity ? getPlayConfigForActivity(selectedActivity) : null;
+  const featuredModule = selectedConfig?.modules[0] ?? null;
 
   async function refreshCatalog() {
     const response = await fetch("/api/catalog", { cache: "no-store" });
+
     if (!response.ok) {
       throw new Error("Unable to refresh catalog.");
     }
@@ -115,253 +137,215 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
   }
 
   return (
-    <main className="page-shell">
-      <section className="hero">
-        <div className="hero-card hero">
-          <div>
-            <p className="eyebrow">Social Workbook</p>
-            <h1>Clickable activities, dedicated detail pages, and a real play flow.</h1>
-            <p style={{ marginTop: 18 }}>
-              The homepage now acts like an activity hub: open an activity, launch its play screen,
-              and keep train mode focused on adding structured content rather than inventing random
-              new product behavior.
-            </p>
-            <div className="mode-row">
-              <button
-                className={`mode-chip ${mode === "work" ? "active" : ""}`}
-                onClick={() => setMode("work")}
-                type="button"
-              >
-                <strong>Work mode</strong>
-                <small>Open fixed activities and run their play screens.</small>
-              </button>
-              <button
-                className={`mode-chip ${mode === "train" ? "active" : ""}`}
-                onClick={() => setMode("train")}
-                type="button"
-              >
-                <strong>Train mode</strong>
-                <small>Ask Copilot to extend existing activities and review the proposal.</small>
-              </button>
+    <main className="app-shell">
+      <section className="landing-hero">
+        <div className="landing-copy">
+          <div className="eyebrow">Calm Activity Hub</div>
+          <h1>Play first. Keep it visual. Keep it predictable.</h1>
+          <p>
+            Choose a game, open one module, and move through large visual cards designed for children
+            who need simple routines, low-pressure prompts, and sensory-friendly pacing.
+          </p>
+          <div className="hero-actions">
+            <button
+              className={`mode-pill ${mode === "work" ? "mode-pill-active" : ""}`}
+              onClick={() => setMode("work")}
+              type="button"
+            >
+              Work mode
+            </button>
+            <button
+              className={`mode-pill ${mode === "train" ? "mode-pill-active" : ""}`}
+              onClick={() => setMode("train")}
+              type="button"
+            >
+              Train mode
+            </button>
+          </div>
+          <div className="hero-stats">
+            <div className="hero-stat-card">
+              <strong>{catalog.activities.length}</strong>
+              <span>clickable activities</span>
+            </div>
+            <div className="hero-stat-card">
+              <strong>{catalog.activities.reduce((sum, activity) => sum + getPlayConfigForActivity(activity).modules.length, 0)}</strong>
+              <span>play modules</span>
+            </div>
+            <div className="hero-stat-card">
+              <strong>Calm</strong>
+              <span>no timers, no failure walls</span>
             </div>
           </div>
         </div>
 
-        <div className="hero-grid">
-          <div className="hero-card hero-stat">
-            <strong>{catalog.activities.length} activities</strong>
-            <span className="tagline">Each activity now has its own detail page and play entry.</span>
-          </div>
-          <div className="hero-card hero-stat">
-            <strong>{catalog.activities.reduce((sum, activity) => sum + getPlayConfigForActivity(activity).modules.length, 0)} modules</strong>
-            <span className="tagline">Speech, typing, and social modules with card-by-card play.</span>
-          </div>
-          <div className="hero-card hero-stat">
-            <strong>{mode === "train" ? "Editable" : "Stable"}</strong>
-            <span className="tagline">
-              {mode === "train"
-                ? "Generate additions, review them, then save them into work mode."
-                : "Use the activity library as a fixed, predictable tool."}
-            </span>
+        <div className="hero-showcase">
+          {selectedActivity ? <ActivityVisual activity={selectedActivity} /> : null}
+          <div className="hero-helper-card">
+            <div className="hero-helper-title">Kittu-style quick help</div>
+            <div className="quick-chip-row">
+              <span className="quick-chip">Speech home practice</span>
+              <span className="quick-chip">Sensory-friendly routine</span>
+              <span className="quick-chip">Choice making prompts</span>
+              <span className="quick-chip">Keyboard warm-up</span>
+            </div>
+            <p className="subtle">Short, structured prompts instead of long walls of text.</p>
           </div>
         </div>
       </section>
 
-      <section className="workspace">
-        <aside className="panel">
-          <div className="sidebar-head">
-            <h2 style={{ marginBottom: 6 }}>Activity library</h2>
-            <div className="subtle">
-              Choose an activity to preview it here, then open its dedicated page or jump straight
-              into play.
+      <section className="hub-grid">
+        <div className="hub-main">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">Activities</div>
+              <h2>Choose a game</h2>
             </div>
+            <p className="subtle">Large cards, simple routes, and a visible play button on each activity.</p>
           </div>
-          <div className="sidebar-list">
+
+          <div className="activity-gallery">
             {catalog.activities.map((activity) => {
-              const playConfig = getPlayConfigForActivity(activity);
+              const config = getPlayConfigForActivity(activity);
+              const isActive = activity.id === selectedActivity?.id;
 
               return (
-                <article
-                  className={`activity-card ${activity.id === selectedActivity?.id ? "active" : ""}`}
-                  key={activity.id}
-                >
-                  <button
-                    className="card-surface"
-                    onClick={() => setSelectedActivityId(activity.id)}
-                    type="button"
-                  >
-                    <div className="meta-row">{activity.category}</div>
-                    <h3>{activity.title}</h3>
-                    <div className="subtle">{activity.summary}</div>
-                    <div className="pill-row" style={{ marginTop: 12 }}>
-                      <span className="pill">{activity.sessionLength}</span>
-                      <span className="pill">{activity.items.length} items</span>
-                      <span className="pill">{playConfig.modules.length} modules</span>
+                <article className={`gallery-card ${isActive ? "gallery-card-active" : ""}`} key={activity.id}>
+                  <button className="gallery-card-top" onClick={() => setSelectedActivityId(activity.id)} type="button">
+                    <ActivityVisual activity={activity} />
+                    <div className="gallery-card-copy">
+                      <div className="meta-row">{activity.category}</div>
+                      <h3>{activity.title}</h3>
+                      <p className="subtle">{config.supportLine}</p>
                     </div>
                   </button>
-                  <div className="card-actions">
+                  <div className="gallery-card-meta">
+                    <span className="soft-chip">{activity.sessionLength}</span>
+                    <span className="soft-chip">{config.modules.length} modes</span>
+                    <span className="soft-chip">{config.theme.mascot}</span>
+                  </div>
+                  <div className="gallery-card-actions">
                     <Link className="ghost-button" href={`/activities/${activity.id}`}>
-                      Open activity
+                      Open
                     </Link>
                     <Link className="button" href={`/activities/${activity.id}/play`}>
-                      Play
+                      Play now
                     </Link>
                   </div>
                 </article>
               );
             })}
           </div>
-        </aside>
-
-        <div className="detail-grid">
-          {selectedActivity ? (
-            <>
-              <section className="panel">
-                <div className="detail-head">
-                  <div>
-                    <div className="meta-row">{selectedActivity.category}</div>
-                    <h2>{selectedActivity.title}</h2>
-                    <p className="subtle" style={{ maxWidth: 760 }}>
-                      {selectedActivity.summary}
-                    </p>
-                  </div>
-                  <div className="pill-row">
-                    <span className="pill">{selectedActivity.goal}</span>
-                    <span className="pill">{selectedActivity.sessionLength}</span>
-                  </div>
-                </div>
-
-                <div className="page-actions" style={{ marginTop: 18 }}>
-                  <Link className="ghost-button" href={`/activities/${selectedActivity.id}`}>
-                    Open full activity page
-                  </Link>
-                  <Link className="button" href={`/activities/${selectedActivity.id}/play`}>
-                    Play {selectedActivity.title}
-                  </Link>
-                </div>
-
-                <div className="content-grid" style={{ marginTop: 20 }}>
-                  <div>
-                    <h3 style={{ marginTop: 0 }}>Available items</h3>
-                    <div className="item-grid">
-                      {selectedActivity.items.map((item) => (
-                        <article className="item-card" key={item.id}>
-                          <div className="meta-row">{item.kind}</div>
-                          <h3>{item.title}</h3>
-                          <div className="subtle">{item.summary}</div>
-                          <ul>
-                            {item.steps.map((step) => (
-                              <li key={step}>{step}</li>
-                            ))}
-                          </ul>
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="session-card">
-                    <div className="meta-row">Playable modules</div>
-                    <h3>{selectedPlayConfig?.modules.length ?? 0} modules ready</h3>
-                    <div className="callout">
-                      {mode === "work" ? selectedActivity.workModeNote : selectedActivity.trainModeNote}
-                    </div>
-                    <ul className="module-list">
-                      {selectedPlayConfig?.modules.map((module) => (
-                        <li key={module.id}>
-                          <Link href={`/activities/${selectedActivity.id}/play?module=${module.id}`}>
-                            {module.title}
-                          </Link>{" "}
-                          <span className="subtle">{module.description}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </section>
-
-              {mode === "train" ? (
-                <section className="content-grid">
-                  <div className="console">
-                    <div className="meta-row">Train mode console</div>
-                    <h3>Ask for structured additions</h3>
-                    <p className="subtle">
-                      Extend an existing activity, add more speech items, or create one more aligned
-                      module without breaking the fixed work-mode flow.
-                    </p>
-                    <div className="suggestion-row" style={{ marginTop: 12 }}>
-                      {suggestionPrompts.map((suggestion) => (
-                        <button
-                          className={`ghost-button ${prompt === suggestion ? "active" : ""}`}
-                          key={suggestion}
-                          onClick={() => setPrompt(suggestion)}
-                          type="button"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                    <textarea
-                      aria-label="Training prompt"
-                      onChange={(event) => setPrompt(event.target.value)}
-                      value={prompt}
-                    />
-                    <div className="button-row">
-                      <button className="button" disabled={isGenerating} onClick={handleGenerate} type="button">
-                        {isGenerating ? "Generating..." : "Generate proposal"}
-                      </button>
-                      <span className="subtle">{status}</span>
-                    </div>
-                  </div>
-
-                  <div className="proposal-card">
-                    <div className="meta-row">Proposal preview</div>
-                    {proposal ? (
-                      <>
-                        <h3>{proposal.headline}</h3>
-                        <p className="subtle">{proposal.reasoning}</p>
-                        <div className="proposal-list">
-                          {proposal.changes.map((change, index) => (
-                            <div className="proposal-entry" key={`${change.type}-${index}`}>
-                              {change.type === "add-activity" ? (
-                                <>
-                                  <strong>New activity: {change.activity.title}</strong>
-                                  <div className="subtle">{change.activity.summary}</div>
-                                </>
-                              ) : (
-                                <>
-                                  <strong>Extend {change.activityTitle}</strong>
-                                  <ul>
-                                    {change.items.map((item) => (
-                                      <li key={item.id}>{item.title}</li>
-                                    ))}
-                                  </ul>
-                                </>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                        <div className="button-row">
-                          <button className="button" disabled={isApplying} onClick={handleApply} type="button">
-                            {isApplying ? "Applying..." : "Apply to catalog"}
-                          </button>
-                          <span className="subtle">Source: {source}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="empty">
-                        No proposal yet. Generate one from the console, review it here, then apply it.
-                      </div>
-                    )}
-                  </div>
-                </section>
-              ) : null}
-            </>
-          ) : (
-            <section className="panel">
-              <div className="empty">No activities are available yet.</div>
-            </section>
-          )}
         </div>
+
+        <aside className="hub-side">
+          {selectedActivity && selectedConfig ? (
+            <section className="focus-panel" style={{ backgroundColor: selectedConfig.theme.surface }}>
+              <div className="focus-top">
+                <div>
+                  <div className="eyebrow">Selected activity</div>
+                  <h2>{selectedActivity.title}</h2>
+                </div>
+                <span className="soft-chip" style={{ backgroundColor: selectedConfig.theme.badge }}>
+                  {selectedConfig.coverLabel}
+                </span>
+              </div>
+              <p className="subtle">{selectedConfig.audience}</p>
+
+              <div className="focus-module-card" style={{ borderColor: selectedConfig.theme.secondary }}>
+                <div className="meta-row">Start here</div>
+                <h3>{featuredModule?.title}</h3>
+                <p className="subtle">{featuredModule?.description}</p>
+                <div className="quick-chip-row">
+                  {featuredModule?.skills.map((skill) => (
+                    <span className="quick-chip" key={skill}>{skill}</span>
+                  ))}
+                </div>
+                <div className="support-note">{featuredModule?.calmNote}</div>
+                <div className="gallery-card-actions">
+                  <Link className="button" href={`/activities/${selectedActivity.id}/play?module=${featuredModule?.id ?? ""}`}>
+                    Start {featuredModule?.title}
+                  </Link>
+                </div>
+              </div>
+
+              <div className="focus-module-list">
+                {selectedConfig.modules.map((module) => (
+                  <Link className="focus-module-link" href={`/activities/${selectedActivity.id}/play?module=${module.id}`} key={module.id}>
+                    <div>
+                      <strong>{module.title}</strong>
+                      <div className="subtle">{module.description}</div>
+                    </div>
+                    <span className="soft-chip">{module.cards.length} cards</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {mode === "train" ? (
+            <section className="trainer-panel">
+              <div className="section-head">
+                <div>
+                  <div className="eyebrow">Train mode</div>
+                  <h2>Extend the saved content</h2>
+                </div>
+              </div>
+              <p className="subtle">Use this only to add more items or modules. The child-facing product stays in work mode.</p>
+              <div className="quick-chip-row">
+                {suggestionPrompts.map((suggestion) => (
+                  <button
+                    className={`quick-chip-button ${prompt === suggestion ? "quick-chip-button-active" : ""}`}
+                    key={suggestion}
+                    onClick={() => setPrompt(suggestion)}
+                    type="button"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+              <textarea aria-label="Training prompt" onChange={(event) => setPrompt(event.target.value)} value={prompt} />
+              <div className="gallery-card-actions">
+                <button className="button" disabled={isGenerating} onClick={handleGenerate} type="button">
+                  {isGenerating ? "Generating..." : "Generate proposal"}
+                </button>
+                <span className="subtle">{status}</span>
+              </div>
+              <div className="proposal-box">
+                {proposal ? (
+                  <>
+                    <h3>{proposal.headline}</h3>
+                    <p className="subtle">{proposal.reasoning}</p>
+                    <div className="proposal-change-list">
+                      {proposal.changes.map((change, index) => (
+                        <div className="proposal-change" key={`${change.type}-${index}`}>
+                          {change.type === "add-activity" ? (
+                            <>
+                              <strong>New activity: {change.activity.title}</strong>
+                              <div className="subtle">{change.activity.summary}</div>
+                            </>
+                          ) : (
+                            <>
+                              <strong>Extend {change.activityTitle}</strong>
+                              <div className="subtle">{change.items.map((item) => item.title).join(", ")}</div>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="gallery-card-actions">
+                      <button className="button" disabled={isApplying} onClick={handleApply} type="button">
+                        {isApplying ? "Applying..." : "Apply to catalog"}
+                      </button>
+                      <span className="subtle">Source: {source}</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="empty-state">No proposal yet. Training stays separate from the child-facing play flow.</div>
+                )}
+              </div>
+            </section>
+          ) : null}
+        </aside>
       </section>
     </main>
   );
