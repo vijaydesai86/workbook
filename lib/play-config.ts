@@ -14,6 +14,8 @@ export type ActivityArt = {
   lead: string;
   trail?: string;
   caption: string;
+  imageSrc?: string;
+  imageAlt?: string;
 };
 
 export type ActivityPlayCard = {
@@ -84,15 +86,17 @@ function createAlphabetCards(): ActivityPlayCard[] {
   return alphabetSeeds.map((seed) => ({
     id: "alphabet-" + seed.letter.toLowerCase(),
     title: seed.letter + " is for " + seed.word,
-    prompt: "Look at the " + seed.word.toLowerCase() + " card, say the letter, then say the object word.",
+    prompt: "Look at the picture, say the letter, then say the object word.",
     focus: "Letter " + seed.letter,
     cue: seed.cue,
     example: seed.letter + ". " + seed.word + ".",
     art: {
       kind: "alphabet",
-      lead: seed.word.toUpperCase(),
+      lead: seed.word,
       trail: seed.letter,
-      caption: seed.word + " card"
+      caption: seed.word + " card",
+      imageSrc: "/cards/alphabet/" + seed.word.toLowerCase().replaceAll(" ", "-") + ".jpg",
+      imageAlt: seed.word + " photo card"
     }
   }));
 }
@@ -154,9 +158,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Wait for swing.",
             art: {
               kind: "scene",
-              lead: "SWING",
-              trail: "WAIT",
-              caption: "Playground swing"
+              lead: "Swing",
+              trail: "Wait",
+              caption: "Playground swing",
+              imageSrc: "/cards/social-scenes/swing.jpg",
+              imageAlt: "Playground swing photo"
             }
           },
           {
@@ -168,9 +174,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "My turn swing.",
             art: {
               kind: "scene",
-              lead: "SWING",
-              trail: "MY TURN",
-              caption: "Ask for the swing"
+              lead: "Swing",
+              trail: "My turn",
+              caption: "Ask for the swing",
+              imageSrc: "/cards/social-scenes/swing.jpg",
+              imageAlt: "Playground swing photo"
             }
           },
           {
@@ -182,9 +190,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "All done swing.",
             art: {
               kind: "scene",
-              lead: "SWING",
-              trail: "ALL DONE",
-              caption: "Finish the swing turn"
+              lead: "Swing",
+              trail: "All done",
+              caption: "Finish the swing turn",
+              imageSrc: "/cards/social-scenes/swing.jpg",
+              imageAlt: "Playground swing photo"
             }
           }
         ]
@@ -206,9 +216,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Line up.",
             art: {
               kind: "scene",
-              lead: "SLIDE",
-              trail: "LINE UP",
-              caption: "Slide line"
+              lead: "Slide",
+              trail: "Line up",
+              caption: "Slide line",
+              imageSrc: "/cards/social-scenes/slide.jpg",
+              imageAlt: "Playground slide photo"
             }
           },
           {
@@ -220,9 +232,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Wait.",
             art: {
               kind: "scene",
-              lead: "SLIDE",
-              trail: "WAIT",
-              caption: "Wait for the slide"
+              lead: "Slide",
+              trail: "Wait",
+              caption: "Wait for the slide",
+              imageSrc: "/cards/social-scenes/slide.jpg",
+              imageAlt: "Playground slide photo"
             }
           },
           {
@@ -234,9 +248,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "My turn slide.",
             art: {
               kind: "scene",
-              lead: "SLIDE",
-              trail: "MY TURN",
-              caption: "Take a slide turn"
+              lead: "Slide",
+              trail: "My turn",
+              caption: "Take a slide turn",
+              imageSrc: "/cards/social-scenes/slide.jpg",
+              imageAlt: "Playground slide photo"
             }
           }
         ]
@@ -258,9 +274,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Apple please.",
             art: {
               kind: "choice",
-              lead: "APPLE",
-              trail: "CRACKER",
-              caption: "Snack choice"
+              lead: "Apple",
+              trail: "Cracker",
+              caption: "Snack choice",
+              imageSrc: "/cards/social-scenes/snack.jpg",
+              imageAlt: "Snack time photo"
             }
           },
           {
@@ -272,9 +290,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Juice please.",
             art: {
               kind: "scene",
-              lead: "JUICE",
-              trail: "PLEASE",
-              caption: "Ask for juice"
+              lead: "Juice",
+              trail: "Please",
+              caption: "Ask for juice",
+              imageSrc: "/cards/social-scenes/snack.jpg",
+              imageAlt: "Snack time photo"
             }
           },
           {
@@ -286,9 +306,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "All done snack.",
             art: {
               kind: "scene",
-              lead: "CRACKER",
-              trail: "ALL DONE",
-              caption: "Finish snack time"
+              lead: "Cracker",
+              trail: "All done",
+              caption: "Finish snack time",
+              imageSrc: "/cards/social-scenes/snack.jpg",
+              imageAlt: "Snack time photo"
             }
           }
         ]
@@ -310,9 +332,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Hello.",
             art: {
               kind: "conversation",
-              lead: "HELLO",
-              trail: "HI",
-              caption: "Say hello"
+              lead: "Hello",
+              trail: "Hi",
+              caption: "Say hello",
+              imageSrc: "/cards/social-scenes/hello.jpg",
+              imageAlt: "Greeting photo"
             }
           },
           {
@@ -324,9 +348,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Good morning.",
             art: {
               kind: "conversation",
-              lead: "GOOD MORNING",
-              trail: "HELLO",
-              caption: "Morning greeting"
+              lead: "Good morning",
+              trail: "Hello",
+              caption: "Morning greeting",
+              imageSrc: "/cards/social-scenes/hello.jpg",
+              imageAlt: "Greeting photo"
             }
           },
           {
@@ -338,9 +364,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Goodbye.",
             art: {
               kind: "conversation",
-              lead: "GOODBYE",
-              trail: "SEE YOU",
-              caption: "Say goodbye"
+              lead: "Goodbye",
+              trail: "See you",
+              caption: "Say goodbye",
+              imageSrc: "/cards/social-scenes/hello.jpg",
+              imageAlt: "Greeting photo"
             }
           }
         ]
@@ -362,9 +390,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "I need help.",
             art: {
               kind: "scene",
-              lead: "TEACHER",
-              trail: "HELP",
-              caption: "Ask the teacher"
+              lead: "Teacher",
+              trail: "Help",
+              caption: "Ask the teacher",
+              imageSrc: "/cards/social-scenes/help.jpg",
+              imageAlt: "Classroom help photo"
             }
           },
           {
@@ -376,9 +406,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Help backpack please.",
             art: {
               kind: "scene",
-              lead: "BACKPACK",
-              trail: "HELP PLEASE",
-              caption: "Help with backpack"
+              lead: "Backpack",
+              trail: "Help please",
+              caption: "Help with backpack",
+              imageSrc: "/cards/social-scenes/help.jpg",
+              imageAlt: "Classroom help photo"
             }
           },
           {
@@ -390,9 +422,11 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             example: "Open please.",
             art: {
               kind: "scene",
-              lead: "JUICE",
-              trail: "OPEN PLEASE",
-              caption: "Ask to open"
+              lead: "Juice",
+              trail: "Open please",
+              caption: "Ask to open",
+              imageSrc: "/cards/social-scenes/help.jpg",
+              imageAlt: "Classroom help photo"
             }
           }
         ]

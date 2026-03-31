@@ -1,0 +1,12 @@
+{
+  "slug": "cat",
+  "dir": "alphabet",
+  "query": "cat%20animal%20photo",
+  "title": "sad cat diary",
+  "creator": "greyloch",
+  "license": "by-sa",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+  "landing_url": "https://www.flickr.com/photos/7168480@N02/14765131371",
+  "image_url": "https://live.staticflickr.com/2913/14765131371_027eb3dd14_b.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/5ecbe9cd-69c0-4dca-8f4a-9bbe8a19791c/thumb/"
+}

@@ -1,0 +1,12 @@
+{
+  "slug": "zebra",
+  "dir": "alphabet",
+  "query": "zebra%20animal%20photo",
+  "title": "Zebra Pattern",
+  "creator": "shaire productions",
+  "license": "by",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "landing_url": "https://www.flickr.com/photos/9822107@N08/3020762624",
+  "image_url": "https://live.staticflickr.com/3012/3020762624_ec8b1abae6_b.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/35d89df9-18b0-4170-b5cf-579cbaf1157d/thumb/"
+}

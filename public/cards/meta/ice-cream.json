@@ -1,0 +1,12 @@
+{
+  "slug": "ice-cream",
+  "dir": "alphabet",
+  "query": "ice%20cream%20cone%20photo",
+  "title": "Dairy Queen",
+  "creator": "Ian Muttoo",
+  "license": "by-sa",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+  "landing_url": "https://www.flickr.com/photos/20741443@N00/2858743646",
+  "image_url": "https://live.staticflickr.com/3047/2858743646_31bd12c6f0_b.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/e18b54dc-5f99-4127-8e8d-5860d4bf9961/thumb/"
+}

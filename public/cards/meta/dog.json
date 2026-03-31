@@ -1,0 +1,12 @@
+{
+  "slug": "dog",
+  "dir": "alphabet",
+  "query": "dog%20animal%20photo",
+  "title": "Dog in a Shelter",
+  "creator": "spotreporting",
+  "license": "by-sa",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+  "landing_url": "https://www.flickr.com/photos/29792566@N08/5245317420",
+  "image_url": "https://live.staticflickr.com/5082/5245317420_68e8427f40.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/600a1c09-624a-4af5-873e-b4358d6e567e/thumb/"
+}

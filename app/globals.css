@@ -1214,3 +1214,282 @@ html[data-quietColors="on"] {
     grid-template-columns: 1fr;
   }
 }
+
+.play-stage-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.play-visual-panel,
+.play-story-panel,
+.scene-stage-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+}
+
+.play-visual-panel,
+.play-story-panel {
+  padding: 20px;
+}
+
+.play-story-panel {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.play-story-panel h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.04;
+}
+
+.play-story-kicker {
+  color: #d0603b;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.play-story-copy {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.play-phrase-card,
+.play-sound-panel {
+  border-radius: 26px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.play-phrase-card {
+  display: grid;
+  gap: 10px;
+}
+
+.play-phrase-card strong {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.play-sound-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.play-sound-panel p {
+  margin: 0;
+}
+
+.play-sound-button {
+  min-height: 58px;
+  font-size: 1.05rem;
+}
+
+.play-progress-track {
+  margin-top: 16px;
+}
+
+.play-topbar-kid {
+  margin-top: 16px;
+}
+
+.play-step-strip {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.play-step-chip {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow-soft);
+  font-weight: 700;
+}
+
+.play-step-chip-active {
+  background: var(--button);
+  border-color: transparent;
+  color: var(--button-ink);
+}
+
+.module-rail-secondary {
+  margin-top: 22px;
+}
+
+.scene-stage-wrap {
+  padding: 14px;
+}
+
+.scene-stage-photo {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.scene-photo-shell {
+  display: grid;
+  gap: 16px;
+}
+
+.scene-photo-head,
+.scene-label-row,
+.scene-choice-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.scene-badge,
+.scene-letter-pill,
+.scene-label-chip,
+.scene-choice-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 800;
+}
+
+.scene-letter-pill {
+  min-width: 52px;
+  min-height: 52px;
+  font-size: 1.5rem;
+}
+
+.scene-label-chip,
+.scene-choice-pill,
+.scene-talk-bubble {
+  border: 1px solid rgba(36, 52, 74, 0.12);
+  box-shadow: var(--shadow-soft);
+}
+
+.scene-label-chip,
+.scene-choice-pill {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.scene-label-chip-light,
+.scene-choice-pill-light {
+  background: white;
+}
+
+.scene-photo-frame,
+.scene-photo-fallback {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(36, 52, 74, 0.1);
+  background: #ffffff;
+}
+
+.scene-photo-image {
+  object-fit: cover;
+}
+
+.scene-photo-fallback {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 24px;
+}
+
+.scene-photo-fallback strong {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.alphabet-card-copy {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.alphabet-card-copy strong {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.alphabet-card-copy span {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.08rem;
+}
+
+.scene-conversation-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.scene-talk-bubble {
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  text-align: center;
+}
+
+.scene-talk-bubble-alt {
+  background: rgba(233, 241, 255, 0.95);
+}
+
+.activity-poster-scene .scene-stage-wrap {
+  padding: 12px;
+}
+
+.activity-poster-scene .scene-photo-frame,
+.activity-poster-scene .scene-photo-fallback {
+  min-height: 220px;
+}
+
+.activity-poster-scene .alphabet-card-copy strong,
+.activity-poster-scene .play-phrase-card strong {
+  font-size: 1.4rem;
+}
+
+@media (max-width: 1080px) {
+  .play-stage-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .play-visual-panel,
+  .play-story-panel,
+  .scene-stage-wrap {
+    padding: 14px;
+  }
+
+  .scene-photo-frame,
+  .scene-photo-fallback {
+    min-height: 280px;
+  }
+
+  .scene-conversation-row {
+    grid-template-columns: 1fr;
+  }
+
+  .play-step-chip,
+  .scene-label-chip,
+  .scene-choice-pill,
+  .scene-badge {
+    width: 100%;
+  }
+}

@@ -70,7 +70,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
           <div className="eyebrow">Kid-first activity space</div>
           <h1>Choose a visual activity and start playing right away.</h1>
           <p>
-            Illustrated cards, calm sound cues, and clear play routes designed to feel safe,
+            Real photo cards, calm sound cues, and clear play routes designed to feel safe,
             predictable, and inviting for children who need extra support.
           </p>
           <div className="hero-actions">

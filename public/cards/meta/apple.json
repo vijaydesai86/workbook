@@ -1,0 +1,12 @@
+{
+  "slug": "apple",
+  "dir": "alphabet",
+  "query": "apple%20fruit%20photo",
+  "title": "Apple",
+  "creator": "orangeacid",
+  "license": "by",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "landing_url": "https://www.flickr.com/photos/71753457@N00/212833788",
+  "image_url": "https://live.staticflickr.com/59/212833788_37b037de12_b.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/d7ac9b7d-5a5a-4ecf-bd23-d1a1e893248f/thumb/"
+}

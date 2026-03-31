@@ -1,0 +1,12 @@
+{
+  "slug": "whale",
+  "dir": "alphabet",
+  "query": "whale%20photo",
+  "title": "Dolphins and blue whales! Photo by @stellasisson",
+  "creator": "cheeseslave",
+  "license": "by",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "landing_url": "https://www.flickr.com/photos/19359283@N00/9527924100",
+  "image_url": "https://live.staticflickr.com/3724/9527924100_532e580c61.jpg",
+  "thumb_url": "https://api.openverse.org/v1/images/d4bfa400-6002-4e5e-923b-80369537a7bd/thumb/"
+}
