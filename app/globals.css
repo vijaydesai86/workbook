@@ -2135,6 +2135,12 @@ h3,
   margin: 4px 0 0;
 }
 
+.kid-detail-copy h1,
+.play-topbar-kid h1 {
+  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  line-height: 1;
+}
+
 .kid-selected-helper h2,
 .kid-section-head h2,
 .kid-focus-panel h2,
@@ -2171,6 +2177,28 @@ h3,
 .play-story-panel,
 .play-visual-panel {
   padding: 26px;
+}
+
+.kid-detail-hero,
+.play-topbar-kid {
+  gap: 20px;
+}
+
+.kid-detail-hero {
+  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+  align-items: center;
+}
+
+.kid-detail-copy {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+
+.kid-detail-poster {
+  min-width: 0;
+  display: grid;
+  align-items: center;
 }
 
 .kid-focus-top {
@@ -2214,8 +2242,9 @@ h3,
 }
 
 .play-topbar-kid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 18px;
 }
 
 .kid-play-status {
@@ -2253,12 +2282,29 @@ h3,
 }
 
 .play-stage-layout-kid {
-  grid-template-columns: minmax(0, 1.16fr) minmax(330px, 0.84fr);
+  grid-template-columns: minmax(0, 1.28fr) minmax(310px, 0.72fr);
+  align-items: start;
+  gap: 20px;
 }
 
 .play-visual-panel,
 .play-story-panel {
   border-color: rgba(36, 52, 74, 0.08);
+}
+
+.play-visual-panel {
+  padding: 18px;
+}
+
+.play-story-panel-kid {
+  gap: 16px;
+}
+
+@media (min-width: 1081px) {
+  .play-story-panel-kid {
+    position: sticky;
+    top: 18px;
+  }
 }
 
 .play-say-card {
@@ -2301,14 +2347,42 @@ h3,
   background: rgba(255, 244, 210, 0.92);
 }
 
-.play-letter-grid {
+.play-letter-grid,
+.play-count-grid,
+.kid-module-rail {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 12px;
+  padding-bottom: 6px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.play-letter-chip,
+.play-count-chip,
+.kid-module-rail-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.play-letter-grid {
+  margin-top: 18px;
 }
 
 .play-letter-chip {
+  min-width: 72px;
   min-height: 64px;
   border-radius: 26px;
   font-size: 1.45rem;
+}
+
+.play-count-chip {
+  width: 138px;
+}
+
+.kid-module-rail-card {
+  min-width: 220px;
 }
 
 .scene-stage-wrap {
@@ -2322,7 +2396,7 @@ h3,
 
 .scene-photo-frame,
 .scene-photo-fallback {
-  min-height: 460px;
+  min-height: clamp(320px, 58vh, 460px);
   border-radius: 40px;
 }
 
@@ -2351,7 +2425,7 @@ h3,
 
 .activity-poster-scene .scene-photo-frame,
 .activity-poster-scene .scene-photo-fallback {
-  min-height: 260px;
+  min-height: clamp(220px, 34vh, 280px);
 }
 
 .activity-poster-label {
@@ -2361,6 +2435,18 @@ h3,
 @media (max-width: 1080px) {
   .play-stage-layout-kid {
     grid-template-columns: 1fr;
+  }
+
+  .kid-detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .kid-detail-copy {
+    order: 2;
+  }
+
+  .kid-detail-poster {
+    order: 1;
   }
 
   .kid-hero-copy,
@@ -2397,13 +2483,33 @@ h3,
 
   .scene-photo-frame,
   .scene-photo-fallback {
-    min-height: 320px;
+    min-height: clamp(280px, 48vh, 360px);
     border-radius: 30px;
   }
 
   .play-helper-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .play-topbar-kid {
+    grid-template-columns: 1fr;
+  }
+
+  .kid-play-status {
+    justify-content: flex-start;
+  }
+
+  .play-nav-dock {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .play-nav-button,
+  .play-sound-button {
+    min-height: 56px;
+    border-radius: 20px;
+    font-size: 0.92rem;
   }
 
   .kid-selected-helper h2,
@@ -2416,7 +2522,7 @@ h3,
 
 .scene-count-shell {
   position: relative;
-  min-height: 460px;
+  min-height: clamp(320px, 58vh, 460px);
   border-radius: 40px;
   border: 1px solid rgba(36, 52, 74, 0.08);
   box-shadow:
@@ -2521,9 +2627,13 @@ h3,
 }
 
 .play-count-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 12px;
+  padding-bottom: 6px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
 
 .play-count-chip {
@@ -2617,7 +2727,7 @@ h3,
 }
 
 .activity-poster-scene .scene-count-shell {
-  min-height: 260px;
+  min-height: clamp(220px, 34vh, 280px);
   padding: 64px 14px 72px;
   border-radius: 30px;
 }
@@ -2636,15 +2746,9 @@ h3,
   bottom: 12px;
 }
 
-@media (max-width: 1080px) {
-  .play-count-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 720px) {
   .scene-count-shell {
-    min-height: 320px;
+    min-height: clamp(280px, 48vh, 360px);
     padding: 78px 14px 96px;
     border-radius: 30px;
   }
@@ -2653,12 +2757,16 @@ h3,
     grid-template-columns: 1fr;
   }
 
-  .play-count-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .play-count-chip {
+    width: 124px;
   }
 
-  .play-scene-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .play-letter-chip {
+    min-width: 64px;
+  }
+
+  .kid-module-rail-card {
+    min-width: 190px;
   }
 
   .play-scene-thumb-media {

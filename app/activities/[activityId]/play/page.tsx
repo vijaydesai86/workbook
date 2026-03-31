@@ -82,6 +82,67 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
         <div className="progress-track-fill" style={{ width: progress, backgroundColor: config.theme.primary }} />
       </div>
 
+      <section className="play-stage-layout play-stage-layout-kid">
+        <div className="play-visual-panel" style={{ backgroundColor: config.theme.surface }}>
+          <ActivityPlayScene
+            art={currentCard.art}
+            badge={config.theme.badge}
+            ink={config.theme.ink}
+            primary={config.theme.primary}
+            secondary={config.theme.secondary}
+            surface={config.theme.surface}
+          />
+        </div>
+
+        <aside className="play-story-panel play-story-panel-kid" style={{ backgroundColor: config.theme.surface }}>
+          <div className="play-say-card">
+            <p className="play-say-label">{promptLabel}</p>
+            <strong>{currentCard.example}</strong>
+            <p className="subtle">{currentCard.prompt}</p>
+          </div>
+
+          <div className="play-helper-card">
+            <div className="play-helper-row">
+              <span className="play-helper-label">Listen, then try</span>
+              <span className="soft-chip">{activeModule.accent}</span>
+            </div>
+            <div className="play-nav-dock">
+              {cardIndex > 0 ? (
+                <Link
+                  className="ghost-button play-nav-button"
+                  href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0), countingSet)}
+                >
+                  Back
+                </Link>
+              ) : (
+                <span className="ghost-button disabled-chip play-nav-button">Back</span>
+              )}
+
+              <PlayControls soundText={currentCard.example} title={currentCard.title} />
+
+              {cardIndex < activeModule.cards.length - 1 ? (
+                <Link
+                  className="button play-nav-button"
+                  href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1), countingSet)}
+                >
+                  Next card
+                </Link>
+              ) : (
+                <Link className="button play-nav-button" href={"/activities/" + activity.id}>
+                  All done
+                </Link>
+              )}
+            </div>
+          </div>
+
+          <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0, countingSet)}>
+            Start this part again
+          </Link>
+
+          <div className="support-note play-support-note">{activeModule.calmNote}</div>
+        </aside>
+      </section>
+
       {isCounting ? (
         <section className="count-set-switch" aria-label="Choose picture cards">
           <div className="count-set-label">Choose picture cards</div>
@@ -153,67 +214,6 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           ))}
         </section>
       )}
-
-      <section className="play-stage-layout play-stage-layout-kid">
-        <div className="play-visual-panel" style={{ backgroundColor: config.theme.surface }}>
-          <ActivityPlayScene
-            art={currentCard.art}
-            badge={config.theme.badge}
-            ink={config.theme.ink}
-            primary={config.theme.primary}
-            secondary={config.theme.secondary}
-            surface={config.theme.surface}
-          />
-        </div>
-
-        <aside className="play-story-panel play-story-panel-kid" style={{ backgroundColor: config.theme.surface }}>
-          <div className="play-say-card">
-            <p className="play-say-label">{promptLabel}</p>
-            <strong>{currentCard.example}</strong>
-            <p className="subtle">{currentCard.prompt}</p>
-          </div>
-
-          <div className="play-helper-card">
-            <div className="play-helper-row">
-              <span className="play-helper-label">Listen, then try</span>
-              <span className="soft-chip">{activeModule.accent}</span>
-            </div>
-            <div className="play-nav-dock">
-              {cardIndex > 0 ? (
-                <Link
-                  className="ghost-button play-nav-button"
-                  href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0), countingSet)}
-                >
-                  Back
-                </Link>
-              ) : (
-                <span className="ghost-button disabled-chip play-nav-button">Back</span>
-              )}
-
-              <PlayControls soundText={currentCard.example} title={currentCard.title} />
-
-              {cardIndex < activeModule.cards.length - 1 ? (
-                <Link
-                  className="button play-nav-button"
-                  href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1), countingSet)}
-                >
-                  Next card
-                </Link>
-              ) : (
-                <Link className="button play-nav-button" href={"/activities/" + activity.id}>
-                  All done
-                </Link>
-              )}
-            </div>
-          </div>
-
-          <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0, countingSet)}>
-            Start this part again
-          </Link>
-
-          <div className="support-note play-support-note">{activeModule.calmNote}</div>
-        </aside>
-      </section>
 
       {config.modules.length > 1 ? (
         <section className="module-rail module-rail-secondary kid-module-rail">

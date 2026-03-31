@@ -77,15 +77,17 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </div>
           )}
         </div>
-        <ActivityPosterScene
-          art={firstCard?.art ?? { kind: "letter", lead: activity.title.slice(0, 1).toUpperCase(), caption: config.supportLine }}
-          badge={config.theme.badge}
-          ink={config.theme.ink}
-          primary={config.theme.primary}
-          secondary={config.theme.secondary}
-          surface={config.theme.surface}
-          title={config.coverLabel}
-        />
+        <div className="kid-detail-poster">
+          <ActivityPosterScene
+            art={firstCard?.art ?? { kind: "letter", lead: activity.title.slice(0, 1).toUpperCase(), caption: config.supportLine }}
+            badge={config.theme.badge}
+            ink={config.theme.ink}
+            primary={config.theme.primary}
+            secondary={config.theme.secondary}
+            surface={config.theme.surface}
+            title={config.coverLabel}
+          />
+        </div>
       </section>
 
       <section className="detail-layout kid-detail-layout">
