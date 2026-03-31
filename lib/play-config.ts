@@ -8,7 +8,6 @@ export type ActivityTheme = {
   surface: string;
   ink: string;
   badge: string;
-  mascot: string;
 };
 
 export type ActivityArt = {
@@ -298,7 +297,7 @@ function createAlphabetCards(): ActivityPlayCard[] {
   return alphabetSeeds.map((seed) => ({
     id: "alphabet-" + seed.letter.toLowerCase(),
     title: seed.letter + " for " + seed.word,
-    prompt: "Say the letter, then say the picture word.",
+    prompt: "Say the letter, then say the word.",
     focus: "Letter " + seed.letter,
     cue: "Say, " + seed.letter + " for " + seed.word + ".",
     example: seed.letter + " for " + seed.word + ".",
@@ -347,24 +346,23 @@ function createCountingCards(range: [number, number], countingSet: CountingSetId
 const alphabetConfig: ActivityPlayConfig = {
   defaultModuleId: "alphabet_deck",
   coverLabel: "Alphabet Cards",
-  supportLine: "Tap a picture card, hear it, and say the letter with the word.",
+  supportLine: "See a picture. Say the letter and word.",
   audience: "Built for early learners who benefit from clear object pictures, short language, and predictable repetition.",
   theme: {
     primary: "#ea6f42",
     secondary: "#ffe4d8",
     surface: "#fff8f3",
     ink: "#4a2b20",
-    badge: "#fff0b8",
-    mascot: "Sunny"
+    badge: "#fff0b8"
   },
   modules: [
     {
       id: "alphabet_deck",
       title: "A to Z",
-      description: "Move through all 26 picture cards.",
+      description: "26 letter cards.",
       accent: "Alphabet",
       skills: ["Look", "Hear", "Say"],
-      calmNote: "One card at a time. Repeat when the child is ready.",
+      calmNote: "One card at a time.",
       cards: createAlphabetCards()
     }
   ]
@@ -374,33 +372,32 @@ function createCountingConfig(countingSet: CountingSetId): ActivityPlayConfig {
   return {
     defaultModuleId: "count_1_10",
     coverLabel: "Counting Cards",
-    supportLine: "Count from 1 to 20 with either the same apple cards or a different real-photo object on each number card.",
+    supportLine: "Count picture cards from 1 to 20.",
     audience: "Helpful for children who learn best with large numerals, concrete repeated pictures, and simple count-and-say routines.",
     theme: {
       primary: "#2f9f6f",
       secondary: "#dff6e7",
       surface: "#f5fff8",
       ink: "#1f4133",
-      badge: "#fff0b8",
-      mascot: "Milo"
+      badge: "#fff0b8"
     },
     modules: [
       {
         id: "count_1_10",
         title: "Count 1 to 10",
-        description: "Start with smaller groups and clear one-step counting.",
-        accent: countingSet === "mixed" ? "Number photos" : "Apple cards",
+        description: "Numbers 1 to 10.",
+        accent: countingSet === "mixed" ? "Mixed cards" : "Apple cards",
         skills: ["Look", "Count", "Say"],
-        calmNote: "Point to each picture as you count.",
+        calmNote: "Count one picture at a time.",
         cards: createCountingCards([1, 10], countingSet)
       },
       {
         id: "count_11_20",
         title: "Count 11 to 20",
-        description: "Move to larger groups once the child is ready.",
-        accent: countingSet === "mixed" ? "Number photos" : "Apple cards",
+        description: "Numbers 11 to 20.",
+        accent: countingSet === "mixed" ? "Mixed cards" : "Apple cards",
         skills: ["Look", "Count", "Say"],
-        calmNote: "Count across the card slowly from left to right.",
+        calmNote: "Count left to right.",
         cards: createCountingCards([11, 20], countingSet)
       }
     ]
@@ -422,8 +419,7 @@ function createFallbackConfig(activity: Activity): ActivityPlayConfig {
       secondary: "#dff7f1",
       surface: "#f3fbf8",
       ink: "#14363a",
-      badge: "#fff3cb",
-      mascot: "Helper"
+      badge: "#fff3cb"
     },
     modules: [
       {

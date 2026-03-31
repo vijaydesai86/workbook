@@ -59,7 +59,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
     <main className="app-shell app-shell-play kid-play-shell">
       <div className="page-actions kid-page-actions kid-play-actions">
         <Link className="ghost-button kid-secondary-button" href={"/activities/" + activity.id}>
-          Back to game
+          Back
         </Link>
         <Link className="ghost-button kid-secondary-button" href="/">
           All games
@@ -73,8 +73,8 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           <p className="subtle">{activeModule.title}</p>
         </div>
         <div className="play-status kid-play-status">
-          <span className="soft-chip">Card {cardIndex + 1} of {activeModule.cards.length}</span>
-          <span className="soft-chip">{config.theme.mascot}</span>
+          <span className="soft-chip">{cardIndex + 1} / {activeModule.cards.length}</span>
+          <span className="soft-chip">{activeModule.accent}</span>
         </div>
       </section>
 
@@ -103,7 +103,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
 
           <div className="play-helper-card">
             <div className="play-helper-row">
-              <span className="play-helper-label">Listen, then try</span>
+              <span className="play-helper-label">Hear and say</span>
               <span className="soft-chip">{activeModule.accent}</span>
             </div>
             <div className="play-nav-dock">
@@ -136,7 +136,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
           </div>
 
           <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0, countingSet)}>
-            Start this part again
+            Restart
           </Link>
 
           <div className="support-note play-support-note">{activeModule.calmNote}</div>
@@ -144,22 +144,22 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
       </section>
 
       {isCounting ? (
-        <section className="count-set-switch" aria-label="Choose picture cards">
-          <div className="count-set-label">Choose picture cards</div>
+        <section className="count-set-switch" aria-label="Choose set">
+          <div className="count-set-label">Choose set</div>
           <div className="count-set-row">
             <Link
               className={"count-set-chip " + (countingSet === "apples" ? "count-set-chip-active" : "")}
               href={buildPlayHref(activity.id, activeModule.id, cardIndex, "apples")}
             >
-              <strong>Apple cards</strong>
-              <span>Same apple on every number card</span>
+              <strong>Apple set</strong>
+              <span>Same apple card</span>
             </Link>
             <Link
               className={"count-set-chip " + (countingSet === "mixed" ? "count-set-chip-active" : "")}
               href={buildPlayHref(activity.id, activeModule.id, cardIndex, "mixed")}
             >
-              <strong>Different picture cards</strong>
-              <span>A new real-photo picture for each number card</span>
+              <strong>Mixed set</strong>
+              <span>Different picture cards</span>
             </Link>
           </div>
         </section>

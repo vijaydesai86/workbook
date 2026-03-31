@@ -10,9 +10,9 @@ type CaregiverStudioProps = {
 };
 
 const suggestionPrompts = [
-  "Add three more playground social scene cards for waiting and turn-taking.",
+  "Add more counting card sets with clear real photos.",
   "Add more alphabet picture cards that stay concrete and child-friendly.",
-  "Extend snack time with more food and drink choice cards."
+  "Add another simple picture card activity that fits the app."
 ];
 
 export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
@@ -55,7 +55,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
 
   function handleGenerate() {
     startGenerating(async () => {
-      setStatus("Generating a structured proposal...");
+      setStatus("Making proposal...");
       setProposal(null);
       setLastPrompt(prompt);
 
@@ -76,7 +76,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
 
         setProposal(payload.proposal as TrainingProposal);
         setSource(payload.source as string);
-        setStatus("Proposal ready. Review it, then apply only if it fits the child-facing product.");
+        setStatus("Proposal ready.");
       } catch (error) {
         setStatus(error instanceof Error ? error.message : "Training request failed.");
       }
@@ -89,7 +89,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
     }
 
     startApplying(async () => {
-      setStatus("Applying proposal to the saved catalog...");
+      setStatus("Saving changes...");
 
       try {
         const response = await fetch("/api/apply", {
@@ -108,7 +108,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
 
         await refreshCatalog();
         setProposal(null);
-        setStatus("Catalog updated. The child-facing activity hub will use the new static content.");
+        setStatus("Saved.");
       } catch (error) {
         setStatus(error instanceof Error ? error.message : "Apply request failed.");
       }
@@ -122,23 +122,20 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
           BrightPath Play
         </Link>
         <Link className="ghost-button" href="/">
-          Back to activity hub
+          Back
         </Link>
       </header>
 
       <section className="caregiver-hero">
         <div className="caregiver-hero-copy">
-          <div className="eyebrow">Caregiver studio</div>
-          <h1>Add more content without changing the child flow.</h1>
-          <p>
-            Use AI here to extend the saved activity sets, add more cards, or create new modules.
-            This area stays separate so the child only sees the play experience.
-          </p>
+          <div className="eyebrow">Adult area</div>
+          <h1>Add or change cards</h1>
+          <p>Use AI here. The child area stays fixed.</p>
         </div>
         <div className="caregiver-summary-card">
-          <div className="meta-row">Current library</div>
+          <div className="meta-row">Library</div>
           <strong>{catalog.activities.length} activities</strong>
-          <span className="subtle">Each update becomes static content in work mode after you apply it.</span>
+          <span className="subtle">Saved changes show in work mode.</span>
         </div>
       </section>
 
@@ -146,11 +143,11 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
         <section className="trainer-panel caregiver-panel">
           <div className="section-head">
             <div>
-              <div className="eyebrow">AI request</div>
-              <h2>Ask for a structured addition</h2>
+              <div className="eyebrow">AI</div>
+              <h2>Ask for a change</h2>
             </div>
           </div>
-          <p className="subtle">Keep requests specific. Ask for more scene cards, more alphabet pictures, or more items inside an existing set.</p>
+          <p className="subtle">Keep requests short and specific.</p>
           <div className="quick-chip-row">
             {suggestionPrompts.map((suggestion) => (
               <button
@@ -174,14 +171,14 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
           <div className="trainer-thread">
             {lastPrompt ? (
               <article className="trainer-bubble trainer-bubble-user">
-                <div className="meta-row">You asked</div>
+                <div className="meta-row">Request</div>
                 <p>{lastPrompt}</p>
               </article>
             ) : null}
 
             {proposal ? (
               <article className="trainer-bubble trainer-bubble-ai">
-                <div className="meta-row">AI proposal</div>
+                <div className="meta-row">Proposal</div>
                 <h3>{proposal.headline}</h3>
                 <p className="subtle">{proposal.reasoning}</p>
                 <div className="proposal-change-list">
@@ -209,7 +206,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
                 </div>
               </article>
             ) : (
-              <div className="empty-state">No proposal yet. This area is only for adult setup and content growth.</div>
+              <div className="empty-state">No proposal yet.</div>
             )}
           </div>
         </section>
@@ -217,8 +214,8 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
         <aside className="caregiver-side-panel caregiver-panel">
           <div className="section-head">
             <div>
-              <div className="eyebrow">Existing activities</div>
-              <h2>Build onto what is already there</h2>
+              <div className="eyebrow">Current games</div>
+              <h2>Use what is there</h2>
             </div>
           </div>
           <div className="caregiver-activity-list">
@@ -233,8 +230,7 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
             ))}
           </div>
           <div className="support-note">
-            Best results come from concrete requests such as adding more playground scenes, more
-            snack choices, or more alphabet picture cards.
+            Best results come from short requests like more alphabet cards or a new counting set.
           </div>
         </aside>
       </section>

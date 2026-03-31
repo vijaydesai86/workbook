@@ -41,38 +41,37 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
           All games
         </Link>
         <Link className="button kid-main-button" href={playHref}>
-          Play now
+          Play
         </Link>
       </div>
 
       <section className="detail-hero kid-detail-hero" style={{ backgroundColor: config.theme.surface }}>
         <div className="detail-hero-copy kid-detail-copy">
-          <div className="eyebrow">Picture game</div>
+          <div className="eyebrow">Game</div>
           <h1>{activity.title}</h1>
           <p>{config.supportLine}</p>
           <div className="quick-chip-row">
             <span className="soft-chip">{config.modules.length} parts</span>
-            <span className="soft-chip">{config.theme.mascot}</span>
             <span className="soft-chip">real photo cards</span>
           </div>
           {isCounting ? (
-            <div className="count-set-switch count-set-switch-detail" aria-label="Choose picture cards">
-              <div className="count-set-label">Choose picture cards</div>
+            <div className="count-set-switch count-set-switch-detail" aria-label="Choose set">
+              <div className="count-set-label">Choose set</div>
               <div className="count-set-row">
                 <Link className="count-set-chip count-set-chip-active" href={buildPlayHref(activity.id, config.defaultModuleId, "apples")}>
-                  <strong>Apple cards</strong>
-                  <span>Same apple on every number card</span>
+                  <strong>Apple set</strong>
+                  <span>Same apple card</span>
                 </Link>
                 <Link className="count-set-chip" href={buildPlayHref(activity.id, config.defaultModuleId, "mixed")}>
-                  <strong>Different picture cards</strong>
-                  <span>A new real-photo picture for each number card</span>
+                  <strong>Mixed set</strong>
+                  <span>Different picture cards</span>
                 </Link>
               </div>
             </div>
           ) : (
             <div className="hero-actions kid-hero-actions">
               <Link className="button kid-main-button" href={playHref}>
-                Start this game
+                Play
               </Link>
             </div>
           )}
@@ -105,7 +104,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </div>
             <div className="support-note">{module.calmNote}</div>
             <Link className="button kid-main-button" href={buildPlayHref(activity.id, module.id)}>
-              Play {module.title}
+              Play
             </Link>
           </article>
         ))}
