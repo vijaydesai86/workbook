@@ -2413,3 +2413,205 @@ h3,
     font-size: 1.7rem;
   }
 }
+
+.scene-count-shell {
+  position: relative;
+  min-height: 460px;
+  border-radius: 40px;
+  border: 1px solid rgba(36, 52, 74, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 40px rgba(49, 65, 88, 0.12);
+  padding: 92px 20px 112px;
+}
+
+.scene-floating-number {
+  top: 16px;
+  left: 16px;
+}
+
+.scene-count-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.scene-count-tile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 20px rgba(49, 65, 88, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.scene-count-tile-image,
+.play-scene-thumb-image {
+  object-fit: cover;
+}
+
+.scene-word-banner-count {
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+}
+
+.play-count-grid,
+.play-scene-grid {
+  margin-top: 18px;
+}
+
+.play-count-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.play-count-chip {
+  min-height: 92px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 28px;
+  border: 1px solid rgba(36, 52, 74, 0.1);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 28px rgba(49, 65, 88, 0.09);
+  text-align: center;
+}
+
+.play-count-chip strong {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.play-count-chip span {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.play-count-chip-active {
+  border-color: rgba(47, 159, 111, 0.24);
+  background: linear-gradient(180deg, #74c89d 0%, #2f9f6f 100%);
+  color: white;
+  box-shadow: 0 18px 32px rgba(47, 159, 111, 0.22);
+}
+
+.play-count-chip-active span {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.play-scene-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.play-scene-thumb {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 28px;
+  border: 1px solid rgba(36, 52, 74, 0.1);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 28px rgba(49, 65, 88, 0.09);
+}
+
+.play-scene-thumb-media {
+  position: relative;
+  min-height: 120px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.play-scene-thumb-label {
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.play-scene-thumb-active {
+  transform: translateY(-2px);
+  border-color: rgba(79, 122, 239, 0.2);
+  box-shadow: 0 18px 34px rgba(79, 122, 239, 0.16);
+}
+
+.kid-gallery-top {
+  border-radius: 24px;
+}
+
+.kid-gallery-top:focus-visible,
+.play-count-chip:focus-visible,
+.play-scene-thumb:focus-visible,
+.play-letter-chip:focus-visible,
+.play-step-chip:focus-visible,
+.kid-focus-link:focus-visible,
+.kid-module-rail-card:focus-visible,
+.kid-main-button:focus-visible,
+.kid-secondary-button:focus-visible {
+  outline: 3px solid rgba(255, 176, 138, 0.9);
+  outline-offset: 3px;
+}
+
+.activity-poster-scene .scene-count-shell {
+  min-height: 260px;
+  padding: 64px 14px 72px;
+  border-radius: 30px;
+}
+
+.activity-poster-scene .scene-count-grid {
+  gap: 6px;
+}
+
+.activity-poster-scene .scene-count-tile {
+  border-radius: 14px;
+}
+
+.activity-poster-scene .scene-word-banner-count {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+}
+
+@media (max-width: 1080px) {
+  .play-count-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .scene-count-shell {
+    min-height: 320px;
+    padding: 78px 14px 96px;
+    border-radius: 30px;
+  }
+
+  .play-count-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .play-scene-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .play-scene-thumb-media {
+    min-height: 100px;
+  }
+}
+
+.play-count-chip,
+.play-scene-thumb {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.play-count-chip:hover,
+.play-scene-thumb:hover {
+  transform: translateY(-2px);
+}

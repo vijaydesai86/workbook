@@ -79,12 +79,51 @@ export const baseCatalog: Catalog = {
       ]
     },
     {
+      id: "counting-cards",
+      title: "Counting Cards",
+      category: "Early math",
+      summary:
+        "A counting deck from 1 to 20 with real photo objects repeated right on each card.",
+      goal: "Support early number sense with clear counting layouts, large numerals, and concrete real-object groups.",
+      sessionLength: "8-15 min",
+      workModeNote:
+        "Work mode keeps the number cards stable so the child can count the same layouts again and again.",
+      trainModeNote:
+        "Train mode can add more counting themes later, but the main 1 to 20 deck should stay simple and familiar.",
+      items: [
+        {
+          id: "count-1-10",
+          title: "Count 1 to 10",
+          kind: "exercise",
+          summary: "Start with the first ten number cards and count one group at a time.",
+          steps: [
+            "Look at the number.",
+            "Count the photo objects.",
+            "Say the whole count phrase."
+          ],
+          tags: ["numbers", "counting", "real objects"]
+        },
+        {
+          id: "count-11-20",
+          title: "Count 11 to 20",
+          kind: "exercise",
+          summary: "Move to bigger groups once the child is ready for longer counts.",
+          steps: [
+            "Point to the big number first.",
+            "Count across the card slowly.",
+            "Say the number and object together."
+          ],
+          tags: ["numbers", "larger groups", "visual math"]
+        }
+      ]
+    },
+    {
       id: "social-scenes",
       title: "Social Scenes",
       category: "Everyday communication",
       summary:
-        "Five everyday scene sets for swing time, slide line, snack time, hello time, and asking for help.",
-      goal: "Support social communication with familiar places, clear picture cues, and short repeatable phrases.",
+        "Five everyday picture sets for swing time, slide time, snack time, greetings, and asking for help.",
+      goal: "Support social communication with concrete photos, short repeatable phrases, and more obvious visual meaning.",
       sessionLength: "10-18 min",
       workModeNote:
         "Work mode keeps the same scene cards and phrases available each session so the child gets a predictable routine.",
@@ -95,61 +134,61 @@ export const baseCatalog: Catalog = {
           id: "scene-swing-time",
           title: "Swing Time",
           kind: "exercise",
-          summary: "Practice waiting, asking for a turn, and finishing at the swing.",
+          summary: "Use two clear swing pictures for going to the swing and taking a turn.",
           steps: [
-            "Show the swing card.",
-            "Practice one short phrase.",
-            "Repeat with the same calm order."
+            "Show the first swing picture.",
+            "Say one short swing phrase.",
+            "Move to the next picture when ready."
           ],
-          tags: ["playground", "turn taking", "swing"]
+          tags: ["playground", "swing", "turn taking"]
         },
         {
-          id: "scene-slide-line",
-          title: "Slide Line",
+          id: "scene-slide-time",
+          title: "Slide Time",
           kind: "exercise",
-          summary: "Use picture cues for lining up and waiting at the slide.",
+          summary: "Use one picture for climbing and one for going down the slide.",
           steps: [
             "Point to the slide picture.",
-            "Say the line-up phrase.",
-            "Move to the next card when ready."
+            "Say the action phrase.",
+            "Keep the order the same each time."
           ],
-          tags: ["playground", "waiting", "slide"]
+          tags: ["playground", "slide", "action words"]
         },
         {
           id: "scene-snack-time",
           title: "Snack Time",
           kind: "support",
-          summary: "Use food and drink cards for choosing and requesting at snack time.",
+          summary: "Use familiar food and drink cards for simple snack requests.",
           steps: [
-            "Show two picture choices.",
-            "Ask one short question.",
-            "Answer with one clear phrase."
+            "Look at one snack card.",
+            "Say the food or drink phrase.",
+            "Pause before the next card."
           ],
-          tags: ["snack", "choices", "requesting"]
+          tags: ["snack", "requesting", "food"]
         },
         {
           id: "scene-hello-time",
           title: "Hello Time",
           kind: "exercise",
-          summary: "Practice hello, good morning, and goodbye with familiar greeting cards.",
+          summary: "Practice hello and goodbye with two different greeting pictures.",
           steps: [
-            "Look at the greeting picture.",
-            "Say one greeting phrase.",
-            "Pause for a reply."
+            "Show the greeting picture.",
+            "Say the greeting phrase.",
+            "Pause and smile before moving on."
           ],
-          tags: ["greetings", "school", "conversation"]
+          tags: ["greetings", "waving", "conversation"]
         },
         {
           id: "scene-ask-help",
           title: "Ask for Help",
           kind: "support",
-          summary: "Use teacher and backpack cards to practice asking for help clearly.",
+          summary: "Use one help photo and one backpack photo for clear help requests.",
           steps: [
-            "Show the help picture.",
-            "Model the help phrase.",
+            "Look at the help picture.",
+            "Say the help phrase.",
             "Repeat once if needed."
           ],
-          tags: ["help", "teacher", "requesting"]
+          tags: ["help", "school", "requesting"]
         }
       ]
     }

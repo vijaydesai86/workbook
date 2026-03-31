@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActivityPlayScene } from "@/app/components/activity-scenes";
@@ -41,6 +42,8 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
   const currentCard = activeModule.cards[cardIndex];
   const progress = String(((cardIndex + 1) / activeModule.cards.length) * 100) + "%";
   const isAlphabet = activity.id === "alphabet-cards";
+  const isCounting = activity.id === "counting-cards";
+  const promptLabel = isCounting ? "Count" : "Say";
 
   return (
     <main className="app-shell app-shell-play kid-play-shell">
@@ -81,15 +84,39 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
             </Link>
           ))}
         </section>
-      ) : (
-        <section className="play-step-strip play-step-strip-story" aria-label="Scene cards">
+      ) : isCounting ? (
+        <section className="play-count-grid" aria-label="Counting cards">
           {activeModule.cards.map((card, index) => (
             <Link
-              className={"play-step-chip " + (index === cardIndex ? "play-step-chip-active" : "")}
+              className={"play-count-chip " + (index === cardIndex ? "play-count-chip-active" : "")}
               href={buildPlayHref(activity.id, activeModule.id, index)}
               key={card.id}
             >
-              {card.art.trail ?? card.title}
+              <strong>{card.art.trail}</strong>
+              <span>{card.title}</span>
+            </Link>
+          ))}
+        </section>
+      ) : (
+        <section className="play-scene-grid" aria-label="Scene cards">
+          {activeModule.cards.map((card, index) => (
+            <Link
+              className={"play-scene-thumb " + (index === cardIndex ? "play-scene-thumb-active" : "")}
+              href={buildPlayHref(activity.id, activeModule.id, index)}
+              key={card.id}
+            >
+              <div className="play-scene-thumb-media">
+                {card.art.imageSrc ? (
+                  <Image
+                    alt={card.art.imageAlt ?? card.title}
+                    className="play-scene-thumb-image"
+                    fill
+                    sizes="(max-width: 720px) 45vw, 180px"
+                    src={card.art.imageSrc}
+                  />
+                ) : null}
+              </div>
+              <span className="play-scene-thumb-label">{card.title}</span>
             </Link>
           ))}
         </section>
@@ -109,7 +136,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
 
         <aside className="play-story-panel play-story-panel-kid" style={{ backgroundColor: config.theme.surface }}>
           <div className="play-say-card">
-            <p className="play-say-label">Say</p>
+            <p className="play-say-label">{promptLabel}</p>
             <strong>{currentCard.example}</strong>
             <p className="subtle">{currentCard.prompt}</p>
           </div>

@@ -14,6 +14,22 @@ type PosterSceneProps = SharedSceneProps & {
   title: string;
 };
 
+function getCountColumns(count: number) {
+  if (count <= 4) {
+    return 2;
+  }
+
+  if (count <= 9) {
+    return 3;
+  }
+
+  if (count <= 16) {
+    return 4;
+  }
+
+  return 5;
+}
+
 function PhotoSurface({ art }: { art: ActivityArt }) {
   if (art.imageSrc == null) {
     return (
@@ -55,6 +71,47 @@ function AlphabetCard({ art, primary, secondary, badge }: SharedSceneProps) {
           <div className="scene-word-banner">
             <strong>{art.lead}</strong>
             <span>{art.trail} for {art.lead}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CountCard({ art, primary, secondary, badge }: SharedSceneProps) {
+  const count = art.count ?? 0;
+  const columns = getCountColumns(count);
+
+  return (
+    <div className="scene-stage scene-stage-photo">
+      <div className="scene-photo-shell scene-photo-shell-count">
+        <div className="scene-photo-head">
+          <span className="scene-badge" style={{ backgroundColor: badge, color: primary }}>
+            {art.caption}
+          </span>
+        </div>
+        <div className="scene-count-shell" style={{ background: "linear-gradient(180deg, white 0%, " + secondary + " 100%)" }}>
+          <div className="scene-floating-letter scene-floating-number" style={{ backgroundColor: secondary, color: primary }}>
+            {art.trail}
+          </div>
+          <div className="scene-count-grid" style={{ gridTemplateColumns: "repeat(" + String(columns) + ", minmax(0, 1fr))" }}>
+            {Array.from({ length: count }).map((_, index) => (
+              <div className="scene-count-tile" key={String(index)}>
+                {art.imageSrc ? (
+                  <Image
+                    alt={(art.imageAlt ?? art.caption) + " " + String(index + 1)}
+                    className="scene-count-tile-image"
+                    fill
+                    sizes="96px"
+                    src={art.imageSrc}
+                  />
+                ) : null}
+              </div>
+            ))}
+          </div>
+          <div className="scene-word-banner scene-word-banner-count">
+            <strong>{art.lead}</strong>
+            <span>Count the real picture cards.</span>
           </div>
         </div>
       </div>
@@ -132,6 +189,10 @@ function SceneCard({ art, primary, secondary, badge }: SharedSceneProps) {
 function CardSurface(props: SharedSceneProps) {
   if (props.art.kind === "alphabet") {
     return <AlphabetCard {...props} />;
+  }
+
+  if (props.art.kind === "count") {
+    return <CountCard {...props} />;
   }
 
   if (props.art.kind === "choice") {
