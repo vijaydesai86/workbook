@@ -202,7 +202,7 @@ function fallbackProposal(prompt: string, catalog: Catalog): TrainingProposal {
 
 async function generateWithCopilot(prompt: string, catalog: Catalog) {
   const { CopilotClient } = await import("@github/copilot-sdk");
-  const client = new CopilotClient();
+  const client = new CopilotClient() as any;
 
   try {
     const session = await client.createSession({ model: "gpt-4.1" });
