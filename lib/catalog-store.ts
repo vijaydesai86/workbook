@@ -2,10 +2,13 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { baseCatalog } from "@/lib/base-catalog";
 import { customizationsSchema } from "@/lib/schema";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import type { Activity, Catalog, Customizations, TrainingProposal } from "@/lib/types";
 
 const dataDir = path.join(process.cwd(), "data");
 const customizationsFile = path.join(dataDir, "customizations.json");
+const stateTable = "catalog_state";
+const stateKey = "customizations";
 
 const emptyCustomizations: Customizations = {
   addedActivities: [],
@@ -36,15 +39,84 @@ async function ensureCustomizationsFile() {
   }
 }
 
-async function readCustomizations() {
+async function readCustomizationsFromFile() {
   await ensureCustomizationsFile();
   const raw = await readFile(customizationsFile, "utf8");
   return customizationsSchema.parse(JSON.parse(raw));
 }
 
-async function writeCustomizations(customizations: Customizations) {
+async function writeCustomizationsToFile(customizations: Customizations) {
   await ensureCustomizationsFile();
   await writeFile(customizationsFile, JSON.stringify(customizations, null, 2), "utf8");
+}
+
+async function readCustomizationsFromSupabase() {
+  const supabase = getSupabaseAdminClient();
+
+  if (!supabase) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from(stateTable)
+    .select("value")
+    .eq("key", stateKey)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Unable to read customization state from Supabase: ${error.message}`);
+  }
+
+  if (!data) {
+    return emptyCustomizations;
+  }
+
+  return customizationsSchema.parse(data.value);
+}
+
+async function writeCustomizationsToSupabase(customizations: Customizations) {
+  const supabase = getSupabaseAdminClient();
+
+  if (!supabase) {
+    return false;
+  }
+
+  const { error } = await supabase.from(stateTable).upsert(
+    {
+      key: stateKey,
+      value: customizations,
+      updated_at: new Date().toISOString()
+    },
+    {
+      onConflict: "key"
+    }
+  );
+
+  if (error) {
+    throw new Error(`Unable to write customization state to Supabase: ${error.message}`);
+  }
+
+  return true;
+}
+
+async function readCustomizations() {
+  const supabaseCustomizations = await readCustomizationsFromSupabase();
+
+  if (supabaseCustomizations) {
+    return supabaseCustomizations;
+  }
+
+  return readCustomizationsFromFile();
+}
+
+async function writeCustomizations(customizations: Customizations) {
+  const wroteToSupabase = await writeCustomizationsToSupabase(customizations);
+
+  if (wroteToSupabase) {
+    return;
+  }
+
+  await writeCustomizationsToFile(customizations);
 }
 
 export async function getMergedCatalog(): Promise<Catalog> {
