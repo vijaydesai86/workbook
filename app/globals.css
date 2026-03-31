@@ -2615,3 +2615,22 @@ h3,
 .play-scene-thumb:hover {
   transform: translateY(-2px);
 }
+
+.scene-photo-image-scene {
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.scene-word-banner-scene {
+  gap: 6px;
+}
+
+.scene-word-banner-scene strong,
+.scene-word-banner-count strong {
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+}
+
+.scene-word-banner-scene span,
+.scene-word-banner-count span {
+  font-size: 1.02rem;
+}

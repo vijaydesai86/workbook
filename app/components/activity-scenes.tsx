@@ -40,11 +40,16 @@ function PhotoSurface({ art }: { art: ActivityArt }) {
     );
   }
 
+  const className =
+    art.kind === "scene"
+      ? "scene-photo-image scene-photo-image-scene"
+      : "scene-photo-image";
+
   return (
     <div className="scene-photo-frame">
       <Image
         alt={art.imageAlt ?? art.caption}
-        className="scene-photo-image"
+        className={className}
         fill
         sizes="(max-width: 720px) 100vw, (max-width: 1100px) 70vw, 560px"
         src={art.imageSrc}
@@ -111,7 +116,7 @@ function CountCard({ art, primary, secondary, badge }: SharedSceneProps) {
           </div>
           <div className="scene-word-banner scene-word-banner-count">
             <strong>{art.lead}</strong>
-            <span>Count the real picture cards.</span>
+            <span>One simple item repeated to count.</span>
           </div>
         </div>
       </div>
@@ -161,7 +166,7 @@ function ConversationCard({ art, primary, badge }: SharedSceneProps) {
   );
 }
 
-function SceneCard({ art, primary, secondary, badge }: SharedSceneProps) {
+function SceneCard({ art, primary, badge }: SharedSceneProps) {
   return (
     <div className="scene-stage scene-stage-photo">
       <div className="scene-photo-shell">
@@ -172,13 +177,9 @@ function SceneCard({ art, primary, secondary, badge }: SharedSceneProps) {
         </div>
         <div className="scene-photo-stage">
           <PhotoSurface art={art} />
-          <div className="scene-label-row scene-label-row-overlay">
-            <span className="scene-label-chip scene-label-chip-light">{art.lead}</span>
-            {art.trail ? (
-              <span className="scene-label-chip" style={{ backgroundColor: secondary, color: primary }}>
-                {art.trail}
-              </span>
-            ) : null}
+          <div className="scene-word-banner scene-word-banner-scene">
+            <strong>{art.lead}</strong>
+            {art.trail ? <span>{art.trail}</span> : null}
           </div>
         </div>
       </div>

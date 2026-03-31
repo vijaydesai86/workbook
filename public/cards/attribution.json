@@ -264,18 +264,6 @@
     "thumb_url": "https://api.openverse.org/v1/images/8e2037e0-1ee7-4860-8bce-9736b2ba66aa/thumb/"
   },
   {
-    "slug": "slide-climb",
-    "dir": "social-scenes",
-    "query": "child%20climbing%20slide%20playground",
-    "title": "A little girl using a ladder to climb a slide",
-    "creator": "Ivan Radic",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/26344495@N05/48552220622",
-    "image_url": "https://live.staticflickr.com/65535/48552220622_6b15f90775_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/7a469e3b-244d-485f-a17f-5c4081132b28/thumb/"
-  },
-  {
     "slug": "slide-turn",
     "dir": "social-scenes",
     "query": "child%20going%20down%20slide%20playground",
@@ -322,18 +310,6 @@
     "landing_url": "https://www.flickr.com/photos/24321458@N03/2899637439",
     "image_url": "https://live.staticflickr.com/3137/2899637439_a9c220983c_b.jpg",
     "thumb_url": "https://api.openverse.org/v1/images/28b5ba46-93b1-40e8-85aa-bf6617565bf4/thumb/"
-  },
-  {
-    "slug": "swing-turn",
-    "dir": "social-scenes",
-    "query": "child%20on%20playground%20swing",
-    "title": "Happy, Swinging Reese",
-    "creator": "donnierayjones",
-    "license": "by",
-    "license_url": "https://creativecommons.org/licenses/by/2.0/",
-    "landing_url": "https://www.flickr.com/photos/11946169@N00/14276228510",
-    "image_url": "https://live.staticflickr.com/2940/14276228510_ff259bc8bc_b.jpg",
-    "thumb_url": "https://api.openverse.org/v1/images/0890119f-3537-4c49-93fa-9742770264e6/thumb/"
   },
   {
     "slug": "swing-wait",

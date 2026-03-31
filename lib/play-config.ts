@@ -114,25 +114,25 @@ const numberWords = [
 
 const countSeeds: CountSeed[] = [
   { value: 1, objectLabel: "apple", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
-  { value: 2, objectLabel: "balls", imageSrc: "/cards/alphabet/ball.jpg", imageAlt: "Ball photo" },
-  { value: 3, objectLabel: "fish", imageSrc: "/cards/alphabet/fish.jpg", imageAlt: "Fish photo" },
-  { value: 4, objectLabel: "oranges", imageSrc: "/cards/alphabet/orange.jpg", imageAlt: "Orange photo" },
-  { value: 5, objectLabel: "kites", imageSrc: "/cards/alphabet/kite.jpg", imageAlt: "Kite photo" },
-  { value: 6, objectLabel: "leaves", imageSrc: "/cards/alphabet/leaf.jpg", imageAlt: "Leaf photo" },
-  { value: 7, objectLabel: "pears", imageSrc: "/cards/alphabet/pear.jpg", imageAlt: "Pear photo" },
-  { value: 8, objectLabel: "umbrellas", imageSrc: "/cards/alphabet/umbrella.jpg", imageAlt: "Umbrella photo" },
-  { value: 9, objectLabel: "vans", imageSrc: "/cards/alphabet/van.jpg", imageAlt: "Van photo" },
-  { value: 10, objectLabel: "whales", imageSrc: "/cards/alphabet/whale.jpg", imageAlt: "Whale photo" },
+  { value: 2, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 3, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 4, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 5, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 6, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 7, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 8, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 9, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 10, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
   { value: 11, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
-  { value: 12, objectLabel: "balls", imageSrc: "/cards/alphabet/ball.jpg", imageAlt: "Ball photo" },
-  { value: 13, objectLabel: "fish", imageSrc: "/cards/alphabet/fish.jpg", imageAlt: "Fish photo" },
-  { value: 14, objectLabel: "oranges", imageSrc: "/cards/alphabet/orange.jpg", imageAlt: "Orange photo" },
-  { value: 15, objectLabel: "kites", imageSrc: "/cards/alphabet/kite.jpg", imageAlt: "Kite photo" },
-  { value: 16, objectLabel: "leaves", imageSrc: "/cards/alphabet/leaf.jpg", imageAlt: "Leaf photo" },
-  { value: 17, objectLabel: "pears", imageSrc: "/cards/alphabet/pear.jpg", imageAlt: "Pear photo" },
-  { value: 18, objectLabel: "umbrellas", imageSrc: "/cards/alphabet/umbrella.jpg", imageAlt: "Umbrella photo" },
-  { value: 19, objectLabel: "vans", imageSrc: "/cards/alphabet/van.jpg", imageAlt: "Van photo" },
-  { value: 20, objectLabel: "whales", imageSrc: "/cards/alphabet/whale.jpg", imageAlt: "Whale photo" }
+  { value: 12, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 13, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 14, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 15, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 16, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 17, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 18, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 19, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" },
+  { value: 20, objectLabel: "apples", imageSrc: "/cards/alphabet/apple.jpg", imageAlt: "Apple photo" }
 ];
 
 function createAlphabetCards(): ActivityPlayCard[] {
@@ -164,7 +164,7 @@ function createCountingCards(range: [number, number]): ActivityPlayCard[] {
       return {
         id: "count-" + String(seed.value),
         title: phrase,
-        prompt: "Count the pictures and say the whole number phrase.",
+        prompt: "Count the apples and say the whole number phrase.",
         focus: "Number " + String(seed.value),
         cue: "Say, " + phrase + ".",
         example: phrase + ".",
@@ -172,7 +172,7 @@ function createCountingCards(range: [number, number]): ActivityPlayCard[] {
           kind: "count",
           lead: phrase,
           trail: String(seed.value),
-          caption: "Count " + seed.objectLabel,
+          caption: "Apple count card",
           imageSrc: seed.imageSrc,
           imageAlt: seed.imageAlt,
           count: seed.value
@@ -258,41 +258,41 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       {
         id: "swing_time",
         title: "Swing Time",
-        description: "Practice going to the swing and taking a turn.",
+        description: "Practice seeing the swing and waiting for the swing.",
         accent: "Playground",
-        skills: ["Go", "Turn"],
+        skills: ["Look", "Wait"],
         calmNote: "Show one swing picture at a time.",
         cards: [
           {
             id: "swing-go",
-            title: "Go to the swing",
-            prompt: "Look at the swing picture and say where to go.",
-            focus: "Going to the swing",
-            cue: "Say, go to the swing.",
-            example: "Go to the swing.",
+            title: "See the swing",
+            prompt: "Look at the swing card and say swing.",
+            focus: "Seeing the swing",
+            cue: "Say, swing.",
+            example: "Swing.",
             art: {
               kind: "scene",
               lead: "Swing",
-              trail: "Go",
-              caption: "Go to swing",
-              imageSrc: "/cards/social-scenes/swing-wait.jpg",
-              imageAlt: "Child near a playground swing"
+              trail: "Look",
+              caption: "Swing card",
+              imageSrc: "/cards/social-scenes/swing.jpg",
+              imageAlt: "Playground swing photo"
             }
           },
           {
             id: "swing-turn",
-            title: "My turn on the swing",
-            prompt: "Look at the swing picture and say whose turn it is.",
-            focus: "Taking a turn",
-            cue: "Say, my turn on the swing.",
-            example: "My turn on the swing.",
+            title: "Wait for the swing",
+            prompt: "Look at the swing picture and say the waiting words.",
+            focus: "Waiting",
+            cue: "Say, wait for the swing.",
+            example: "Wait for the swing.",
             art: {
               kind: "scene",
               lead: "Swing",
-              trail: "My turn",
-              caption: "Swing turn",
-              imageSrc: "/cards/social-scenes/swing-turn.jpg",
-              imageAlt: "Child swinging at the playground"
+              trail: "Wait",
+              caption: "Wait for swing",
+              imageSrc: "/cards/social-scenes/swing-wait.jpg",
+              imageAlt: "Child waiting near a playground swing"
             }
           }
         ]
@@ -300,25 +300,25 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
       {
         id: "slide_time",
         title: "Slide Time",
-        description: "Practice climbing up and going down the slide.",
+        description: "Practice seeing the slide and going down the slide.",
         accent: "Playground",
-        skills: ["Climb", "Slide"],
+        skills: ["Look", "Slide"],
         calmNote: "Keep the pictures in the same order each time.",
         cards: [
           {
             id: "slide-climb",
-            title: "Climb to the slide",
-            prompt: "Look at the slide picture and say the action.",
-            focus: "Climbing",
-            cue: "Say, climb to the slide.",
-            example: "Climb to the slide.",
+            title: "See the slide",
+            prompt: "Look at the slide card and say slide.",
+            focus: "Seeing the slide",
+            cue: "Say, slide.",
+            example: "Slide.",
             art: {
               kind: "scene",
               lead: "Slide",
-              trail: "Climb",
-              caption: "Climb to slide",
-              imageSrc: "/cards/social-scenes/slide-climb.jpg",
-              imageAlt: "Child climbing up a playground slide"
+              trail: "Look",
+              caption: "Slide card",
+              imageSrc: "/cards/social-scenes/slide.jpg",
+              imageAlt: "Playground slide photo"
             }
           },
           {
@@ -397,12 +397,12 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             cue: "Say, hello.",
             example: "Hello.",
             art: {
-              kind: "conversation",
+              kind: "scene",
               lead: "Hello",
-              trail: "Hi",
-              caption: "Say hello",
+              trail: "Wave",
+              caption: "Hello card",
               imageSrc: "/cards/social-scenes/hello.jpg",
-              imageAlt: "Person waving hello"
+              imageAlt: "Waving hello photo"
             }
           },
           {
@@ -413,10 +413,10 @@ const bespokeConfigs: Record<string, ActivityPlayConfig> = {
             cue: "Say, goodbye.",
             example: "Goodbye.",
             art: {
-              kind: "conversation",
+              kind: "scene",
               lead: "Goodbye",
               trail: "Bye",
-              caption: "Say goodbye",
+              caption: "Goodbye card",
               imageSrc: "/cards/social-scenes/goodbye.jpg",
               imageAlt: "Child waving goodbye"
             }
