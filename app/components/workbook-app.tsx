@@ -62,138 +62,65 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         </Link>
       </header>
 
-      <section className="landing-hero kid-hero-home">
-        <div className="landing-copy kid-hero-copy">
-          <div className="eyebrow">Games</div>
-          <h1>Pick a game</h1>
-          <p>Choose a game, hear the card, and say it back.</p>
-          <div className="hero-actions kid-hero-actions">
-            {selectedActivity ? (
-              <Link className="button hero-button kid-main-button" href={playHref}>
-                Play {selectedActivity.title}
-              </Link>
-            ) : null}
-            <a className="ghost-button kid-secondary-button" href="#activity-gallery">
-              See games
-            </a>
-          </div>
-          <div className="kid-how-row" aria-label="How to play">
-            <div className="kid-how-card">
-              <strong>1</strong>
-              <span>Pick</span>
+      {selectedActivity && selectedConfig ? (
+        <section className="kid-home-stage">
+          <div className="kid-home-main-card" style={{ backgroundColor: selectedConfig.theme.surface }}>
+            <div className="kid-home-main-visual">
+              <ActivityVisual activity={selectedActivity} />
             </div>
-            <div className="kid-how-card">
-              <strong>2</strong>
-              <span>Hear</span>
-            </div>
-            <div className="kid-how-card">
-              <strong>3</strong>
-              <span>Say</span>
-            </div>
-          </div>
-        </div>
 
-        <div className="hero-showcase kid-hero-showcase">
-          {selectedActivity ? <ActivityVisual activity={selectedActivity} /> : null}
-          {selectedActivity && selectedConfig ? (
-            <div className="hero-helper-card kid-hero-helper kid-selected-helper">
-              <div className="hero-helper-title">Start</div>
-              <h2>{selectedActivity.title}</h2>
-              <p className="subtle">{selectedConfig.supportLine}</p>
-              <div className="quick-chip-row">
-                <span className="quick-chip">{totalCards} cards</span>
-                <span className="quick-chip">real photos</span>
+            <div className="kid-home-main-copy">
+              <div className="eyebrow">Game</div>
+              <h1>{selectedActivity.title}</h1>
+              <p>{selectedConfig.supportLine}</p>
+              <div className="kid-home-meta">
+                <span className="soft-chip">{totalCards} cards</span>
+                <span className="soft-chip">{featuredModule?.title}</span>
+              </div>
+              <div className="kid-home-main-actions">
+                <Link className="button kid-main-button kid-home-play-button" href={playHref}>
+                  Play
+                </Link>
+                <Link className="ghost-button kid-secondary-button" href={"/activities/" + selectedActivity.id}>
+                  Open
+                </Link>
               </div>
             </div>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="hub-grid kid-hub-grid">
-        <div className="hub-main">
-          <div className="section-head kid-section-head" id="activity-gallery">
-            <div>
-              <div className="eyebrow">Games</div>
-              <h2>Choose one</h2>
-            </div>
           </div>
 
-          <div className="activity-gallery kid-activity-gallery">
-            {initialCatalog.activities.map((activity) => {
-              const config = getPlayConfigForActivity(activity);
-              const isActive = activity.id === selectedActivity?.id;
-              const cardClassName = "gallery-card kid-gallery-card " + (isActive ? "gallery-card-active kid-gallery-card-active" : "");
+          <section className="kid-picker-panel" aria-label="Choose a game">
+            <div className="kid-picker-head">
+              <div className="eyebrow">Choose</div>
+              <h2>Pick a game</h2>
+            </div>
 
-              return (
-                <article className={cardClassName} key={activity.id}>
-                  <button className="gallery-card-top kid-gallery-top" onClick={() => setSelectedActivityId(activity.id)} type="button">
-                    <ActivityVisual activity={activity} />
-                    <div className="gallery-card-copy kid-gallery-copy">
-                      <h3>{activity.title}</h3>
-                      <p className="subtle">{config.supportLine}</p>
+            <div className="kid-picker-rail">
+              {initialCatalog.activities.map((activity) => {
+                const config = getPlayConfigForActivity(activity);
+                const isActive = activity.id === selectedActivity.id;
+
+                return (
+                  <button
+                    className={"kid-picker-card " + (isActive ? "kid-picker-card-active" : "")}
+                    key={activity.id}
+                    onClick={() => setSelectedActivityId(activity.id)}
+                    style={isActive ? { backgroundColor: config.theme.surface, borderColor: config.theme.primary } : undefined}
+                    type="button"
+                  >
+                    <div className="kid-picker-card-visual">
+                      <ActivityVisual activity={activity} />
+                    </div>
+                    <div className="kid-picker-card-copy">
+                      <strong>{activity.title}</strong>
+                      <span>{config.supportLine}</span>
                     </div>
                   </button>
-                  <div className="gallery-card-actions kid-gallery-actions">
-                    <Link className="ghost-button kid-secondary-button" href={"/activities/" + activity.id}>
-                      Open
-                    </Link>
-                    <Link className="button kid-main-button" href={"/activities/" + activity.id + "/play"}>
-                      Play
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-
-        <aside className="hub-side">
-          {selectedActivity && selectedConfig ? (
-            <section className="focus-panel kid-focus-panel" style={{ backgroundColor: selectedConfig.theme.surface }}>
-              <div className="focus-top kid-focus-top">
-                <div>
-                  <div className="eyebrow">Selected</div>
-                  <h2>{selectedActivity.title}</h2>
-                </div>
-                <span className="soft-chip" style={{ backgroundColor: selectedConfig.theme.badge }}>
-                  {totalCards} cards
-                </span>
-              </div>
-
-              <div className="focus-module-card kid-start-card" style={{ borderColor: selectedConfig.theme.secondary }}>
-                <p className="kid-card-kicker">Start</p>
-                <h3>{featuredModule?.title}</h3>
-                <p className="subtle">{featuredModule?.description}</p>
-                <div className="quick-chip-row">
-                  {featuredModule?.skills.map((skill) => (
-                    <span className="quick-chip" key={skill}>
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-                <div className="support-note">{featuredModule?.calmNote}</div>
-                <div className="gallery-card-actions kid-gallery-actions">
-                  <Link className="button kid-main-button" href={playHref}>
-                    Play
-                  </Link>
-                </div>
-              </div>
-
-              <div className="focus-module-list">
-                {selectedConfig.modules.map((module) => (
-                  <Link className="focus-module-link kid-focus-link" href={"/activities/" + selectedActivity.id + "/play?module=" + module.id} key={module.id}>
-                    <div>
-                      <strong>{module.title}</strong>
-                      <div className="subtle">{module.description}</div>
-                    </div>
-                    <span className="soft-chip">{module.cards.length} cards</span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          ) : null}
-        </aside>
-      </section>
+                );
+              })}
+            </div>
+          </section>
+        </section>
+      ) : null}
 
       <section className="caregiver-callout kid-caregiver-callout">
         <div>
