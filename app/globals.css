@@ -3122,3 +3122,236 @@ html {
 .kid-picker-card-copy strong {
   font-size: 1.5rem;
 }
+
+/* ============================================================
+   CARD IMAGE MANAGER — Caregiver area "change photo" UI
+============================================================ */
+
+.cim-shell {
+  margin-top: 36px;
+  border-top: 2px solid var(--line);
+  padding-top: 32px;
+}
+
+.cim-header {
+  margin-bottom: 20px;
+}
+
+.cim-title {
+  margin: 0 0 6px;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  color: var(--ink);
+}
+
+.cim-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 560px;
+}
+
+.cim-activity {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.cim-activity-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: background 140ms ease;
+}
+
+.cim-activity-toggle:hover {
+  background: rgba(36, 52, 74, 0.04);
+}
+
+.cim-activity-toggle-open {
+  background: rgba(36, 52, 74, 0.05);
+  border-bottom: 1px solid var(--line);
+}
+
+.cim-toggle-icon {
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.cim-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.cim-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--page-bg-strong);
+}
+
+.cim-card-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(36, 52, 74, 0.06);
+}
+
+.cim-card-img {
+  object-fit: cover;
+}
+
+.cim-card-no-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.cim-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cim-card-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.cim-status-saved {
+  font-size: 0.82rem;
+  color: #1d7a4f;
+  font-weight: 700;
+}
+
+.cim-status-error {
+  font-size: 0.82rem;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.cim-change-btn {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: white;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.cim-change-btn:hover {
+  background: rgba(36, 52, 74, 0.06);
+  border-color: rgba(36, 52, 74, 0.22);
+}
+
+.cim-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.cim-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.cim-file-input {
+  font-size: 0.84rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cim-url-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: white;
+  font-size: 0.84rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 140ms ease;
+}
+
+.cim-url-input:focus {
+  border-color: rgba(234, 111, 66, 0.5);
+}
+
+.cim-editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.cim-save-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--button);
+  color: var(--button-ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 140ms ease;
+}
+
+.cim-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cim-cancel-btn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .cim-cards-grid {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+}

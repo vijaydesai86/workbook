@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { CardImageManager } from "@/app/components/card-image-manager";
 import { getPlayConfigForActivity } from "@/lib/play-config";
 import type { Catalog, TrainingProposal } from "@/lib/types";
 
@@ -234,6 +235,8 @@ export function CaregiverStudio({ initialCatalog }: CaregiverStudioProps) {
           </div>
         </aside>
       </section>
+
+      <CardImageManager activities={catalog.activities} />
     </main>
   );
 }

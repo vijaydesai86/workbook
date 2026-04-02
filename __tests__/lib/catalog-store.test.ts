@@ -14,12 +14,13 @@ vi.mock("node:fs/promises", () => ({
 }));
 
 import { readFile, writeFile } from "node:fs/promises";
-import { applyTrainingProposal, getActivityById, getMergedCatalog } from "@/lib/catalog-store";
+import { applyTrainingProposal, getActivityById, getImageOverrides, getMergedCatalog, saveImageOverride } from "@/lib/catalog-store";
 
 const emptyCustomizations = JSON.stringify({
   addedActivities: [],
   addedItems: [],
-  history: []
+  history: [],
+  imageOverrides: []
 });
 
 beforeEach(() => {
@@ -442,5 +443,89 @@ describe("applyTrainingProposal - add-activity", () => {
     const colorActivities = written.addedActivities.filter((a: { id: string }) => a.id === "color-cards");
     expect(colorActivities.length).toBe(1);
     expect(colorActivities[0].items.length).toBe(2);
+  });
+});
+
+describe("getImageOverrides", () => {
+  it("returns an empty array when no overrides are stored", async () => {
+    const overrides = await getImageOverrides();
+    expect(overrides).toEqual([]);
+  });
+
+  it("returns stored image overrides", async () => {
+    const customizations = JSON.stringify({
+      addedActivities: [],
+      addedItems: [],
+      history: [],
+      imageOverrides: [
+        { cardId: "alphabet-a", imageSrc: "/cards/custom/alphabet-a.jpg", imageAlt: "A red apple" }
+      ]
+    });
+    vi.mocked(readFile).mockResolvedValue(customizations as never);
+
+    const overrides = await getImageOverrides();
+    expect(overrides).toHaveLength(1);
+    expect(overrides[0]?.cardId).toBe("alphabet-a");
+    expect(overrides[0]?.imageSrc).toBe("/cards/custom/alphabet-a.jpg");
+  });
+
+  it("returns empty array when imageOverrides field is absent (backward-compat)", async () => {
+    const customizations = JSON.stringify({
+      addedActivities: [],
+      addedItems: [],
+      history: []
+    });
+    vi.mocked(readFile).mockResolvedValue(customizations as never);
+
+    const overrides = await getImageOverrides();
+    expect(overrides).toEqual([]);
+  });
+});
+
+describe("saveImageOverride", () => {
+  it("writes a new image override to storage", async () => {
+    await saveImageOverride({ cardId: "alphabet-b", imageSrc: "/cards/custom/b.jpg", imageAlt: "Ball" });
+
+    expect(vi.mocked(writeFile)).toHaveBeenCalledOnce();
+    const written = JSON.parse(vi.mocked(writeFile).mock.calls[0]![1] as string);
+    expect(written.imageOverrides).toHaveLength(1);
+    expect(written.imageOverrides[0].cardId).toBe("alphabet-b");
+    expect(written.imageOverrides[0].imageSrc).toBe("/cards/custom/b.jpg");
+  });
+
+  it("updates an existing override without duplicating", async () => {
+    const existing = JSON.stringify({
+      addedActivities: [],
+      addedItems: [],
+      history: [],
+      imageOverrides: [
+        { cardId: "alphabet-a", imageSrc: "/old/a.jpg", imageAlt: "Old apple" }
+      ]
+    });
+    vi.mocked(readFile).mockResolvedValue(existing as never);
+
+    await saveImageOverride({ cardId: "alphabet-a", imageSrc: "/new/a.jpg", imageAlt: "New apple" });
+
+    const written = JSON.parse(vi.mocked(writeFile).mock.calls[0]![1] as string);
+    const aOverrides = written.imageOverrides.filter((o: { cardId: string }) => o.cardId === "alphabet-a");
+    expect(aOverrides).toHaveLength(1);
+    expect(aOverrides[0].imageSrc).toBe("/new/a.jpg");
+  });
+
+  it("appends to existing overrides when card ID is different", async () => {
+    const existing = JSON.stringify({
+      addedActivities: [],
+      addedItems: [],
+      history: [],
+      imageOverrides: [
+        { cardId: "alphabet-a", imageSrc: "/custom/a.jpg", imageAlt: "Apple" }
+      ]
+    });
+    vi.mocked(readFile).mockResolvedValue(existing as never);
+
+    await saveImageOverride({ cardId: "alphabet-b", imageSrc: "/custom/b.jpg", imageAlt: "Ball" });
+
+    const written = JSON.parse(vi.mocked(writeFile).mock.calls[0]![1] as string);
+    expect(written.imageOverrides).toHaveLength(2);
   });
 });
