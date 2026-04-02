@@ -52,7 +52,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
   const safeCardIndex = Number.isNaN(rawCardIndex) ? 0 : rawCardIndex;
   const cardIndex = Math.min(Math.max(safeCardIndex, 0), activeModule.cards.length - 1);
   const currentCard = activeModule.cards[cardIndex];
-  const progress = String(((cardIndex + 1) / activeModule.cards.length) * 100) + "%";
+  const progress = String(Math.round(((cardIndex + 1) / activeModule.cards.length) * 100)) + "%";
   const promptLabel = isCounting ? "Count" : "Say";
 
   return (
