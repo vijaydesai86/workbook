@@ -82,7 +82,7 @@ const alphabetSeeds: AlphabetSeed[] = [
   { letter: "I", word: "Ice Cream" },
   { letter: "J", word: "Juice" },
   { letter: "K", word: "Kite" },
-  { letter: "L", word: "Leaf" },
+  { letter: "L", word: "Lily" },
   { letter: "M", word: "Moon" },
   { letter: "N", word: "Nest" },
   { letter: "O", word: "Orange" },
@@ -268,7 +268,7 @@ const mixedCountSeeds: CountSeed[] = [
     value: 18,
     objectLabel: "flowers",
     cardLabel: "Flower",
-    imageSrc: "/cards/alphabet/leaf.jpg",
+    imageSrc: "/cards/alphabet/lily.jpg",
     imageAlt: "Flower photo",
     imagePosition: "64% 50%",
     imageScale: 1.18

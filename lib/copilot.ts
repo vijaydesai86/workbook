@@ -6,7 +6,7 @@ type BuildTrainingProposalArgs = {
   catalog: Catalog;
 };
 
-function slugify(value: string) {
+export function slugify(value: string) {
   const lower = value.toLowerCase();
   let output = "";
   let lastWasDash = false;
