@@ -2999,3 +2999,126 @@ h3,
     padding: 12px;
   }
 }
+
+/* ============================================================
+   BRIGHTPATH PLAY — AUTISM-FRIENDLY ACCESSIBILITY LAYER
+   Larger text · stronger focus rings · gentle motion cues ·
+   bigger touch targets · completion celebration
+============================================================ */
+
+/* 1. Base font size bump: 18 px gives better readability for kids */
+html {
+  font-size: 18px;
+}
+
+/* 2. Soft pulse on the primary "Play" button — draws attention without overwhelming */
+@keyframes bp-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 14px 28px rgba(234, 111, 66, 0.28),
+      0 0 0 0 rgba(234, 111, 66, 0);
+  }
+
+  50% {
+    box-shadow:
+      0 18px 38px rgba(234, 111, 66, 0.38),
+      0 0 0 8px rgba(234, 111, 66, 0.08);
+  }
+}
+
+.kid-home-play-button {
+  animation: bp-pulse 2.8s ease-in-out infinite;
+}
+
+/* Respect system preference: no motion for users who need it */
+@media (prefers-reduced-motion: reduce) {
+  .kid-home-play-button {
+    animation: none;
+  }
+}
+
+/* 3. High-visibility focus ring — critical for switch-access & keyboard users */
+:focus-visible {
+  outline: 4px solid rgba(234, 111, 66, 0.78);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* 4. Taller progress bar — easier to perceive forward progress */
+.play-progress-track {
+  height: 26px;
+  border-radius: 999px;
+}
+
+/* 5. "Last card" badge shown next to the progress area */
+.play-last-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff8e0 0%, #fff0d4 100%);
+  border: 1px solid rgba(234, 111, 66, 0.28);
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #a03a10;
+  box-shadow: 0 10px 22px rgba(234, 111, 66, 0.14);
+}
+
+/* 6. Completion celebration banner */
+.play-complete-banner {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 30px 24px;
+  border-radius: 36px;
+  background: linear-gradient(135deg, #fffbf0 0%, #fff5f0 100%);
+  border: 2px solid rgba(234, 111, 66, 0.18);
+  box-shadow:
+    0 24px 56px rgba(234, 111, 66, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.play-complete-emoji {
+  font-size: 3.8rem;
+  line-height: 1;
+}
+
+.play-complete-banner strong {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: #24344a;
+}
+
+.play-complete-banner p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* 7. Minimum 64 px touch height on all play navigation */
+.play-nav-button,
+.play-sound-button {
+  min-height: 64px;
+}
+
+/* 8. Activity emoji shown in picker cards */
+.kid-picker-card-emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+/* 9. "Hear it" button — green when speaking for clear feedback */
+.play-sound-button-speaking {
+  background: linear-gradient(180deg, #74c89d 0%, #2f9f6f 100%);
+  box-shadow: 0 14px 28px rgba(47, 159, 111, 0.28);
+  color: white;
+}
+
+/* 10. Slightly larger chip text inside picker cards */
+.kid-picker-card-copy strong {
+  font-size: 1.5rem;
+}
