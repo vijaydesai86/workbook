@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ActivityPosterScene } from "@/app/components/activity-scenes";
+import { getActivityMeta } from "@/lib/activity-meta";
 import { getPlayConfigForActivity } from "@/lib/play-config";
 import type { Activity, Catalog } from "@/lib/types";
 
@@ -79,10 +80,10 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
               </div>
               <div className="kid-home-main-actions">
                 <Link className="button kid-main-button kid-home-play-button" href={playHref}>
-                  Play
+                  🎮 Play
                 </Link>
                 <Link className="ghost-button kid-secondary-button" href={"/activities/" + selectedActivity.id}>
-                  Open
+                  📖 Open
                 </Link>
               </div>
             </div>
@@ -111,6 +112,7 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
                       <ActivityVisual activity={activity} />
                     </div>
                     <div className="kid-picker-card-copy">
+                      <div className="kid-picker-card-emoji">{getActivityMeta(activity.id).emoji}</div>
                       <strong>{activity.title}</strong>
                       <span>{config.supportLine}</span>
                     </div>
@@ -126,10 +128,10 @@ export function WorkbookApp({ initialCatalog }: WorkbookAppProps) {
         <div>
           <div className="eyebrow">Adult area</div>
           <h2>Change cards here</h2>
-          <p className="subtle">Add or update cards in the adult area.</p>
+          <p className="subtle">Caregivers can add or update cards.</p>
         </div>
         <Link className="ghost-button kid-secondary-button" href="/caregiver">
-          Open adult area
+          ⚙️ Open caregiver area
         </Link>
       </section>
     </main>

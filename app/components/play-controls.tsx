@@ -92,8 +92,13 @@ export function PlayControls({ soundText, title }: PlayControlsProps) {
   }
 
   return (
-    <button aria-label={"Hear " + title} className="button play-sound-button" onClick={handlePlaySound} type="button">
-      {reading ? "Playing..." : "Hear card"}
+    <button
+      aria-label={"Hear " + title}
+      className={"button play-sound-button" + (reading ? " play-sound-button-speaking" : "")}
+      onClick={handlePlaySound}
+      type="button"
+    >
+      {reading ? "🔊 Playing…" : "🔊 Hear it"}
     </button>
   );
 }

@@ -38,10 +38,10 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
     <main className="app-shell kid-detail-shell">
       <div className="page-actions kid-page-actions">
         <Link className="ghost-button kid-secondary-button" href="/">
-          All games
+          ← All games
         </Link>
         <Link className="button kid-main-button" href={playHref}>
-          Play
+          🎮 Play
         </Link>
       </div>
 
@@ -59,11 +59,11 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
               <div className="count-set-label">Choose set</div>
               <div className="count-set-row">
                 <Link className="count-set-chip count-set-chip-active" href={buildPlayHref(activity.id, config.defaultModuleId, "apples")}>
-                  <strong>Apple set</strong>
+                  <strong>🍎 Apple set</strong>
                   <span>Same apple card</span>
                 </Link>
                 <Link className="count-set-chip" href={buildPlayHref(activity.id, config.defaultModuleId, "mixed")}>
-                  <strong>Mixed set</strong>
+                  <strong>🎨 Mixed set</strong>
                   <span>Different picture cards</span>
                 </Link>
               </div>
@@ -71,7 +71,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
           ) : (
             <div className="hero-actions kid-hero-actions">
               <Link className="button kid-main-button" href={playHref}>
-                Play
+                🎮 Play
               </Link>
             </div>
           )}
@@ -104,7 +104,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </div>
             <div className="support-note">{module.calmNote}</div>
             <Link className="button kid-main-button" href={buildPlayHref(activity.id, module.id)}>
-              Play
+              🎮 Play
             </Link>
           </article>
         ))}

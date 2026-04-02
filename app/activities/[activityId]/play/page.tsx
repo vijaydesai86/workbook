@@ -55,14 +55,16 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
   const progress = String(Math.round(((cardIndex + 1) / activeModule.cards.length) * 100)) + "%";
   const promptLabel = isCounting ? "Count" : "Say";
 
+  const isLastCard = cardIndex === activeModule.cards.length - 1;
+
   return (
     <main className="app-shell app-shell-play kid-play-shell">
       <div className="page-actions kid-page-actions kid-play-actions">
         <Link className="ghost-button kid-secondary-button" href={"/activities/" + activity.id}>
-          Back
+          ← Back
         </Link>
         <Link className="ghost-button kid-secondary-button" href="/">
-          All games
+          🏠 All games
         </Link>
       </div>
 
@@ -75,6 +77,7 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
         <div className="play-status kid-play-status">
           <span className="soft-chip">{cardIndex + 1} / {activeModule.cards.length}</span>
           <span className="soft-chip">{activeModule.accent}</span>
+          {isLastCard ? <span className="play-last-card-badge">🎉 Last card!</span> : null}
         </div>
       </section>
 
@@ -112,10 +115,10 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
                   className="ghost-button play-nav-button"
                   href={buildPlayHref(activity.id, activeModule.id, Math.max(cardIndex - 1, 0), countingSet)}
                 >
-                  Back
+                  ← Back
                 </Link>
               ) : (
-                <span className="ghost-button disabled-chip play-nav-button">Back</span>
+                <span className="ghost-button disabled-chip play-nav-button">← Back</span>
               )}
 
               <PlayControls soundText={currentCard.example} title={currentCard.title} />
@@ -125,23 +128,31 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
                   className="button play-nav-button"
                   href={buildPlayHref(activity.id, activeModule.id, Math.min(cardIndex + 1, activeModule.cards.length - 1), countingSet)}
                 >
-                  Next card
+                  Next →
                 </Link>
               ) : (
                 <Link className="button play-nav-button" href={"/activities/" + activity.id}>
-                  All done
+                  ⭐ All done
                 </Link>
               )}
             </div>
           </div>
 
           <Link className="play-restart-link" href={buildPlayHref(activity.id, activeModule.id, 0, countingSet)}>
-            Restart
+            ↺ Start over
           </Link>
 
           <div className="support-note play-support-note">{activeModule.calmNote}</div>
         </aside>
       </section>
+
+      {isLastCard ? (
+        <div className="play-complete-banner">
+          <div className="play-complete-emoji">🌟</div>
+          <strong>Amazing work!</strong>
+          <p>You made it to the last card. Press {isCounting ? "Count" : "Say"} to finish, then tap ⭐ All done.</p>
+        </div>
+      ) : null}
 
       <section className="play-secondary-stack" aria-label="More options">
         {isCounting ? (
