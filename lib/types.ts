@@ -45,12 +45,6 @@ export type TrainingProposal = {
   notes: string[];
 };
 
-export type ImageOverride = {
-  cardId: string;
-  imageSrc: string;
-  imageAlt: string;
-};
-
 export type Customizations = {
   addedActivities: Activity[];
   addedItems: Array<{
@@ -61,6 +55,4 @@ export type Customizations = {
     appliedAt: string;
     headline: string;
   }>;
-  imageOverrides: ImageOverride[];
 };
-

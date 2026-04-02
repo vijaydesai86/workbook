@@ -1,4 +1,4 @@
-import type { Activity, ImageOverride } from "@/lib/types";
+import type { Activity } from "@/lib/types";
 
 export type CountingSetId = "apples" | "mixed";
 
@@ -465,35 +465,4 @@ export function getPlayModule(config: ActivityPlayConfig, requestedModuleId?: st
     config.modules.find((module) => module.id === config.defaultModuleId) ??
     config.modules[0]
   );
-}
-
-export function applyImageOverrides(config: ActivityPlayConfig, overrides: ImageOverride[]): ActivityPlayConfig {
-  if (overrides.length === 0) {
-    return config;
-  }
-
-  const overrideMap = new Map(overrides.map((o) => [o.cardId, o]));
-
-  return {
-    ...config,
-    modules: config.modules.map((module) => ({
-      ...module,
-      cards: module.cards.map((card) => {
-        const override = overrideMap.get(card.id);
-
-        if (!override) {
-          return card;
-        }
-
-        return {
-          ...card,
-          art: {
-            ...card.art,
-            imageSrc: override.imageSrc,
-            imageAlt: override.imageAlt
-          }
-        };
-      })
-    }))
-  };
 }

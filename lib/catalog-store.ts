@@ -3,7 +3,7 @@ import path from "node:path";
 import { baseCatalog } from "@/lib/base-catalog";
 import { customizationsSchema } from "@/lib/schema";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
-import type { Activity, Catalog, Customizations, ImageOverride, TrainingProposal } from "@/lib/types";
+import type { Activity, Catalog, Customizations, TrainingProposal } from "@/lib/types";
 
 const dataDir = path.join(process.cwd(), "data");
 const customizationsFile = path.join(dataDir, "customizations.json");
@@ -13,8 +13,7 @@ const stateKey = "customizations";
 const emptyCustomizations: Customizations = {
   addedActivities: [],
   addedItems: [],
-  history: [],
-  imageOverrides: []
+  history: []
 };
 
 function dedupeItems(items: Activity["items"]) {
@@ -210,22 +209,4 @@ export async function applyTrainingProposal(proposal: TrainingProposal) {
 export async function getActivityById(activityId: string) {
   const catalog = await getMergedCatalog();
   return catalog.activities.find((activity) => activity.id === activityId) ?? null;
-}
-
-export async function getImageOverrides(): Promise<ImageOverride[]> {
-  const customizations = await readCustomizations();
-  return customizations.imageOverrides;
-}
-
-export async function saveImageOverride(override: ImageOverride): Promise<void> {
-  const customizations = await readCustomizations();
-  const existing = customizations.imageOverrides.findIndex((o) => o.cardId === override.cardId);
-
-  if (existing >= 0) {
-    customizations.imageOverrides[existing] = override;
-  } else {
-    customizations.imageOverrides.push(override);
-  }
-
-  await writeCustomizations(customizations);
 }

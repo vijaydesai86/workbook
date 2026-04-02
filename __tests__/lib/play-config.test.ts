@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { baseCatalog } from "@/lib/base-catalog";
 import {
-  applyImageOverrides,
   getCountingSetId,
   getPlayConfigForActivity,
   getPlayModule
@@ -283,77 +282,5 @@ describe("getPlayModule", () => {
     const brokenConfig = { ...config, defaultModuleId: "invalid" };
     const mod = getPlayModule(brokenConfig, null);
     expect(mod?.id).toBe(config.modules[0]?.id);
-  });
-});
-
-describe("applyImageOverrides", () => {
-  const config = getPlayConfigForActivity(
-    baseCatalog.activities.find((a) => a.id === "alphabet-cards")!
-  );
-
-  it("returns the same config reference when overrides is empty", () => {
-    const result = applyImageOverrides(config, []);
-    expect(result).toBe(config);
-  });
-
-  it("replaces imageSrc for a matching card", () => {
-    const result = applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/new-apple.jpg", imageAlt: "A shiny apple" }
-    ]);
-    const aCard = result.modules[0]?.cards.find((c) => c.id === "alphabet-a");
-    expect(aCard?.art.imageSrc).toBe("/custom/new-apple.jpg");
-  });
-
-  it("replaces imageAlt for a matching card", () => {
-    const result = applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/new-apple.jpg", imageAlt: "A shiny apple" }
-    ]);
-    const aCard = result.modules[0]?.cards.find((c) => c.id === "alphabet-a");
-    expect(aCard?.art.imageAlt).toBe("A shiny apple");
-  });
-
-  it("leaves other cards unchanged", () => {
-    const original = config.modules[0]?.cards.find((c) => c.id === "alphabet-b");
-    const result = applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/new-apple.jpg", imageAlt: "A shiny apple" }
-    ]);
-    const bCard = result.modules[0]?.cards.find((c) => c.id === "alphabet-b");
-    expect(bCard?.art.imageSrc).toBe(original?.art.imageSrc);
-  });
-
-  it("applies multiple overrides independently", () => {
-    const result = applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/apple2.jpg", imageAlt: "Apple 2" },
-      { cardId: "alphabet-b", imageSrc: "/custom/ball2.jpg", imageAlt: "Ball 2" }
-    ]);
-    expect(result.modules[0]?.cards.find((c) => c.id === "alphabet-a")?.art.imageSrc).toBe("/custom/apple2.jpg");
-    expect(result.modules[0]?.cards.find((c) => c.id === "alphabet-b")?.art.imageSrc).toBe("/custom/ball2.jpg");
-  });
-
-  it("ignores overrides for unknown card IDs", () => {
-    const result = applyImageOverrides(config, [
-      { cardId: "nonexistent-card", imageSrc: "/custom/x.jpg", imageAlt: "X" }
-    ]);
-    expect(result.modules[0]?.cards[0]?.art.imageSrc).toBe(config.modules[0]?.cards[0]?.art.imageSrc);
-  });
-
-  it("preserves other art fields on overridden card", () => {
-    const original = config.modules[0]?.cards.find((c) => c.id === "alphabet-a");
-    const result = applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/new.jpg", imageAlt: "New" }
-    ]);
-    const aCard = result.modules[0]?.cards.find((c) => c.id === "alphabet-a");
-    expect(aCard?.art.kind).toBe(original?.art.kind);
-    expect(aCard?.art.lead).toBe(original?.art.lead);
-    expect(aCard?.art.trail).toBe(original?.art.trail);
-  });
-
-  it("does not mutate the original config", () => {
-    const originalSrc = config.modules[0]?.cards.find((c) => c.id === "alphabet-a")?.art.imageSrc;
-    applyImageOverrides(config, [
-      { cardId: "alphabet-a", imageSrc: "/custom/mutated.jpg", imageAlt: "Mutated" }
-    ]);
-    const stillOriginal = config.modules[0]?.cards.find((c) => c.id === "alphabet-a")?.art.imageSrc;
-    expect(stillOriginal).toBe(originalSrc);
   });
 });

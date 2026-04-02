@@ -103,7 +103,7 @@ data/
   customizations.json            Local persistence for applied proposals
 
 public/cards/alphabet/           26 CC-licensed real-photo card images
-__tests__/lib/                   Vitest unit tests (131 tests, 100% pass rate)
+__tests__/lib/                   Vitest unit tests (117 tests, 100% pass rate)
 ```
 
 ---

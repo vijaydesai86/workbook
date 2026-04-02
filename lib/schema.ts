@@ -21,12 +21,6 @@ const activitySchema = z.object({
   items: z.array(activityItemSchema).min(1)
 });
 
-export const imageOverrideSchema = z.object({
-  cardId: z.string().min(1),
-  imageSrc: z.string().min(1),
-  imageAlt: z.string()
-});
-
 export const trainingProposalSchema = z.object({
   headline: z.string().min(1),
   reasoning: z.string().min(1),
@@ -62,7 +56,5 @@ export const customizationsSchema = z.object({
       appliedAt: z.string().min(1),
       headline: z.string().min(1)
     })
-  ),
-  imageOverrides: z.array(imageOverrideSchema).default([])
+  )
 });
-
