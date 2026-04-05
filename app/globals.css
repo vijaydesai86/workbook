@@ -3453,41 +3453,51 @@ html {
   }
 }
 
-.pizza-topping-card-facedown {
-  background: linear-gradient(135deg, #f5d89a 0%, #d4a057 100%);
-  border: 3px solid #c49240;
-  color: #8b6914;
+/* Face-up card — shows colour + shape so child can match */
+.pizza-topping-card-faceup {
+  background: #fffdf5;
+  border: 3px solid #d4a057;
+  color: #4a1a14;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
 }
 
-.pizza-topping-card-facedown:hover:not(:disabled) {
+.pizza-topping-card-faceup:hover:not(:disabled) {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
-.pizza-topping-back {
-  font-size: 2rem;
+/* Highlighted card — matches the spin result, subtle glow hint */
+.pizza-topping-card-match {
+  border-color: #27ae60;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.25), 0 4px 12px rgba(0, 0, 0, 0.10);
 }
 
-.pizza-topping-tap {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.pizza-topping-card-match:hover:not(:disabled) {
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.35), 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
+/* Yucky card — clickable red card with 🤢 */
+.pizza-topping-card-yucky {
+  background: #fce8e8;
+  border: 3px solid #e74c3c;
+  cursor: pointer;
+}
+
+.pizza-topping-card-yucky:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.18);
+}
+
+/* Revealed card result */
 .pizza-topping-card-revealed {
   border: 3px solid;
+  cursor: default;
 }
 
 .pizza-topping-card-good {
   background: #e8fce8;
   border-color: #27ae60;
-}
-
-.pizza-topping-card-yucky {
-  background: #fce8e8;
-  border-color: #e74c3c;
 }
 
 .pizza-topping-shape {

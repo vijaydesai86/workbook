@@ -193,60 +193,92 @@ function PizzaBoard({ board }: { board: GameState["board"] }) {
 }
 
 // ---------------------------------------------------------------------------
-// Topping card button — face-down shows unique backIcon
+// Topping card — always face-up so the child can visually match
 // ---------------------------------------------------------------------------
 
 function ToppingCardButton({
   card,
-  revealed,
+  highlighted,
   onClick,
   disabled,
 }: {
   card: ToppingCard;
-  revealed: boolean;
+  highlighted: boolean;
   onClick: () => void;
   disabled: boolean;
 }) {
-  if (revealed) {
+  if (card.yucky) {
     return (
-      <div
-        className={"pizza-topping-card pizza-topping-card-revealed" + (card.yucky ? " pizza-topping-card-yucky" : " pizza-topping-card-good")}
-        aria-label={
-          card.yucky
-            ? "Yucky topping"
-            : COLOUR_LABEL[card.colour] + " " + SHAPE_LABEL[card.shape] + " topping"
-        }
+      <button
+        className="pizza-topping-card pizza-topping-card-yucky"
+        onClick={onClick}
+        disabled={disabled}
+        aria-label="Yucky topping card"
+        type="button"
       >
-        {card.yucky ? (
-          <span className="pizza-topping-yucky-icon">🤢</span>
-        ) : (
-          <>
-            <span
-              className="pizza-topping-shape"
-              style={{ color: COLOUR_HEX[card.colour] }}
-            >
-              {SHAPE_EMOJI[card.shape]}
-            </span>
-            <span className="pizza-topping-name">
-              {COLOUR_LABEL[card.colour]} {SHAPE_LABEL[card.shape]}
-            </span>
-          </>
-        )}
-      </div>
+        <span className="pizza-topping-yucky-icon">🤢</span>
+        <span className="pizza-topping-name">Yucky!</span>
+      </button>
     );
   }
 
   return (
     <button
-      className="pizza-topping-card pizza-topping-card-facedown"
+      className={
+        "pizza-topping-card pizza-topping-card-faceup" +
+        (highlighted ? " pizza-topping-card-match" : "")
+      }
       onClick={onClick}
       disabled={disabled}
-      aria-label={"Pick the " + card.backIcon + " card"}
+      aria-label={COLOUR_LABEL[card.colour] + " " + SHAPE_LABEL[card.shape] + " topping"}
       type="button"
     >
-      <span className="pizza-topping-back">{card.backIcon}</span>
-      <span className="pizza-topping-tap">Tap!</span>
+      <span
+        className="pizza-topping-shape"
+        style={{ color: COLOUR_HEX[card.colour] }}
+      >
+        {SHAPE_EMOJI[card.shape]}
+      </span>
+      <span className="pizza-topping-name">
+        {COLOUR_LABEL[card.colour]} {SHAPE_LABEL[card.shape]}
+      </span>
     </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Revealed card result (shown after picking)
+// ---------------------------------------------------------------------------
+
+function RevealedCard({ card }: { card: ToppingCard }) {
+  return (
+    <div
+      className={
+        "pizza-topping-card pizza-topping-card-revealed" +
+        (card.yucky ? " pizza-topping-card-yucky" : " pizza-topping-card-good")
+      }
+      aria-label={
+        card.yucky
+          ? "Yucky topping"
+          : COLOUR_LABEL[card.colour] + " " + SHAPE_LABEL[card.shape] + " topping"
+      }
+    >
+      {card.yucky ? (
+        <span className="pizza-topping-yucky-icon">🤢</span>
+      ) : (
+        <>
+          <span
+            className="pizza-topping-shape"
+            style={{ color: COLOUR_HEX[card.colour] }}
+          >
+            {SHAPE_EMOJI[card.shape]}
+          </span>
+          <span className="pizza-topping-name">
+            {COLOUR_LABEL[card.colour]} {SHAPE_LABEL[card.shape]}
+          </span>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -401,16 +433,20 @@ export default function PizzaGame() {
             )}
           </div>
 
-          {/* Topping cards */}
+          {/* Topping cards — face-up so the child can match */}
           {gameState.phase === "picking" && (
             <div className="pizza-topping-row" aria-label="Pick a topping card">
-              <div className="pizza-topping-prompt">Pick a card!</div>
+              <div className="pizza-topping-prompt">Find the matching card!</div>
               <div className="pizza-topping-cards">
                 {pickableCards.map((card) => (
                   <ToppingCardButton
                     key={card.id}
                     card={card}
-                    revealed={false}
+                    highlighted={
+                      !card.yucky &&
+                      gameState.spinColour === card.colour &&
+                      gameState.spinShape === card.shape
+                    }
                     onClick={() => handlePickCard(card.id)}
                     disabled={false}
                   />
@@ -423,12 +459,7 @@ export default function PizzaGame() {
           {gameState.phase === "reveal" && gameState.revealedCard != null && (
             <div className="pizza-reveal-area">
               <div className="pizza-reveal-label">You picked:</div>
-              <ToppingCardButton
-                card={gameState.revealedCard}
-                revealed={true}
-                onClick={() => {}}
-                disabled={true}
-              />
+              <RevealedCard card={gameState.revealedCard} />
             </div>
           )}
 

@@ -30,7 +30,9 @@ Entries are in reverse-chronological order (newest first).
 #### Client component (`app/components/pizza-game.tsx`)
 - SVG pizza board with colour-filled slices and shape emoji indicators.
 - Animated dual spinners with `prefers-reduced-motion` support.
-- Face-down topping cards show unique food emoji backs (🍅🧀🫒🌶️🍄🌽…).
+- **Cards shown face-up** during picking — child sees colour+shape on each card and matches to the spin result (visual matching game, not random luck).
+- Yucky cards (🤢) visible so child learns to avoid them.
+- Matching card gets a subtle green glow hint to guide the child.
 - ≥ 64 px touch targets on all interactive elements.
 
 #### Catalog & config
