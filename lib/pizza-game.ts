@@ -49,6 +49,16 @@ export const SHAPE_LABEL: Record<Shape, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Card back icons — each card gets a unique food icon on its back
+// so face-down cards look distinct and picking feels meaningful.
+// ---------------------------------------------------------------------------
+
+export const CARD_BACK_ICONS = [
+  "🍅", "🧀", "🫒", "🌶️", "🍄", "🌽",
+  "🧅", "🫑", "🥦", "🥕", "🍍", "🥚",
+] as const;
+
+// ---------------------------------------------------------------------------
 // Topping card
 // ---------------------------------------------------------------------------
 
@@ -57,6 +67,7 @@ export type ToppingCard = {
   colour: Colour;
   shape: Shape;
   yucky: boolean;
+  backIcon: string;
 };
 
 // ---------------------------------------------------------------------------
@@ -149,14 +160,16 @@ export function createBoard(rand: () => number): PizzaSlice[] {
 /**
  * Build the face-down topping deck.
  * Includes one card for every board slot plus 4 yucky cards.
+ * Each card gets a unique back icon so the face-down side is distinct.
  */
 export function createDeck(board: PizzaSlice[], rand: () => number): ToppingCard[] {
   let id = 0;
-  const cards: ToppingCard[] = board.map((slice) => ({
+  const cards: ToppingCard[] = board.map((slice, index) => ({
     id: "topping-" + String(++id),
     colour: slice.colour,
     shape: slice.shape,
     yucky: false,
+    backIcon: CARD_BACK_ICONS[index % CARD_BACK_ICONS.length],
   }));
 
   // Add yucky cards — random colour/shape, but marked yucky
@@ -166,6 +179,7 @@ export function createDeck(board: PizzaSlice[], rand: () => number): ToppingCard
       colour: COLOURS[Math.floor(rand() * COLOURS.length)],
       shape: SHAPES[Math.floor(rand() * SHAPES.length)],
       yucky: true,
+      backIcon: CARD_BACK_ICONS[(board.length + i) % CARD_BACK_ICONS.length],
     });
   }
 
@@ -259,7 +273,7 @@ export function doSpin(state: GameState, rand: () => number): GameState {
 /**
  * Transition: child taps a face-down card → reveal it.
  */
-export function doReveal(state: GameState, cardId: string): GameState {
+export function doReveal(state: GameState, cardId: string, rand: () => number): GameState {
   if (state.phase !== "picking") return state;
 
   const card = state.faceDownCards.find((c) => c.id === cardId);
@@ -272,7 +286,7 @@ export function doReveal(state: GameState, cardId: string): GameState {
     return {
       ...state,
       phase: "reveal",
-      faceDownCards: remaining,
+      faceDownCards: shuffle(remaining, rand),
       revealedCard: card,
       binCount: state.binCount + 1,
       message: "Yucky! In the bin!",
@@ -281,10 +295,12 @@ export function doReveal(state: GameState, cardId: string): GameState {
 
   const slotIndex = findMatchingSlot(state.board, card);
   if (slotIndex === -1) {
-    // Card doesn't match any unfilled slot — treat like a miss, put back conceptually
+    // Card doesn't match any unfilled slot — put it back and reshuffle
+    // so the child sees a different spread next turn
     return {
       ...state,
       phase: "reveal",
+      faceDownCards: shuffle(state.faceDownCards, rand),
       revealedCard: card,
       message: "That one doesn't fit. Try again!",
     };
@@ -301,7 +317,7 @@ export function doReveal(state: GameState, cardId: string): GameState {
     ...state,
     phase: complete ? "complete" : "reveal",
     board: newBoard,
-    faceDownCards: remaining,
+    faceDownCards: shuffle(remaining, rand),
     revealedCard: card,
     binCount: state.binCount,
     message: complete ? "Pizza, Pizza! You did it!" : "Great match!",
@@ -325,10 +341,11 @@ export function doContinue(state: GameState): GameState {
 }
 
 /**
- * Get the number of face-down cards available to pick (visible set of 3).
+ * Get face-down cards the child can pick from.
+ * Shows up to 6 cards so the spread feels like a real table of cards.
  */
 export function getPickableCards(state: GameState): ToppingCard[] {
-  return state.faceDownCards.slice(0, 3);
+  return state.faceDownCards.slice(0, Math.min(6, state.faceDownCards.length));
 }
 
 /**
