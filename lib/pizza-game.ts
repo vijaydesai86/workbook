@@ -51,6 +51,7 @@ export const SHAPE_LABEL: Record<Shape, string> = {
 // ---------------------------------------------------------------------------
 // Card back icons — each card gets a unique food icon on its back
 // so face-down cards look distinct and picking feels meaningful.
+// 12 icons match the max deck size (8 good + 4 yucky = 12 cards).
 // ---------------------------------------------------------------------------
 
 export const CARD_BACK_ICONS = [
