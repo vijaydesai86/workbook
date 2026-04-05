@@ -404,8 +404,48 @@ function createCountingConfig(countingSet: CountingSetId): ActivityPlayConfig {
   };
 }
 
+const pizzaConfig: ActivityPlayConfig = {
+  defaultModuleId: "pizza_game",
+  coverLabel: "Pizza, Pizza!",
+  supportLine: "Spin, match, and build your pizza!",
+  audience: "A calm colour-and-shape matching game for early learners who enjoy predictable turn-based play.",
+  theme: {
+    primary: "#e74c3c",
+    secondary: "#fdecea",
+    surface: "#fff5f4",
+    ink: "#4a1a14",
+    badge: "#fff0b8"
+  },
+  modules: [
+    {
+      id: "pizza_game",
+      title: "Build a Pizza",
+      description: "Spin the spinners and fill your pizza board.",
+      accent: "Pizza game",
+      skills: ["Look", "Match", "Place"],
+      calmNote: "Take your time. One spin at a time.",
+      cards: [
+        {
+          id: "pizza-intro",
+          title: "Pizza, Pizza!",
+          prompt: "Spin the spinners and match the colour and shape.",
+          focus: "Colour and shape",
+          cue: "Tap Spin to start!",
+          example: "Pizza, Pizza!",
+          art: {
+            kind: "scene",
+            lead: "🍕",
+            caption: "Pizza game"
+          }
+        }
+      ]
+    }
+  ]
+};
+
 const bespokeConfigs: Record<string, ActivityPlayConfig> = {
-  "alphabet-cards": alphabetConfig
+  "alphabet-cards": alphabetConfig,
+  "pizza-pizza": pizzaConfig
 };
 
 function createFallbackConfig(activity: Activity): ActivityPlayConfig {

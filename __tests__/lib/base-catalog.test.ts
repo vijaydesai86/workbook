@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { baseCatalog } from "@/lib/base-catalog";
 
 describe("baseCatalog", () => {
-  it("has exactly 2 activities", () => {
-    expect(baseCatalog.activities).toHaveLength(2);
+  it("has exactly 3 activities", () => {
+    expect(baseCatalog.activities).toHaveLength(3);
   });
 
   it("has an updatedAt timestamp", () => {
@@ -23,6 +23,18 @@ describe("baseCatalog", () => {
     expect(counting).toBeDefined();
     expect(counting?.title).toBe("Counting Cards");
     expect(counting?.category).toBe("Early math");
+  });
+
+  it("contains pizza-pizza activity", () => {
+    const pizza = baseCatalog.activities.find((a) => a.id === "pizza-pizza");
+    expect(pizza).toBeDefined();
+    expect(pizza?.title).toBe("Pizza, Pizza!");
+    expect(pizza?.category).toBe("Colour and shape matching");
+  });
+
+  it("pizza-pizza has exactly 2 items", () => {
+    const pizza = baseCatalog.activities.find((a) => a.id === "pizza-pizza");
+    expect(pizza?.items).toHaveLength(2);
   });
 
   it("alphabet-cards has exactly 5 items", () => {

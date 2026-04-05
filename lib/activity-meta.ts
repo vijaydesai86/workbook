@@ -5,7 +5,8 @@ export type ActivityMeta = {
 
 const knownMeta: Record<string, ActivityMeta> = {
   "alphabet-cards": { emoji: "🔤", shortLabel: "Letters" },
-  "counting-cards": { emoji: "🔢", shortLabel: "Numbers" }
+  "counting-cards": { emoji: "🔢", shortLabel: "Numbers" },
+  "pizza-pizza": { emoji: "🍕", shortLabel: "Pizza" }
 };
 
 const fallbackMeta: ActivityMeta = { emoji: "🎮", shortLabel: "Game" };

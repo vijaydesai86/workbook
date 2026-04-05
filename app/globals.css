@@ -3122,3 +3122,397 @@ html {
 .kid-picker-card-copy strong {
   font-size: 1.5rem;
 }
+
+/* =========================================================================
+   11. PIZZA PIZZA! GAME — colour-and-shape matching board game
+   ========================================================================= */
+
+/* Shell */
+.pizza-game-shell {
+  max-width: 1100px;
+}
+
+.pizza-topbar {
+  background-color: #fff5f4 !important;
+}
+
+/* Game area — two-column on desktop, single column on mobile */
+.pizza-game-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .pizza-game-area {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pizza board */
+.pizza-board-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pizza-board-svg {
+  width: min(100%, 360px);
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.1));
+}
+
+/* Celebration overlay */
+.pizza-celebration {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  text-align: center;
+  padding: 24px;
+}
+
+.pizza-celebration-emoji {
+  font-size: 3.8rem;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.pizza-celebration strong {
+  font-size: 1.5rem;
+  color: #e74c3c;
+}
+
+.pizza-celebration p {
+  font-size: 1rem;
+  color: #4a1a14;
+  margin: 4px 0 0;
+}
+
+/* Controls column */
+.pizza-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Spinners row */
+.pizza-spinners {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pizza-spinner-wheel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pizza-spinner-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4a1a14;
+}
+
+.pizza-spinner-disc {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff5f4 0%, #fdecea 100%);
+  border: 4px solid #e74c3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.pizza-spinner-disc-spinning {
+  animation: pizza-spin 0.8s ease-out;
+}
+
+@keyframes pizza-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(720deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pizza-spinner-disc-spinning {
+    animation: none;
+  }
+}
+
+.pizza-spinner-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pizza-spinner-colour-dot {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.pizza-spinner-shape-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.pizza-spinner-placeholder {
+  font-size: 2rem;
+  color: #ccc;
+  font-weight: 700;
+}
+
+/* Message bar */
+.pizza-message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a1a14;
+  text-align: center;
+  padding: 8px 16px;
+  background: #fff0b8;
+  border-radius: var(--radius-sm);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Action buttons */
+.pizza-action-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.pizza-spin-button,
+.pizza-continue-button,
+.pizza-new-game-button {
+  min-height: 64px;
+  min-width: 180px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: none;
+}
+
+.pizza-spin-button {
+  background: linear-gradient(180deg, #ff6b4a 0%, #e74c3c 100%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+}
+
+.pizza-spin-button:hover:not(:disabled) {
+  box-shadow: 0 12px 28px rgba(231, 76, 60, 0.4);
+}
+
+.pizza-spin-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.pizza-continue-button {
+  background: linear-gradient(180deg, #74c89d 0%, #27ae60 100%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+}
+
+.pizza-new-game-button {
+  background: linear-gradient(180deg, #ff6b4a 0%, #e74c3c 100%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+}
+
+/* Topping cards */
+.pizza-topping-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.pizza-topping-prompt {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4a1a14;
+}
+
+.pizza-topping-cards {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pizza-topping-card {
+  width: 100px;
+  height: 120px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pizza-topping-card {
+    transition: none;
+  }
+}
+
+.pizza-topping-card-facedown {
+  background: linear-gradient(135deg, #f5d89a 0%, #d4a057 100%);
+  border: 3px solid #c49240;
+  color: #8b6914;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.pizza-topping-card-facedown:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.pizza-topping-back {
+  font-size: 2rem;
+}
+
+.pizza-topping-tap {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pizza-topping-card-revealed {
+  border: 3px solid;
+}
+
+.pizza-topping-card-good {
+  background: #e8fce8;
+  border-color: #27ae60;
+}
+
+.pizza-topping-card-yucky {
+  background: #fce8e8;
+  border-color: #e74c3c;
+}
+
+.pizza-topping-shape {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.pizza-topping-name {
+  font-size: 0.8rem;
+  color: #4a1a14;
+  text-align: center;
+}
+
+.pizza-topping-yucky-icon {
+  font-size: 2.4rem;
+}
+
+/* Reveal area */
+.pizza-reveal-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pizza-reveal-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4a1a14;
+}
+
+/* Spin result reminder */
+.pizza-spin-reminder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4a1a14;
+  padding: 8px 16px;
+  background: #fff;
+  border: 2px dashed #e74c3c;
+  border-radius: var(--radius-sm);
+}
+
+.pizza-reminder-dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Board legend */
+.pizza-legend {
+  margin-top: 20px;
+  padding: 16px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.pizza-legend-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #4a1a14;
+  margin-bottom: 10px;
+}
+
+.pizza-legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pizza-legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #fdecea;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4a1a14;
+  border: 2px solid transparent;
+}
+
+.pizza-legend-chip-filled {
+  background: #e8fce8;
+  border-color: #27ae60;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.pizza-legend-check {
+  color: #27ae60;
+  font-weight: 700;
+}

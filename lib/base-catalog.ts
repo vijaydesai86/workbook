@@ -116,6 +116,45 @@ export const baseCatalog: Catalog = {
           tags: ["numbers", "larger groups", "visual math"]
         }
       ]
+    },
+    {
+      id: "pizza-pizza",
+      title: "Pizza, Pizza!",
+      category: "Colour and shape matching",
+      summary:
+        "A fun pizza-building game where you spin for a colour and shape, then find the matching topping to fill your pizza.",
+      goal: "Build colour recognition, shape matching, and turn-taking skills through a calm, predictable game loop.",
+      sessionLength: "5-10 min",
+      workModeNote:
+        "Work mode uses a fixed seed so the pizza board and topping cards are always the same, giving the child a predictable routine.",
+      trainModeNote:
+        "Train mode could add new topping themes or adjust board sizes, but the core game should stay simple.",
+      items: [
+        {
+          id: "pizza-spin-match",
+          title: "Spin and match",
+          kind: "exercise",
+          summary: "Spin the spinners, then pick the matching topping card.",
+          steps: [
+            "Tap the Spin button.",
+            "Look at the colour and shape.",
+            "Pick the matching topping card."
+          ],
+          tags: ["colours", "shapes", "matching"]
+        },
+        {
+          id: "pizza-place-topping",
+          title: "Place the topping",
+          kind: "exercise",
+          summary: "Good toppings go on the pizza. Yucky toppings go in the bin!",
+          steps: [
+            "If the topping is good, it goes on your pizza.",
+            "If the topping is yucky, it goes in the bin.",
+            "Fill all the slices to win!"
+          ],
+          tags: ["sorting", "decision making", "fun"]
+        }
+      ]
     }
   ]
 };

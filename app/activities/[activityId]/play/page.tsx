@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActivityPlayScene } from "@/app/components/activity-scenes";
 import { PlayControls } from "@/app/components/play-controls";
+import PizzaGame from "@/app/components/pizza-game";
 import { getActivityById } from "@/lib/catalog-store";
 import { getCountingSetId, getPlayConfigForActivity, getPlayModule } from "@/lib/play-config";
 
@@ -36,6 +37,11 @@ export default async function ActivityPlayPage({ params, searchParams }: PlayPag
 
   if (activity == null) {
     notFound();
+  }
+
+  // Pizza game has its own dedicated client component
+  if (activity.id === "pizza-pizza") {
+    return <PizzaGame />;
   }
 
   const isAlphabet = activity.id === "alphabet-cards";
