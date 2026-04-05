@@ -1,10 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  COLOURS,
-  SHAPES,
   COLOUR_HEX,
   COLOUR_LABEL,
   SHAPE_EMOJI,
@@ -17,33 +15,92 @@ import {
   filledCount,
   mulberry32,
 } from "@/lib/pizza-game";
-import type { GameState, ToppingCard } from "@/lib/pizza-game";
+import type { Colour, Shape, GameState, ToppingCard } from "@/lib/pizza-game";
 
 // ---------------------------------------------------------------------------
-// Spinner animation component
+// Colour Spinner — a rounded square with 4 colour swatches inside
 // ---------------------------------------------------------------------------
 
-function SpinnerWheel({
-  items,
+function ColourSpinner({
   result,
   spinning,
-  renderItem,
-  label,
 }: {
-  items: readonly string[];
-  result: string | null;
+  result: Colour | null;
   spinning: boolean;
-  renderItem: (item: string) => React.ReactNode;
-  label: string;
 }) {
   return (
-    <div className="pizza-spinner-wheel" aria-label={label}>
-      <div className="pizza-spinner-label">{label}</div>
-      <div className={"pizza-spinner-disc" + (spinning ? " pizza-spinner-disc-spinning" : "")}>
+    <div className="pizza-colour-spinner" aria-label="Colour spinner">
+      <div className="pizza-spinner-heading">🎨 Colour</div>
+      <div
+        className={
+          "pizza-colour-spinner-box" +
+          (spinning ? " pizza-spinner-anim" : "")
+        }
+      >
         {result != null ? (
-          <div className="pizza-spinner-result">{renderItem(result)}</div>
+          <div className="pizza-colour-spinner-result">
+            <span
+              className="pizza-colour-big-swatch"
+              style={{ backgroundColor: COLOUR_HEX[result] }}
+            />
+            <span className="pizza-colour-result-label">
+              {COLOUR_LABEL[result]}
+            </span>
+          </div>
         ) : (
-          <div className="pizza-spinner-placeholder">?</div>
+          <div className="pizza-colour-spinner-grid">
+            {(["red", "yellow", "green", "blue"] as const).map((c) => (
+              <span
+                key={c}
+                className="pizza-colour-mini-swatch"
+                style={{ backgroundColor: COLOUR_HEX[c] }}
+                aria-label={COLOUR_LABEL[c]}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Shape Spinner — a dark circle with shape icons inside
+// ---------------------------------------------------------------------------
+
+function ShapeSpinner({
+  result,
+  spinning,
+}: {
+  result: Shape | null;
+  spinning: boolean;
+}) {
+  return (
+    <div className="pizza-shape-spinner" aria-label="Shape spinner">
+      <div className="pizza-spinner-heading">✏️ Shape</div>
+      <div
+        className={
+          "pizza-shape-spinner-disc" +
+          (spinning ? " pizza-spinner-anim" : "")
+        }
+      >
+        {result != null ? (
+          <div className="pizza-shape-spinner-result">
+            <span className="pizza-shape-big-icon">
+              {SHAPE_EMOJI[result]}
+            </span>
+            <span className="pizza-shape-result-label">
+              {SHAPE_LABEL[result]}
+            </span>
+          </div>
+        ) : (
+          <div className="pizza-shape-spinner-grid">
+            {(["circle", "star", "triangle", "square"] as const).map((s) => (
+              <span key={s} className="pizza-shape-mini-icon">
+                {SHAPE_EMOJI[s]}
+              </span>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -136,7 +193,7 @@ function PizzaBoard({ board }: { board: GameState["board"] }) {
 }
 
 // ---------------------------------------------------------------------------
-// Topping card button
+// Topping card button — face-down shows unique backIcon
 // ---------------------------------------------------------------------------
 
 function ToppingCardButton({
@@ -184,10 +241,10 @@ function ToppingCardButton({
       className="pizza-topping-card pizza-topping-card-facedown"
       onClick={onClick}
       disabled={disabled}
-      aria-label="Pick this topping card"
+      aria-label={"Pick the " + card.backIcon + " card"}
       type="button"
     >
-      <span className="pizza-topping-back">🍕</span>
+      <span className="pizza-topping-back">{card.backIcon}</span>
       <span className="pizza-topping-tap">Tap!</span>
     </button>
   );
@@ -219,7 +276,7 @@ export default function PizzaGame() {
   const handlePickCard = useCallback(
     (cardId: string) => {
       if (gameState.phase !== "picking") return;
-      setGameState((prev) => doReveal(prev, cardId));
+      setGameState((prev) => doReveal(prev, cardId, rngRef.current));
     },
     [gameState.phase]
   );
@@ -293,31 +350,15 @@ export default function PizzaGame() {
 
         {/* Game controls */}
         <div className="pizza-controls">
-          {/* Spinners */}
+          {/* Spinners — visually distinct designs */}
           <div className="pizza-spinners">
-            <SpinnerWheel
-              items={COLOURS as unknown as string[]}
+            <ColourSpinner
               result={gameState.spinColour}
               spinning={spinning}
-              label="Colour"
-              renderItem={(c) => (
-                <span
-                  className="pizza-spinner-colour-dot"
-                  style={{ backgroundColor: COLOUR_HEX[c as keyof typeof COLOUR_HEX] }}
-                  aria-label={COLOUR_LABEL[c as keyof typeof COLOUR_LABEL]}
-                />
-              )}
             />
-            <SpinnerWheel
-              items={SHAPES as unknown as string[]}
+            <ShapeSpinner
               result={gameState.spinShape}
               spinning={spinning}
-              label="Shape"
-              renderItem={(s) => (
-                <span className="pizza-spinner-shape-icon">
-                  {SHAPE_EMOJI[s as keyof typeof SHAPE_EMOJI]}
-                </span>
-              )}
             />
           </div>
 

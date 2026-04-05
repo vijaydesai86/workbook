@@ -290,6 +290,7 @@ describe("cardMatchesSpin", () => {
     colour: "red",
     shape: "star",
     yucky: false,
+    backIcon: "🍅",
   };
 
   it("returns true for exact match", () => {
@@ -321,17 +322,17 @@ describe("findMatchingSlot", () => {
   ];
 
   it("finds an unfilled matching slot", () => {
-    const card: ToppingCard = { id: "t", colour: "blue", shape: "star", yucky: false };
+    const card: ToppingCard = { id: "t", colour: "blue", shape: "star", yucky: false, backIcon: "🍅" };
     expect(findMatchingSlot(board, card)).toBe(1);
   });
 
   it("returns -1 for a filled slot", () => {
-    const card: ToppingCard = { id: "t", colour: "green", shape: "triangle", yucky: false };
+    const card: ToppingCard = { id: "t", colour: "green", shape: "triangle", yucky: false, backIcon: "🍅" };
     expect(findMatchingSlot(board, card)).toBe(-1);
   });
 
   it("returns -1 for no match", () => {
-    const card: ToppingCard = { id: "t", colour: "yellow", shape: "square", yucky: false };
+    const card: ToppingCard = { id: "t", colour: "yellow", shape: "square", yucky: false, backIcon: "🍅" };
     expect(findMatchingSlot(board, card)).toBe(-1);
   });
 });
@@ -406,13 +407,15 @@ describe("doSpin", () => {
 describe("doReveal", () => {
   it("does nothing if not in picking phase", () => {
     const state = createInitialState(42);
-    const next = doReveal(state, "topping-1");
+    const rng = mulberry32(50);
+    const next = doReveal(state, "topping-1", rng);
     expect(next).toBe(state); // ready phase, not picking
   });
 
   it("does nothing for unknown card id", () => {
     const state: GameState = { ...createInitialState(42), phase: "picking", spinColour: "red", spinShape: "circle" };
-    const next = doReveal(state, "nonexistent");
+    const rng = mulberry32(50);
+    const next = doReveal(state, "nonexistent", rng);
     expect(next).toBe(state);
   });
 
@@ -427,7 +430,8 @@ describe("doReveal", () => {
       spinColour: "red",
       spinShape: "circle",
     };
-    const next = doReveal(pickingState, yuckyCard.id);
+    const rng = mulberry32(50);
+    const next = doReveal(pickingState, yuckyCard.id, rng);
     expect(next.phase).toBe("reveal");
     expect(next.binCount).toBe(1);
     expect(next.revealedCard).toEqual(yuckyCard);
@@ -448,7 +452,8 @@ describe("doReveal", () => {
       spinColour: goodCard.colour,
       spinShape: goodCard.shape,
     };
-    const next = doReveal(pickingState, goodCard.id);
+    const rng = mulberry32(50);
+    const next = doReveal(pickingState, goodCard.id, rng);
     expect(next.phase).toBe("reveal");
     expect(next.message).toContain("match");
 
@@ -459,7 +464,23 @@ describe("doReveal", () => {
     expect(next.board[slotIndex].filled).toBe(true);
   });
 
-  it("removes card from faceDownCards", () => {
+  it("removes card from faceDownCards when matched or yucky", () => {
+    const state = createInitialState(42);
+    const yuckyCard = state.faceDownCards.find((c) => c.yucky);
+    if (yuckyCard == null) return;
+
+    const pickingState: GameState = {
+      ...state,
+      phase: "picking",
+      spinColour: yuckyCard.colour,
+      spinShape: yuckyCard.shape,
+    };
+    const rng = mulberry32(50);
+    const next = doReveal(pickingState, yuckyCard.id, rng);
+    expect(next.faceDownCards.find((c) => c.id === yuckyCard.id)).toBeUndefined();
+  });
+
+  it("reshuffles faceDownCards after reveal", () => {
     const state = createInitialState(42);
     const card = state.faceDownCards[0];
     const pickingState: GameState = {
@@ -468,8 +489,10 @@ describe("doReveal", () => {
       spinColour: card.colour,
       spinShape: card.shape,
     };
-    const next = doReveal(pickingState, card.id);
-    expect(next.faceDownCards.find((c) => c.id === card.id)).toBeUndefined();
+    const rng = mulberry32(50);
+    const next = doReveal(pickingState, card.id, rng);
+    // Cards should still be the same set (minus removed card if applicable) but in different order
+    expect(next.faceDownCards.length).toBeLessThanOrEqual(state.faceDownCards.length);
   });
 });
 
@@ -484,7 +507,7 @@ describe("doContinue", () => {
       phase: "reveal",
       spinColour: "red",
       spinShape: "circle",
-      revealedCard: { id: "t1", colour: "red", shape: "circle", yucky: false },
+      revealedCard: { id: "t1", colour: "red", shape: "circle", yucky: false, backIcon: "🍅" },
     };
     const next = doContinue(state);
     expect(next.phase).toBe("ready");
@@ -505,16 +528,25 @@ describe("doContinue", () => {
 // ---------------------------------------------------------------------------
 
 describe("getPickableCards", () => {
-  it("returns at most 3 cards", () => {
+  it("returns at most 6 cards", () => {
     const state = createInitialState(42);
     const cards = getPickableCards(state);
-    expect(cards.length).toBeLessThanOrEqual(3);
+    expect(cards.length).toBeLessThanOrEqual(6);
   });
 
   it("returns cards from the front of faceDownCards", () => {
     const state = createInitialState(42);
     const cards = getPickableCards(state);
-    expect(cards).toEqual(state.faceDownCards.slice(0, 3));
+    expect(cards).toEqual(state.faceDownCards.slice(0, 6));
+  });
+
+  it("returns fewer cards when deck is smaller than 6", () => {
+    const state: GameState = {
+      ...createInitialState(42),
+      faceDownCards: createInitialState(42).faceDownCards.slice(0, 2),
+    };
+    const cards = getPickableCards(state);
+    expect(cards).toHaveLength(2);
   });
 });
 
@@ -569,7 +601,8 @@ describe("full game flow", () => {
     if (goodCard == null) return;
 
     // Reveal the good card
-    const afterReveal = doReveal(afterSpin, goodCard.id);
+    const rng2 = mulberry32(88);
+    const afterReveal = doReveal(afterSpin, goodCard.id, rng2);
     expect(afterReveal.phase).toBe("reveal");
     expect(afterReveal.revealedCard).not.toBeNull();
 

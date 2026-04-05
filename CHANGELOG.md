@@ -5,6 +5,46 @@ Entries are in reverse-chronological order (newest first).
 
 ---
 
+## [Unreleased] — 2026-04-05
+
+### Added — Pizza, Pizza! Game
+
+#### New activity: `pizza-pizza`
+- Colour-and-shape matching board game adapted from Orchard Toys "Pizza, Pizza!".
+- Single-player, autism-friendly: calm pace, no timer, no social pressure.
+- Core loop: spin → pick → place/bin → repeat → win.
+
+#### Game logic (`lib/pizza-game.ts`)
+- Pure state machine with deterministic seeded RNG (mulberry32) for reproducible work-mode sessions.
+- 8-slice board from 16 possible colour×shape combos; 12-card deck (8 good + 4 yucky).
+- State transitions: `doSpin`, `doReveal` (with reshuffle), `doContinue`.
+- Each face-down card has a unique `backIcon` (food emoji) so cards look distinct.
+- `getPickableCards` shows up to 6 cards for a meaningful spread.
+- Cards reshuffle after every reveal to prevent stale card positions.
+
+#### Visually distinct spinners
+- **Colour spinner**: rounded square with rainbow gradient border, 2×2 colour swatch grid (idle) or single large swatch (result).
+- **Shape spinner**: dark circle with white shape icons, 2×2 shape grid (idle) or single large shape (result).
+- Heading emojis (🎨 Colour, ✏️ Shape) help kids distinguish spinners instantly.
+
+#### Client component (`app/components/pizza-game.tsx`)
+- SVG pizza board with colour-filled slices and shape emoji indicators.
+- Animated dual spinners with `prefers-reduced-motion` support.
+- Face-down topping cards show unique food emoji backs (🍅🧀🫒🌶️🍄🌽…).
+- ≥ 64 px touch targets on all interactive elements.
+
+#### Catalog & config
+- `lib/base-catalog.ts` — new `pizza-pizza` activity with 2 items.
+- `lib/activity-meta.ts` — `{ emoji: "🍕", shortLabel: "Pizza" }`.
+- `lib/play-config.ts` — bespoke `pizzaConfig` with red theme.
+
+#### Tests
+- 59 tests in `__tests__/lib/pizza-game.test.ts` covering constants, RNG, board/deck generation, state transitions, matching logic, reshuffle behaviour, and full game flow.
+- Updated `base-catalog.test.ts` for 3 activities.
+- All 178 tests pass.
+
+---
+
 ## [Unreleased] — 2026-04-02
 
 ### Added — Autism-Friendly UI Revamp
